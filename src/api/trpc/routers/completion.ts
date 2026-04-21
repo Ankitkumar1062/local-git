@@ -11,6 +11,12 @@ import { TRPCError } from '@trpc/server';
 import { Agent } from '@mastra/core/agent';
 import { getAnyApiKeyForRepo, isAIAvailable, isAIAvailableForRepo } from '../../../ai/mastra.js';
 
+const DEFAULT_AI_MODEL = 'openai/google/gemma-3-27b-it';
+
+function getActiveModel(): string {
+  return process.env.WIT_AI_MODEL || DEFAULT_AI_MODEL;
+}
+
 // Cache for rate limiting and deduplication
 const completionCache = new Map<string, { result: string; timestamp: number }>();
 const CACHE_TTL_MS = 5000; // 5 seconds
@@ -63,7 +69,7 @@ async function generateCompletion(
   const apiKeyInfo = await getAnyApiKeyForRepo(repoId);
   
   if (!apiKeyInfo) {
-    throw new Error('No AI API key configured. Set ANTHROPIC_API_KEY, OPENROUTER_API_KEY, or OPENAI_API_KEY, or add an API key in repository settings.');
+    throw new Error('No AI API key configured. Set OPENROUTER_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, or ANTHROPIC_API_KEY, or add an API key in repository settings.');
   }
 
   // Set OpenRouter base URL if using OpenRouter
@@ -72,11 +78,8 @@ async function generateCompletion(
     process.env.OPENAI_BASE_URL = 'https://openrouter.ai/api/v1';
   }
 
-  // Determine model based on provider
-  // OpenRouter uses OpenAI-compatible format
-  const model = apiKeyInfo.provider === 'anthropic' 
-    ? 'anthropic/claude-sonnet-4-20250514'
-    : 'openai/gpt-4o-mini';
+  // Use centralized model selection (Gemma-first by default).
+  const model = getActiveModel();
 
   // Create completion agent
   const agent = createCompletionAgent(model);
@@ -214,7 +217,7 @@ export const completionRouter = router({
       if (!aiAvailable) {
         throw new TRPCError({
           code: 'PRECONDITION_FAILED',
-          message: 'No AI API key configured. Set ANTHROPIC_API_KEY or OPENAI_API_KEY, or add an API key in repository settings.',
+          message: 'No AI API key configured. Set OPENROUTER_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, or ANTHROPIC_API_KEY, or add an API key in repository settings.',
         });
       }
 

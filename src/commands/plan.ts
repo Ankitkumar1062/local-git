@@ -381,7 +381,7 @@ Workflow:
 Environment:
   OPENAI_API_KEY       OpenAI API key (for GPT models)
   ANTHROPIC_API_KEY    Anthropic API key (for Claude models)
-  WIT_AI_MODEL         Model to use (default: anthropic/claude-opus-4-5)
+  WIT_AI_MODEL         Model to use (default: openai/google/gemma-3-27b-it)
 `);
 }
 

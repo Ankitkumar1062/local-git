@@ -514,7 +514,7 @@ ${colors.bold}Capabilities:${colors.reset}
 ${colors.bold}Environment:${colors.reset}
   OPENAI_API_KEY       OpenAI API key (for GPT models)
   ANTHROPIC_API_KEY    Anthropic API key (for Claude models)
-  WIT_AI_MODEL         Model override (default: openai/gpt-4o)
+  WIT_AI_MODEL         Model override (default: openai/google/gemma-3-27b-it)
 `);
 }
 

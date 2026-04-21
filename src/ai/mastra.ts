@@ -22,11 +22,46 @@ let mastraInstance: Mastra | null = null;
 let memoryInstance: Memory | null = null;
 let storageInstance: LibSQLStore | PostgresStore | null = null;
 
+const DEFAULT_AI_MODEL = 'openai/google/gemma-3-27b-it';
+
+function getDefaultModel(config?: AIConfig): string {
+  return config?.model || process.env.WIT_AI_MODEL || DEFAULT_AI_MODEL;
+}
+
+function isGemmaModel(model: string): boolean {
+  return model.toLowerCase().includes('gemma');
+}
+
+function ensureModelProviderCompatibility(model: string): void {
+  // Gemma is commonly served via OpenRouter's OpenAI-compatible endpoint.
+  // If only OPENROUTER_API_KEY is present, mirror it into OPENAI variables.
+  if (
+    isGemmaModel(model) &&
+    !!process.env.OPENROUTER_API_KEY &&
+    !process.env.OPENAI_API_KEY
+  ) {
+    process.env.OPENAI_API_KEY = process.env.OPENROUTER_API_KEY;
+    if (!process.env.OPENAI_BASE_URL) {
+      process.env.OPENAI_BASE_URL = 'https://openrouter.ai/api/v1';
+    }
+  }
+}
+
 /**
  * Check if we're running in server mode (have DATABASE_URL)
  */
 function isServerMode(): boolean {
-  return !!process.env.DATABASE_URL;
+  if (!process.env.DATABASE_URL) {
+    return false;
+  }
+
+  if (process.env.WIT_SERVER_MODE === 'true') {
+    return true;
+  }
+
+  // CLI invocations should default to local storage to avoid long-lived DB handles.
+  const argv = process.argv.slice(2);
+  return argv.includes('serve') || argv.includes('up');
 }
 
 /**
@@ -81,7 +116,8 @@ export function getMemory(): Memory {
  * Default model: Claude Opus 4 (claude-opus-4-5)
  */
 export function createTsgitMastra(config: AIConfig = {}): Mastra {
-  const model = config.model || process.env.WIT_AI_MODEL || 'anthropic/claude-opus-4-5';
+  const model = getDefaultModel(config);
+  ensureModelProviderCompatibility(model);
   
   const agent = createTsgitAgent(model);
   const textAgent = createTextAgent(model);
@@ -217,11 +253,14 @@ export async function getApiKeyForRepo(
 export async function getAnyApiKeyForRepo(
   repoId: string | null
 ): Promise<{ provider: 'openai' | 'anthropic' | 'openrouter' | 'gemini'; key: string } | null> {
+  const activeModel = getDefaultModel();
+  const preferOpenAICompatible = isGemmaModel(activeModel);
+
   // If we have a repo ID, try repo-level keys first
   if (repoId) {
     try {
       const { repoAiKeyModel } = await import('../db/models/repo-ai-keys.js');
-      const repoKey = await repoAiKeyModel.getAnyKey(repoId);
+      const repoKey = await repoAiKeyModel.getAnyKey(repoId, preferOpenAICompatible);
       if (repoKey) {
         return repoKey;
       }
@@ -230,18 +269,34 @@ export async function getAnyApiKeyForRepo(
     }
   }
   
-  // Fall back to server-level keys - prefer Anthropic, then Gemini, then OpenRouter, then OpenAI
-  if (process.env.ANTHROPIC_API_KEY) {
-    return { provider: 'anthropic', key: process.env.ANTHROPIC_API_KEY };
-  }
-  if (process.env.GEMINI_API_KEY) {
-    return { provider: 'gemini', key: process.env.GEMINI_API_KEY };
-  }
-  if (process.env.OPENROUTER_API_KEY) {
-    return { provider: 'openrouter', key: process.env.OPENROUTER_API_KEY };
-  }
-  if (process.env.OPENAI_API_KEY) {
-    return { provider: 'openai', key: process.env.OPENAI_API_KEY };
+  // Fall back to server-level keys.
+  // Gemma models are typically served via OpenRouter/OpenAI-compatible APIs.
+  if (preferOpenAICompatible) {
+    if (process.env.OPENROUTER_API_KEY) {
+      return { provider: 'openrouter', key: process.env.OPENROUTER_API_KEY };
+    }
+    if (process.env.OPENAI_API_KEY) {
+      return { provider: 'openai', key: process.env.OPENAI_API_KEY };
+    }
+    if (process.env.GEMINI_API_KEY) {
+      return { provider: 'gemini', key: process.env.GEMINI_API_KEY };
+    }
+    if (process.env.ANTHROPIC_API_KEY) {
+      return { provider: 'anthropic', key: process.env.ANTHROPIC_API_KEY };
+    }
+  } else {
+    if (process.env.ANTHROPIC_API_KEY) {
+      return { provider: 'anthropic', key: process.env.ANTHROPIC_API_KEY };
+    }
+    if (process.env.GEMINI_API_KEY) {
+      return { provider: 'gemini', key: process.env.GEMINI_API_KEY };
+    }
+    if (process.env.OPENROUTER_API_KEY) {
+      return { provider: 'openrouter', key: process.env.OPENROUTER_API_KEY };
+    }
+    if (process.env.OPENAI_API_KEY) {
+      return { provider: 'openai', key: process.env.OPENAI_API_KEY };
+    }
   }
   
   return null;
@@ -252,12 +307,13 @@ export async function getAnyApiKeyForRepo(
  * Default: Claude Opus 4
  */
 export function getAIInfo(): { available: boolean; model: string; provider: string } {
-  const model = process.env.WIT_AI_MODEL || 'anthropic/claude-opus-4-5';
+  const model = getDefaultModel();
+  const provider = model.includes('/') ? model.split('/')[0] : 'openrouter';
   
   return {
     available: isAIAvailable(),
     model,
-    provider: 'anthropic',
+    provider,
   };
 }
 
@@ -271,8 +327,8 @@ export async function getAIInfoForRepo(repoId: string): Promise<{
   model: string;
   provider: string;
 }> {
-  const model = process.env.WIT_AI_MODEL || 'anthropic/claude-opus-4-5';
-  const defaultProvider = 'anthropic';
+  const model = getDefaultModel();
+  const defaultProvider = model.includes('/') ? model.split('/')[0] : 'openrouter';
   
   // Check repo-level keys first
   if (repoId) {

@@ -280,7 +280,7 @@ function createAddCommentTool(context: TriageContext) {
 /**
  * Create a Triage Agent for analyzing and categorizing issues
  */
-export function createTriageAgent(context: TriageContext, model: string = 'anthropic/claude-sonnet-4-20250514'): Agent {
+export function createTriageAgent(context: TriageContext, model: string = 'openai/google/gemma-3-27b-it'): Agent {
   const customInstructions = context.customPrompt
     ? `${TRIAGE_AGENT_INSTRUCTIONS}\n\n## Custom Instructions from Repository Owner\n${context.customPrompt}`
     : TRIAGE_AGENT_INSTRUCTIONS;

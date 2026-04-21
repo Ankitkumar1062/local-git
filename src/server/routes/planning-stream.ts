@@ -16,6 +16,16 @@ import { createAuth } from '../../lib/auth';
 import { isAIAvailable, streamMultiAgentPlanningWorkflow } from '../../ai/mastra';
 import type { MultiAgentPlanningInput } from '../../ai/workflows/multi-agent-planning.workflow';
 
+const DEFAULT_AI_MODEL = 'openai/google/gemma-3-27b-it';
+
+function getActiveModel(): string {
+  return process.env.WIT_AI_MODEL || DEFAULT_AI_MODEL;
+}
+
+function isGemmaModel(model: string): boolean {
+  return model.toLowerCase().includes('gemma');
+}
+
 function getRepoDiskPath(ownerUsername: string, repoName: string): string {
   const reposDir = process.env.REPOS_DIR || './repos';
   return path.join(reposDir, ownerUsername, `${repoName}.git`);
@@ -83,7 +93,8 @@ export function createPlanningStreamRoutes() {
 
     // Check AI availability and get API key
     if (!isAIAvailable()) {
-      const repoKey = await repoAiKeyModel.getAnyKey(repoId);
+      const preferOpenAICompatible = isGemmaModel(getActiveModel());
+      const repoKey = await repoAiKeyModel.getAnyKey(repoId, preferOpenAICompatible);
       if (!repoKey) {
         return c.json({ error: 'AI is not configured. Add an API key in repository settings.' }, 412);
       }

@@ -11,7 +11,7 @@ import { router, protectedProcedure } from '../trpc';
 import { repoModel, repoAiKeyModel } from '../../../db/models';
 
 // Valid AI providers
-const aiProviderSchema = z.enum(['openai', 'anthropic', 'coderabbit', 'openrouter']);
+const aiProviderSchema = z.enum(['openai', 'anthropic', 'coderabbit', 'openrouter', 'gemini']);
 
 /**
  * Helper to get repo by owner/name and verify ownership
@@ -73,7 +73,8 @@ export const repoAiKeysRouter = router({
       const hasServerKeys = !!(
         process.env.OPENAI_API_KEY || 
         process.env.ANTHROPIC_API_KEY ||
-        process.env.OPENROUTER_API_KEY
+        process.env.OPENROUTER_API_KEY ||
+        process.env.GEMINI_API_KEY
       );
       
       // If not owner, return limited info
@@ -157,6 +158,13 @@ export const repoAiKeysRouter = router({
           message: 'Anthropic API keys should start with "sk-ant-"',
         });
       }
+
+      if (input.provider === 'gemini' && !input.apiKey.startsWith('AIza')) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Gemini API keys should typically start with "AIza"',
+        });
+      }
       
       // OpenRouter keys start with "sk-or-"
       if (input.provider === 'openrouter' && !input.apiKey.startsWith('sk-or-')) {
@@ -237,7 +245,8 @@ export const repoAiKeysRouter = router({
       const hasServerKeys = !!(
         process.env.OPENAI_API_KEY || 
         process.env.ANTHROPIC_API_KEY ||
-        process.env.OPENROUTER_API_KEY
+        process.env.OPENROUTER_API_KEY ||
+        process.env.GEMINI_API_KEY
       );
       
       return {

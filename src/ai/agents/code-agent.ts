@@ -518,7 +518,7 @@ function createDeleteFileTool(context: AgentContext) {
 /**
  * Create a Code mode agent for a specific repository
  */
-export function createCodeAgent(context: AgentContext, model: string = 'anthropic/claude-sonnet-4-20250514'): Agent {
+export function createCodeAgent(context: AgentContext, model: string = 'openai/google/gemma-3-27b-it'): Agent {
   return new Agent({
     id: `wit-code-${context.repoId}`,
     name: 'wit Code Agent',
@@ -546,7 +546,7 @@ export function createCodeAgent(context: AgentContext, model: string = 'anthropi
  */
 export function createCodeAgentWithMcpTools(
   context: AgentContext,
-  model: string = 'anthropic/claude-sonnet-4-20250514',
+  model: string = 'openai/google/gemma-3-27b-it',
   mcpTools: Record<string, ReturnType<typeof createTool>>,
   mcpInstructions: string = ''
 ): Agent {

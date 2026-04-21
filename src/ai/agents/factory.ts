@@ -11,6 +11,8 @@ import { createPMAgent } from './pm-agent.js';
 import { createCodeAgent, createCodeAgentWithMcpTools } from './code-agent.js';
 import { getMcpToolsRecord, getMcpToolsSummary } from '../services/mcp-loader.js';
 
+const DEFAULT_AI_MODEL = 'openai/google/gemma-3-27b-it';
+
 /**
  * Create an agent for the specified mode and repository context
  * This async version loads MCP tools dynamically
@@ -18,7 +20,7 @@ import { getMcpToolsRecord, getMcpToolsSummary } from '../services/mcp-loader.js
 export async function createAgentForMode(
   mode: AgentMode,
   context: AgentContext,
-  model: string = 'anthropic/claude-opus-4-5'
+  model: string = DEFAULT_AI_MODEL
 ): Promise<Agent> {
   switch (mode) {
     case 'pm':
@@ -47,7 +49,7 @@ export async function createAgentForMode(
 export function createAgentForModeSync(
   mode: AgentMode,
   context: AgentContext,
-  model: string = 'anthropic/claude-opus-4-5'
+  model: string = DEFAULT_AI_MODEL
 ): Agent {
   switch (mode) {
     case 'pm':

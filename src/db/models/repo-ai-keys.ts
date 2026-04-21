@@ -214,32 +214,23 @@ export const repoAiKeyModel = {
 
   /**
    * Get any available LLM API key for a repository
-   * Prefers Anthropic, then OpenRouter (any model), then OpenAI
+   * Prefers Anthropic by default.
+   * If preferOpenAICompatible=true, prefers OpenRouter/OpenAI for models like Gemma.
    * Note: Does not return CodeRabbit keys as they are not LLM providers
    */
-  async getAnyKey(repoId: string): Promise<{ provider: 'openai' | 'anthropic' | 'openrouter' | 'gemini'; key: string } | null> {
-    // Try Anthropic first (recommended - Claude)
-    const anthropicKey = await this.getDecryptedKey(repoId, 'anthropic');
-    if (anthropicKey) {
-      return { provider: 'anthropic', key: anthropicKey };
-    }
-    
-    // Try Google Gemini
-    const geminiKey = await this.getDecryptedKey(repoId, 'gemini');
-    if (geminiKey) {
-      return { provider: 'gemini', key: geminiKey };
-    }
+  async getAnyKey(
+    repoId: string,
+    preferOpenAICompatible: boolean = false
+  ): Promise<{ provider: 'openai' | 'anthropic' | 'openrouter' | 'gemini'; key: string } | null> {
+    const providerOrder: Array<'openai' | 'anthropic' | 'openrouter' | 'gemini'> = preferOpenAICompatible
+      ? ['openrouter', 'openai', 'gemini', 'anthropic']
+      : ['anthropic', 'gemini', 'openrouter', 'openai'];
 
-    // Try OpenRouter (supports any model)
-    const openrouterKey = await this.getDecryptedKey(repoId, 'openrouter');
-    if (openrouterKey) {
-      return { provider: 'openrouter', key: openrouterKey };
-    }
-    
-    // Fall back to OpenAI
-    const openaiKey = await this.getDecryptedKey(repoId, 'openai');
-    if (openaiKey) {
-      return { provider: 'openai', key: openaiKey };
+    for (const provider of providerOrder) {
+      const key = await this.getDecryptedKey(repoId, provider);
+      if (key) {
+        return { provider, key };
+      }
     }
     
     return null;

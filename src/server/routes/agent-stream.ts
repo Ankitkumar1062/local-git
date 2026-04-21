@@ -17,6 +17,48 @@ import { type AgentMode, type AgentContext } from '../../ai/types';
 import { createAuth } from '../../lib/auth';
 import { getMemory } from '../../ai/mastra.js';
 
+const DEFAULT_AI_MODEL = 'openai/google/gemma-3-27b-it';
+const TOOL_CALL_FALLBACK_MODEL_OPENAI = 'openai/gpt-4o-mini';
+const TOOL_CALL_FALLBACK_MODEL_OPENROUTER = 'openrouter/openai/gpt-4o-mini';
+
+function getActiveModel(): string {
+  return process.env.WIT_AI_MODEL || DEFAULT_AI_MODEL;
+}
+
+function isGemmaModel(model: string): boolean {
+  return model.toLowerCase().includes('gemma');
+}
+
+function isToolUseSupportError(error: unknown): boolean {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  const message = error.message.toLowerCase();
+  return (
+    message.includes('no endpoints found that support tool use') ||
+    message.includes('support tool use')
+  );
+}
+
+function getToolCallFallbackModel(provider: 'openai' | 'anthropic' | 'openrouter' | 'gemini'): string {
+  return provider === 'openrouter'
+    ? TOOL_CALL_FALLBACK_MODEL_OPENROUTER
+    : TOOL_CALL_FALLBACK_MODEL_OPENAI;
+}
+
+function resolveModelForSession(
+  mode: AgentMode,
+  activeModel: string,
+  provider: 'openai' | 'anthropic' | 'openrouter' | 'gemini'
+): string {
+  // Gemma is fine for text tasks, but code mode requires tool-calling reliability.
+  if (mode === 'code' && isGemmaModel(activeModel)) {
+    return getToolCallFallbackModel(provider);
+  }
+  return activeModel;
+}
+
 // Lazy import to avoid circular dependencies
 async function getAgentForMode(mode: AgentMode, context: AgentContext, model: string) {
   const { createAgentForMode } = await import('../../ai/agents/factory.js');
@@ -75,15 +117,18 @@ export function createAgentStreamRoutes() {
 
     // Determine API key and provider
     let apiKey: string | null = null;
+    const activeModel = getActiveModel();
+    const preferOpenAICompatible = isGemmaModel(activeModel);
+
     let provider: 'openai' | 'anthropic' | 'openrouter' | 'gemini' = (requestedProvider === 'openai' || requestedProvider === 'anthropic' || requestedProvider === 'openrouter' || requestedProvider === 'gemini') 
       ? requestedProvider 
-      : 'anthropic';
+      : (preferOpenAICompatible ? 'openrouter' : 'anthropic');
 
     if (agentSession.repoId) {
       if (requestedProvider && (requestedProvider === 'openai' || requestedProvider === 'anthropic' || requestedProvider === 'openrouter' || requestedProvider === 'gemini')) {
         apiKey = await repoAiKeyModel.getDecryptedKey(agentSession.repoId, requestedProvider);
       } else {
-        const repoKey = await repoAiKeyModel.getAnyKey(agentSession.repoId);
+        const repoKey = await repoAiKeyModel.getAnyKey(agentSession.repoId, preferOpenAICompatible);
         if (repoKey) {
           apiKey = repoKey.key;
           provider = repoKey.provider;
@@ -98,6 +143,12 @@ export function createAgentStreamRoutes() {
         apiKey = process.env.OPENAI_API_KEY;
       } else if (provider === 'openrouter' && process.env.OPENROUTER_API_KEY) {
         apiKey = process.env.OPENROUTER_API_KEY;
+      } else if (preferOpenAICompatible && process.env.OPENROUTER_API_KEY) {
+        apiKey = process.env.OPENROUTER_API_KEY;
+        provider = 'openrouter';
+      } else if (preferOpenAICompatible && process.env.OPENAI_API_KEY) {
+        apiKey = process.env.OPENAI_API_KEY;
+        provider = 'openai';
       } else if (process.env.ANTHROPIC_API_KEY) {
         apiKey = process.env.ANTHROPIC_API_KEY;
         provider = 'anthropic';
@@ -226,11 +277,9 @@ export function createAgentStreamRoutes() {
 
         // Get agent
         const sessionMode = (agentSession.mode === 'questions' ? 'pm' : agentSession.mode || 'pm') as AgentMode;
-        // Select model based on provider
-        // OpenRouter uses OpenAI-compatible format
-        const modelId = provider === 'anthropic' 
-          ? 'anthropic/claude-sonnet-4-20250514' 
-          : 'openai/gpt-4o';
+        // Use a tool-capable model for code mode when Gemma is active.
+        const modelId = resolveModelForSession(sessionMode, activeModel, provider);
+        const fallbackModel = getToolCallFallbackModel(provider);
 
         let agent: any;
         if (agentContext) {
@@ -249,23 +298,76 @@ export function createAgentStreamRoutes() {
 
         if (agent.stream) {
           // Pass threadId and resourceId to enable Mastra memory
-          const result = await agent.stream(message, {
-            threadId,
-            resourceId,
-          });
+          let result: any;
+          try {
+            result = await agent.stream(message, {
+              threadId,
+              resourceId,
+            });
+          } catch (error) {
+            if (!isToolUseSupportError(error) || modelId === fallbackModel) {
+              throw error;
+            }
 
-          // Stream text chunks
-          for await (const chunk of result.textStream) {
-            fullResponse += chunk;
-            await stream.writeSSE({
-              event: 'text',
-              data: JSON.stringify({ content: chunk }),
+            // Retry with a tool-capable fallback model when Gemma routing cannot satisfy tool calls.
+            if (agentContext) {
+              agent = await getAgentForMode(sessionMode, agentContext, fallbackModel);
+            } else {
+              const { getTsgitAgent } = await import('../../ai/mastra');
+              agent = getTsgitAgent({ model: fallbackModel });
+            }
+
+            result = await agent.stream(message, {
+              threadId,
+              resourceId,
             });
           }
 
+          // Stream text chunks. Some providers surface tool-use routing errors during iteration.
+          try {
+            for await (const chunk of result.textStream) {
+              fullResponse += chunk;
+              await stream.writeSSE({
+                event: 'text',
+                data: JSON.stringify({ content: chunk }),
+              });
+            }
+          } catch (error) {
+            if (
+              !isToolUseSupportError(error) ||
+              modelId === fallbackModel ||
+              fullResponse.length > 0
+            ) {
+              throw error;
+            }
+
+            if (agentContext) {
+              agent = await getAgentForMode(sessionMode, agentContext, fallbackModel);
+            } else {
+              const { getTsgitAgent } = await import('../../ai/mastra');
+              agent = getTsgitAgent({ model: fallbackModel });
+            }
+
+            const retryResult = await agent.stream(message, {
+              threadId,
+              resourceId,
+            });
+
+            for await (const retryChunk of retryResult.textStream) {
+              fullResponse += retryChunk;
+              await stream.writeSSE({
+                event: 'text',
+                data: JSON.stringify({ content: retryChunk }),
+              });
+            }
+
+            // Use fallback result for tool call/result extraction below.
+            result = retryResult;
+          }
+
           // Merge tool calls with their results from steps
-          const toolCalls = result.toolCalls || [];
-          const steps = result.steps || [];
+          const toolCalls = Array.isArray(result?.toolCalls) ? result.toolCalls : [];
+          const steps = Array.isArray(result?.steps) ? result.steps : [];
           
           // Build a map of tool results by toolCallId
           const toolResultsMap = new Map<string, any>();
@@ -286,15 +388,34 @@ export function createAgentStreamRoutes() {
           }));
         } else {
           // Fallback to generate with memory
-          const result = await agent.generate(message, {
-            threadId,
-            resourceId,
-          });
+          let result: any;
+          try {
+            result = await agent.generate(message, {
+              threadId,
+              resourceId,
+            });
+          } catch (error) {
+            if (!isToolUseSupportError(error) || modelId === fallbackModel) {
+              throw error;
+            }
+
+            if (agentContext) {
+              agent = await getAgentForMode(sessionMode, agentContext, fallbackModel);
+            } else {
+              const { getTsgitAgent } = await import('../../ai/mastra');
+              agent = getTsgitAgent({ model: fallbackModel });
+            }
+
+            result = await agent.generate(message, {
+              threadId,
+              resourceId,
+            });
+          }
           fullResponse = result.text || '';
           
           // Merge tool calls with results from steps
-          const toolCalls = result.toolCalls || [];
-          const steps = result.steps || [];
+          const toolCalls = Array.isArray(result?.toolCalls) ? result.toolCalls : [];
+          const steps = Array.isArray(result?.steps) ? result.steps : [];
           
           const toolResultsMap = new Map<string, any>();
           for (const step of steps) {

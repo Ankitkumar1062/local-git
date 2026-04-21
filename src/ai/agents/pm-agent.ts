@@ -324,7 +324,7 @@ function createListPRsTool(context: AgentContext) {
 /**
  * Create a PM mode agent for a specific repository
  */
-export function createPMAgent(context: AgentContext, model: string = 'anthropic/claude-opus-4-5'): Agent {
+export function createPMAgent(context: AgentContext, model: string = 'openai/google/gemma-3-27b-it'): Agent {
   return new Agent({
     id: `wit-pm-${context.repoId}`,
     name: 'wit PM Agent',

@@ -21,6 +21,47 @@ import {
 import { getTsgitAgent, isAIAvailable, getAIInfo, getMemory } from '../../../ai/mastra';
 import { AGENT_MODES, type AgentMode, type AgentContext } from '../../../ai/types';
 
+const DEFAULT_AI_MODEL = 'openai/google/gemma-3-27b-it';
+const TOOL_CALL_FALLBACK_MODEL_OPENAI = 'openai/gpt-4o-mini';
+const TOOL_CALL_FALLBACK_MODEL_OPENROUTER = 'openrouter/openai/gpt-4o-mini';
+
+function getActiveModel(): string {
+  return process.env.WIT_AI_MODEL || DEFAULT_AI_MODEL;
+}
+
+function isGemmaModel(model: string): boolean {
+  return model.toLowerCase().includes('gemma');
+}
+
+function isToolUseSupportError(error: unknown): boolean {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  const message = error.message.toLowerCase();
+  return (
+    message.includes('no endpoints found that support tool use') ||
+    message.includes('support tool use')
+  );
+}
+
+function getToolCallFallbackModel(provider: 'openai' | 'anthropic' | 'openrouter' | 'gemini'): string {
+  return provider === 'openrouter'
+    ? TOOL_CALL_FALLBACK_MODEL_OPENROUTER
+    : TOOL_CALL_FALLBACK_MODEL_OPENAI;
+}
+
+function resolveModelForSession(
+  mode: AgentMode,
+  activeModel: string,
+  provider: 'openai' | 'anthropic' | 'openrouter' | 'gemini'
+): string {
+  if (mode === 'code' && isGemmaModel(activeModel)) {
+    return getToolCallFallbackModel(provider);
+  }
+  return activeModel;
+}
+
 // Lazy import to avoid circular dependencies
 async function getAgentForMode(mode: AgentMode, context: AgentContext, model: string) {
   const { createAgentForMode } = await import('../../../ai/agents/factory.js');
@@ -51,6 +92,18 @@ const AVAILABLE_MODELS = {
     name: 'OpenAI',
     model: 'gpt-5.2',
     description: 'GPT 5.2',
+  },
+  openrouter: {
+    id: 'openrouter',
+    name: 'OpenRouter',
+    model: 'openai/google/gemma-3-27b-it',
+    description: 'Gemma 3 27B Instruct',
+  },
+  gemini: {
+    id: 'gemini',
+    name: 'Google Gemini',
+    model: 'google/gemini-2.5-flash',
+    description: 'Gemini 2.5 Flash',
   },
 } as const;
 
@@ -91,6 +144,18 @@ export const agentRouter = router({
           source: 'server',
         });
       }
+      if (process.env.OPENROUTER_API_KEY) {
+        availableProviders.push({
+          ...AVAILABLE_MODELS.openrouter,
+          source: 'server',
+        });
+      }
+      if (process.env.GEMINI_API_KEY) {
+        availableProviders.push({
+          ...AVAILABLE_MODELS.gemini,
+          source: 'server',
+        });
+      }
       
       // Check repo-level keys if repoId provided
       if (input?.repoId) {
@@ -109,8 +174,20 @@ export const agentRouter = router({
         }
       }
       
-      // Sort to prefer Anthropic
+      const preferOpenAICompatible = isGemmaModel(getActiveModel());
+
+      // Sort providers by active model preference.
       availableProviders.sort((a, b) => {
+        if (preferOpenAICompatible) {
+          const rank: Record<string, number> = {
+            openrouter: 0,
+            openai: 1,
+            gemini: 2,
+            anthropic: 3,
+          };
+          return (rank[a.id] ?? 99) - (rank[b.id] ?? 99);
+        }
+
         if (a.id === 'anthropic') return -1;
         if (b.id === 'anthropic') return 1;
         return 0;
@@ -358,7 +435,9 @@ export const agentRouter = router({
 
       // Determine which provider/key to use
       let apiKey: string | null = null;
-      let provider = input.provider || 'anthropic'; // Default to Anthropic
+      const activeModel = getActiveModel();
+      const preferOpenAICompatible = isGemmaModel(activeModel);
+      let provider = input.provider || (preferOpenAICompatible ? 'openrouter' : 'anthropic');
       
       // Try repo-level keys first if we have a repoId
       if (session.repoId) {
@@ -367,7 +446,7 @@ export const agentRouter = router({
           apiKey = await repoAiKeyModel.getDecryptedKey(session.repoId, input.provider);
         } else {
           // No provider specified, get any available key (prefers Anthropic)
-          const repoKey = await repoAiKeyModel.getAnyKey(session.repoId);
+          const repoKey = await repoAiKeyModel.getAnyKey(session.repoId, preferOpenAICompatible);
           if (repoKey) {
             apiKey = repoKey.key;
             provider = repoKey.provider;
@@ -383,6 +462,12 @@ export const agentRouter = router({
           apiKey = process.env.OPENAI_API_KEY;
         } else if (provider === 'openrouter' && process.env.OPENROUTER_API_KEY) {
           apiKey = process.env.OPENROUTER_API_KEY;
+        } else if (preferOpenAICompatible && process.env.OPENROUTER_API_KEY) {
+          apiKey = process.env.OPENROUTER_API_KEY;
+          provider = 'openrouter';
+        } else if (preferOpenAICompatible && process.env.OPENAI_API_KEY) {
+          apiKey = process.env.OPENAI_API_KEY;
+          provider = 'openai';
         } else if (process.env.ANTHROPIC_API_KEY) {
           apiKey = process.env.ANTHROPIC_API_KEY;
           provider = 'anthropic';
@@ -516,30 +601,43 @@ export const agentRouter = router({
       // Get agent based on mode (or fallback to general agent)
       // Treat legacy 'questions' mode as 'pm'
       const sessionMode = (session.mode === 'questions' ? 'pm' : session.mode || 'pm') as AgentMode;
-      // Select model based on provider
-      // OpenRouter can use any model - default to Claude for best results
-      const modelId = provider === 'anthropic' 
-        ? 'anthropic/claude-opus-4-5' 
-        : provider === 'openrouter' 
-          ? 'openai/gpt-4o'  // OpenRouter uses OpenAI-compatible format
-          : 'openai/gpt-5.2';
+      // Use a tool-capable model for code mode when Gemma is active.
+      const modelId = resolveModelForSession(sessionMode, activeModel, provider);
+      const fallbackModel = getToolCallFallbackModel(provider);
       
-      // Use mode-based agent if we have a repo context, otherwise fallback to general agent
-      const agent = agentContext 
-        ? await getAgentForMode(sessionMode, agentContext, modelId)
-        : getTsgitAgent();
+      const buildAgent = async (model: string) => {
+        return agentContext
+          ? await getAgentForMode(sessionMode, agentContext, model)
+          : getTsgitAgent({ model });
+      };
       
       try {
-        // Use Mastra memory by passing threadId and resourceId
-        // Mastra will automatically:
-        // 1. Load conversation history from the thread
-        // 2. Save the user message and assistant response
-        const result = await agent.generate(input.message, {
-          memory: {
-            thread: threadId,
-            resource: resourceId,
-          },
-        });
+        let result: any;
+        try {
+          // Use Mastra memory by passing threadId and resourceId
+          // Mastra will automatically:
+          // 1. Load conversation history from the thread
+          // 2. Save the user message and assistant response
+          const agent = await buildAgent(modelId);
+          result = await agent.generate(input.message, {
+            memory: {
+              thread: threadId,
+              resource: resourceId,
+            },
+          });
+        } catch (error) {
+          if (!isToolUseSupportError(error) || modelId === fallbackModel) {
+            throw error;
+          }
+
+          const fallbackAgent = await buildAgent(fallbackModel);
+          result = await fallbackAgent.generate(input.message, {
+            memory: {
+              thread: threadId,
+              resource: resourceId,
+            },
+          });
+        }
 
         // Auto-generate title if first message and no title
         if (!session.title) {
@@ -659,17 +757,62 @@ export const agentRouter = router({
             }
 
             // Get agent and stream response with Mastra memory
-            const agent = getTsgitAgent();
-            const result = await agent.stream(input.message, {
-              memory: {
-                thread: threadId,
-                resource: resourceId,
-              },
-            });
+            const sessionMode = (session.mode === 'questions' ? 'pm' : session.mode || 'pm') as AgentMode;
+            const activeModel = getActiveModel();
+            const fallbackModel = getToolCallFallbackModel('openrouter');
+            const modelId = resolveModelForSession(sessionMode, activeModel, 'openrouter');
+            const buildAgent = (model: string) => getTsgitAgent({ model });
 
-            // Stream text chunks
-            for await (const chunk of result.textStream) {
-              emit.next({ type: 'text', content: chunk });
+            let result: any;
+            try {
+              const agent = buildAgent(modelId);
+              result = await agent.stream(input.message, {
+                memory: {
+                  thread: threadId,
+                  resource: resourceId,
+                },
+              });
+            } catch (error) {
+              if (!isToolUseSupportError(error) || modelId === fallbackModel) {
+                throw error;
+              }
+
+              const fallbackAgent = buildAgent(fallbackModel);
+              result = await fallbackAgent.stream(input.message, {
+                memory: {
+                  thread: threadId,
+                  resource: resourceId,
+                },
+              });
+            }
+
+            // Stream text chunks. Some providers surface tool-use routing errors during iteration.
+            let hasEmittedText = false;
+            try {
+              for await (const chunk of result.textStream) {
+                hasEmittedText = true;
+                emit.next({ type: 'text', content: chunk });
+              }
+            } catch (error) {
+              if (
+                !isToolUseSupportError(error) ||
+                modelId === fallbackModel ||
+                hasEmittedText
+              ) {
+                throw error;
+              }
+
+              const fallbackAgent = buildAgent(fallbackModel);
+              const retryResult = await fallbackAgent.stream(input.message, {
+                memory: {
+                  thread: threadId,
+                  resource: resourceId,
+                },
+              });
+
+              for await (const retryChunk of retryResult.textStream) {
+                emit.next({ type: 'text', content: retryChunk });
+              }
             }
 
             // Auto-generate title if needed
@@ -834,17 +977,30 @@ export const agentRouter = router({
       }
 
       // Get API key
-      let apiKey = await repoAiKeyModel.getDecryptedKey(input.repoId, 'anthropic');
-      let provider = 'anthropic';
-      
+      const activeModel = getActiveModel();
+      const preferOpenAICompatible = isGemmaModel(activeModel);
+      const repoKey = await repoAiKeyModel.getAnyKey(input.repoId, preferOpenAICompatible);
+
+      let apiKey = repoKey?.key || null;
+      let provider = repoKey?.provider || (preferOpenAICompatible ? 'openrouter' : 'anthropic');
+
       if (!apiKey) {
-        apiKey = await repoAiKeyModel.getDecryptedKey(input.repoId, 'openai');
-        provider = 'openai';
-      }
-      
-      if (!apiKey) {
-        apiKey = process.env.ANTHROPIC_API_KEY || process.env.OPENAI_API_KEY || null;
-        provider = process.env.ANTHROPIC_API_KEY ? 'anthropic' : 'openai';
+        if (preferOpenAICompatible && process.env.OPENROUTER_API_KEY) {
+          apiKey = process.env.OPENROUTER_API_KEY;
+          provider = 'openrouter';
+        } else if (preferOpenAICompatible && process.env.OPENAI_API_KEY) {
+          apiKey = process.env.OPENAI_API_KEY;
+          provider = 'openai';
+        } else if (process.env.ANTHROPIC_API_KEY) {
+          apiKey = process.env.ANTHROPIC_API_KEY;
+          provider = 'anthropic';
+        } else if (process.env.OPENROUTER_API_KEY) {
+          apiKey = process.env.OPENROUTER_API_KEY;
+          provider = 'openrouter';
+        } else if (process.env.OPENAI_API_KEY) {
+          apiKey = process.env.OPENAI_API_KEY;
+          provider = 'openai';
+        }
       }
 
       if (!apiKey) {
@@ -857,9 +1013,13 @@ export const agentRouter = router({
       // Set the API key for this request
       const originalAnthropicKey = process.env.ANTHROPIC_API_KEY;
       const originalOpenAIKey = process.env.OPENAI_API_KEY;
+      const originalOpenAIBaseUrl = process.env.OPENAI_BASE_URL;
       
       if (provider === 'anthropic') {
         process.env.ANTHROPIC_API_KEY = apiKey;
+      } else if (provider === 'openrouter') {
+        process.env.OPENAI_API_KEY = apiKey;
+        process.env.OPENAI_BASE_URL = 'https://openrouter.ai/api/v1';
       } else {
         process.env.OPENAI_API_KEY = apiKey;
       }
@@ -875,6 +1035,11 @@ export const agentRouter = router({
         } else {
           delete process.env.OPENAI_API_KEY;
         }
+        if (originalOpenAIBaseUrl !== undefined) {
+          process.env.OPENAI_BASE_URL = originalOpenAIBaseUrl;
+        } else {
+          delete process.env.OPENAI_BASE_URL;
+        }
       };
 
       try {
@@ -883,9 +1048,9 @@ export const agentRouter = router({
         const { anthropic } = await import('@ai-sdk/anthropic');
         const { openai } = await import('@ai-sdk/openai');
         
-        const model = provider === 'anthropic' 
+        const model = provider === 'anthropic'
           ? anthropic('claude-sonnet-4-20250514')
-          : openai('gpt-4o');
+          : openai(activeModel);
 
         // Build the system prompt for inline editing
         const systemPrompt = `You are an expert code editor. Your task is to transform or generate code based on the user's instructions.

@@ -65,7 +65,7 @@ export async function handleAI(args: string[]): Promise<void> {
   // All other commands require an API key
   if (!isAIAvailable()) {
     console.error('AI features require an API key.');
-    console.error('Set OPENAI_API_KEY or ANTHROPIC_API_KEY environment variable.');
+    console.error('Set OPENROUTER_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, or ANTHROPIC_API_KEY.');
     console.error('\nAlternatively, set WIT_AI_MODEL to use a different provider.');
     console.error('\nRun "wit ai status" to see current configuration.');
     process.exit(1);
@@ -517,13 +517,17 @@ function printAIStatus(): void {
   
   if (!info.available) {
     console.log('\nTo enable AI features, set one of:');
+    console.log('  export OPENROUTER_API_KEY=sk-or-...');
     console.log('  export OPENAI_API_KEY=sk-...');
+    console.log('  export GEMINI_API_KEY=AIza...');
     console.log('  export ANTHROPIC_API_KEY=sk-ant-...');
     console.log('  export WIT_AI_MODEL=provider/model');
   }
   
   console.log('\nEnvironment Variables:');
+  console.log(`  OPENROUTER_API_KEY: ${process.env.OPENROUTER_API_KEY ? '✅ Set' : '❌ Not set'}`);
   console.log(`  OPENAI_API_KEY: ${process.env.OPENAI_API_KEY ? '✅ Set' : '❌ Not set'}`);
+  console.log(`  GEMINI_API_KEY: ${process.env.GEMINI_API_KEY ? '✅ Set' : '❌ Not set'}`);
   console.log(`  ANTHROPIC_API_KEY: ${process.env.ANTHROPIC_API_KEY ? '✅ Set' : '❌ Not set'}`);
   console.log(`  WIT_AI_MODEL: ${process.env.WIT_AI_MODEL || '(not set, using default)'}`);
 }
@@ -560,9 +564,11 @@ Examples:
   wit ai resolve src/utils.ts
 
 Environment:
+  OPENROUTER_API_KEY   OpenRouter API key (recommended for Gemma)
   OPENAI_API_KEY       OpenAI API key (for GPT models)
+  GEMINI_API_KEY       Google Gemini API key
   ANTHROPIC_API_KEY    Anthropic API key (for Claude models)
-  WIT_AI_MODEL       Model to use (default: openai/gpt-4o)
+  WIT_AI_MODEL         Model to use (default: openai/google/gemma-3-27b-it)
 `);
 }
 

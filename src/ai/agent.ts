@@ -8,6 +8,8 @@
 import { Agent } from '@mastra/core/agent';
 import { witTools } from './tools/index.js';
 
+const DEFAULT_AI_MODEL = 'openai/google/gemma-3-27b-it';
+
 /**
  * System instructions for the wit AI coding agent
  */
@@ -131,14 +133,14 @@ export const witAgent = new Agent({
   name: 'wit Coding Agent',
   description: 'An intelligent coding agent that can write code, edit files, run commands, and manage the full development workflow from coding to PR',
   instructions: WIT_AGENT_INSTRUCTIONS,
-  model: 'openai/gpt-4o',
+  model: DEFAULT_AI_MODEL,
   tools: witTools,
 });
 
 /**
  * Create an agent with a custom model
  */
-export function createTsgitAgent(model: string = 'openai/gpt-4o'): Agent {
+export function createTsgitAgent(model: string = DEFAULT_AI_MODEL): Agent {
   return new Agent({
     id: 'wit-coding-agent',
     name: 'wit Coding Agent',
@@ -152,7 +154,7 @@ export function createTsgitAgent(model: string = 'openai/gpt-4o'): Agent {
 /**
  * Create a simple text-only agent without tools (best for basic reviews, commits)
  */
-export function createTextAgent(model: string = 'openai/gpt-4o'): Agent {
+export function createTextAgent(model: string = DEFAULT_AI_MODEL): Agent {
   return new Agent({
     id: 'wit-text-agent',
     name: 'wit Text Agent',
