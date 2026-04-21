@@ -22,7 +22,6 @@ import {
   Trophy,
   Zap,
   Flame,
-  Award,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -371,13 +370,6 @@ export function UserHomePage() {
                   <span className="font-medium">{gamificationData.currentStreak}</span>
                   <span className="text-muted-foreground hidden sm:inline">day streak</span>
                 </div>
-                <Link 
-                  to={`/${owner}/achievements`}
-                  className="flex items-center gap-1 text-primary hover:underline"
-                >
-                  <Award className="h-4 w-4" />
-                  <span>Achievements</span>
-                </Link>
               </div>
             </div>
           </CardContent>

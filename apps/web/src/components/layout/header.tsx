@@ -87,24 +87,6 @@ export function Header() {
               </div>
               <span className="font-bold text-lg md:text-xl tracking-tight">wit</span>
             </Link>
-
-            {/* Leaderboard link */}
-            <Link
-              to="/leaderboard"
-              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/40 rounded-lg transition-all"
-            >
-              <Trophy className="h-4 w-4" />
-              <span>Leaderboard</span>
-            </Link>
-
-            {/* Contribute link */}
-            <Link
-              to="/contribute"
-              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/40 rounded-lg transition-all"
-            >
-              <Heart className="h-4 w-4" />
-              <span>Contribute</span>
-            </Link>
           </div>
 
           {/* Center section - Search bar */}
@@ -203,10 +185,6 @@ export function Header() {
                     <DropdownMenuItem onClick={() => navigate(`/${user?.username}/wrapped`)}>
                       <Flame className="mr-2 h-4 w-4" />
                       Your Wrapped
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate(`/${user?.username}/achievements`)}>
-                      <Trophy className="mr-2 h-4 w-4" />
-                      Achievements
                     </DropdownMenuItem>
                     {/* Mobile-only: New repository option */}
                     <DropdownMenuItem onClick={() => navigate('/new')} className="md:hidden">
@@ -352,29 +330,6 @@ export function Header() {
                 </Link>
               </div>
             )}
-
-            {/* Explore section */}
-            <div className="mb-4">
-              <p className="px-3 py-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                Explore
-              </p>
-              <Link
-                to="/leaderboard"
-                className="flex items-center gap-3 px-3 py-3 text-sm hover:bg-muted/40 rounded-xl transition-all touch-target no-tap-highlight active:bg-muted/60"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Trophy className="h-5 w-5 text-muted-foreground" />
-                <span className="font-medium">Leaderboard</span>
-              </Link>
-              <Link
-                to="/contribute"
-                className="flex items-center gap-3 px-3 py-3 text-sm hover:bg-muted/40 rounded-xl transition-all touch-target no-tap-highlight active:bg-muted/60"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Heart className="h-5 w-5 text-muted-foreground" />
-                <span className="font-medium">Contribute</span>
-              </Link>
-            </div>
 
             {/* Account section */}
             {authenticated && (
