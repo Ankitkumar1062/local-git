@@ -24,16 +24,19 @@ install_base_tools_if_possible() {
 load_or_install_nvm() {
     export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
 
+    # nvm.sh internally uses unset variables, which crashes under `set -u`.
+    # Temporarily relax nounset for all nvm operations.
+    set +u
+
     if [ -s "$NVM_DIR/nvm.sh" ]; then
         # shellcheck source=/dev/null
-        set +euo pipefail # Disable strict mode temporarily for NVM
-        set +e
         . "$NVM_DIR/nvm.sh"
-        set -euo pipefail
+        set -u
         return
     fi
 
     if ! command -v curl >/dev/null 2>&1; then
+        set -u
         warn "curl is missing; cannot auto-install nvm."
         return
     fi
@@ -43,32 +46,26 @@ load_or_install_nvm() {
 
     if [ -s "$NVM_DIR/nvm.sh" ]; then
         # shellcheck source=/dev/null
-        set +euo pipefail
-        set +e
         . "$NVM_DIR/nvm.sh"
-        set -euo pipefail
     fi
+
+    set -u
 }
 
 ensure_node_version() {
     load_or_install_nvm
 
-    if command -v nvm >/dev/null 2>&1; then
+    # nvm is a shell function, not a binary — use `type` instead of `command -v`.
+    # Also disable nounset around nvm calls since nvm uses unset variables.
+    set +u
+    if type nvm >/dev/null 2>&1; then
         log "Installing/using Node version from .nvmrc..."
-        set +euo pipefail
-        set +e
         nvm install
         nvm use
-        set -euo pipefail
     else
-        warn "nvm is unavailable. Falling back to native system installation of Node.js 22.x..."
-        if command -v apt >/dev/null 2>&1; then
-            curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - >/dev/null 2>&1
-            sudo apt install -y nodejs >/dev/null 2>&1
-        else
-            warn "Ensure Node >= 22.13.0 is installed manually."
-        fi
+        warn "nvm is unavailable. Ensure Node >= 22.13.0 is installed manually."
     fi
+    set -u
 
     if ! command -v node >/dev/null 2>&1; then
         echo "Node.js is required but not installed."
