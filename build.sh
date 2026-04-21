@@ -93,7 +93,7 @@ ensure_env_file() {
         else
             warn ".env.example missing, creating minimal .env..."
             cat > .env <<'EOF'
-DATABASE_URL=postgresql://wit:wit@localhost:5432/wit
+DATABASE_URL=postgresql://myvcs:myvcs@localhost:5432/myvcs
 NODE_ENV=development
 PORT=3000
 HOST=0.0.0.0
@@ -129,10 +129,10 @@ ensure_frontend_env_files() {
 
 extract_database_settings() {
     local db_url
-    db_url="$(grep -E '^DATABASE_URL=' .env | head -n 1 | cut -d '=' -f2- || true)"
+    db_url="$(grep -E '^DATABASE_URL=' .env | head -n 1 | cut -d '=' -f2- | tr -d '\r' || true)"
 
     if [ -z "${db_url}" ]; then
-        db_url='postgresql://wit:wit@localhost:5432/wit'
+        db_url='postgresql://myvcs:myvcs@localhost:5432/myvcs'
         echo "DATABASE_URL=${db_url}" >> .env
     fi
 
@@ -281,7 +281,7 @@ run_database_migrations() {
 }
 
 main() {
-    log "Starting post-clone setup for wit/local-git..."
+    log "Starting post-clone setup for myvcs/local-git..."
 
     install_base_tools_if_possible
     ensure_node_version
