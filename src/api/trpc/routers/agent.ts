@@ -339,7 +339,7 @@ export const agentRouter = router({
       z.object({
         sessionId: z.string().uuid(),
         message: z.string().min(1).max(32000),
-        provider: z.enum(['anthropic', 'openai', 'openrouter']).optional(),
+        provider: z.enum(['anthropic', 'openai', 'openrouter', 'gemini']).optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {

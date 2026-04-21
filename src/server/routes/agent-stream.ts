@@ -75,12 +75,12 @@ export function createAgentStreamRoutes() {
 
     // Determine API key and provider
     let apiKey: string | null = null;
-    let provider: 'openai' | 'anthropic' | 'openrouter' = (requestedProvider === 'openai' || requestedProvider === 'anthropic' || requestedProvider === 'openrouter') 
+    let provider: 'openai' | 'anthropic' | 'openrouter' | 'gemini' = (requestedProvider === 'openai' || requestedProvider === 'anthropic' || requestedProvider === 'openrouter' || requestedProvider === 'gemini') 
       ? requestedProvider 
       : 'anthropic';
 
     if (agentSession.repoId) {
-      if (requestedProvider && (requestedProvider === 'openai' || requestedProvider === 'anthropic' || requestedProvider === 'openrouter')) {
+      if (requestedProvider && (requestedProvider === 'openai' || requestedProvider === 'anthropic' || requestedProvider === 'openrouter' || requestedProvider === 'gemini')) {
         apiKey = await repoAiKeyModel.getDecryptedKey(agentSession.repoId, requestedProvider);
       } else {
         const repoKey = await repoAiKeyModel.getAnyKey(agentSession.repoId);
