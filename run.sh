@@ -6,12 +6,13 @@ set -e
 echo "Starting local-git frontend and backend..."
 
 # Load NVM if it's available to ensure Node environment is loaded
+# NVM internal logic is incompatible with set -e, so we temporarily disable it
+set +e
 if ! command -v npm &> /dev/null; then
     export NVM_DIR="$HOME/.nvm"
-    set +e
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    set -e
 fi
+set -e
 
 # Defaults
 PORT=${1:-3000}
