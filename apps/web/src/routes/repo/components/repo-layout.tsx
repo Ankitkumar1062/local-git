@@ -19,8 +19,6 @@ import {
   RefreshCw,
   Package,
   Play,
-  Wand2,
-  Radar,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -278,10 +276,8 @@ export function RepoLayout({ owner, repo, children }: RepoLayoutProps) {
     if (path.includes('/issues') || path.includes('/projects') || path.includes('/cycles')) return 'issues';
     if (path.includes('/pulls') || path.includes('/pull/')) return 'pulls';
     if (path.includes('/actions')) return 'actions';
-    if (path.includes('/planning')) return 'planning';
     if (path.includes('/stacks')) return 'stacks';
     if (path.includes('/journal')) return 'journal';
-    if (path.includes('/sentinel') && !path.includes('/settings/sentinel')) return 'sentinel';
     if (path.includes('/package') && !path.includes('/settings/package')) return 'package';
     if (path.includes('/settings')) return 'settings';
     return 'code';
@@ -518,10 +514,6 @@ export function RepoLayout({ owner, repo, children }: RepoLayoutProps) {
               <Play className="h-4 w-4" />
               <span className="sr-only sm:not-sr-only sm:inline">Actions</span>
             </Link>
-            <Link to={`/${owner}/${repo}/planning`} className={tabClass('planning')}>
-              <Wand2 className="h-4 w-4" />
-              <span className="sr-only sm:not-sr-only sm:inline">Planning</span>
-            </Link>
             <Link to={`/${owner}/${repo}/stacks`} className={tabClass('stacks')}>
               <Layers className="h-4 w-4" />
               <span className="sr-only sm:not-sr-only sm:inline">Stacks</span>
@@ -529,10 +521,6 @@ export function RepoLayout({ owner, repo, children }: RepoLayoutProps) {
             <Link to={`/${owner}/${repo}/journal`} className={tabClass('journal')}>
               <BookOpen className="h-4 w-4" />
               <span className="sr-only sm:not-sr-only sm:inline">Journal</span>
-            </Link>
-            <Link to={`/${owner}/${repo}/sentinel`} className={tabClass('sentinel')}>
-              <Radar className="h-4 w-4" />
-              <span className="sr-only sm:not-sr-only sm:inline">Sentinel</span>
             </Link>
             {packageData && (
               <Link to={`/${owner}/${repo}/package`} className={tabClass('package')}>
@@ -576,10 +564,6 @@ export function RepoLayout({ owner, repo, children }: RepoLayoutProps) {
             <Play className="h-4 w-4" />
             <span>Actions</span>
           </Link>
-          <Link to={`/${owner}/${repo}/planning`} className={tabClass('planning')}>
-            <Wand2 className="h-4 w-4" />
-            <span>Planning</span>
-          </Link>
           <Link to={`/${owner}/${repo}/stacks`} className={tabClass('stacks')}>
             <Layers className="h-4 w-4" />
             <span>Stacks</span>
@@ -587,10 +571,6 @@ export function RepoLayout({ owner, repo, children }: RepoLayoutProps) {
           <Link to={`/${owner}/${repo}/journal`} className={tabClass('journal')}>
             <BookOpen className="h-4 w-4" />
             <span>Journal</span>
-          </Link>
-          <Link to={`/${owner}/${repo}/sentinel`} className={tabClass('sentinel')}>
-            <Radar className="h-4 w-4" />
-            <span>Sentinel</span>
           </Link>
           {packageData && (
             <Link to={`/${owner}/${repo}/package`} className={tabClass('package')}>

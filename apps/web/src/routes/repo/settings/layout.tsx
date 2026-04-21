@@ -1,5 +1,5 @@
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { Settings, Users, Shield, Webhook, Bot, Package, Container, HardDrive } from 'lucide-react';
+import { Settings, Users, Shield, Webhook, Package } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface SettingsLayoutProps {
@@ -12,9 +12,6 @@ const settingsNav = [
   { path: '/branches', label: 'Branches', icon: Shield },
   { path: '/webhooks', label: 'Webhooks', icon: Webhook },
   { path: '/package', label: 'Package Registry', icon: Package },
-  { path: '/storage', label: 'Storage', icon: HardDrive },
-  { path: '/agents', label: 'Agents', icon: Bot },
-  { path: '/sandbox', label: 'Sandbox', icon: Container },
 ];
 
 export function SettingsLayout({ children }: SettingsLayoutProps) {

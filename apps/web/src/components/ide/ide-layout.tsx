@@ -21,11 +21,9 @@ import {
 import { toastSuccess, toastError } from '@/components/ui/use-toast';
 import {
   PanelLeft,
-  PanelBottom,
   FileCode2,
   Search,
   Save,
-  Keyboard,
   GitBranch,
   Check,
   Plus,
@@ -478,77 +476,6 @@ export function IDELayout({ owner, repo, repoId, defaultRef }: IDELayoutProps) {
               <span>{pendingCount} pending</span>
             </div>
           )}
-
-          {/* Terminal toggle */}
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant={showTerminal ? 'secondary' : 'ghost'}
-                  size="icon-sm"
-                  onClick={() => setShowTerminal(!showTerminal)}
-                >
-                  <PanelBottom className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Toggle terminal (⌘`)</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-          {/* Keyboard shortcuts menu */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm">
-                <Keyboard className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-64">
-              <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground flex items-center gap-2">
-                <Sparkles className="h-3 w-3 text-purple-400" />
-                AI Shortcuts
-              </div>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="justify-between">
-                <span>AI inline edit</span>
-                <kbd className="text-xs text-muted-foreground">⌘K</kbd>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="justify-between">
-                <span>Focus chat</span>
-                <kbd className="text-xs text-muted-foreground">⌘L</kbd>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
-                Editor
-              </div>
-              <DropdownMenuItem className="justify-between">
-                <span>Quick open</span>
-                <kbd className="text-xs text-muted-foreground">⌘P</kbd>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="justify-between">
-                <span>Save file</span>
-                <kbd className="text-xs text-muted-foreground">⌘S</kbd>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="justify-between">
-                <span>Toggle sidebar</span>
-                <kbd className="text-xs text-muted-foreground">⌘B</kbd>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="justify-between">
-                <span>Toggle terminal</span>
-                <kbd className="text-xs text-muted-foreground">⌘`</kbd>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem 
-                className="justify-between text-purple-400"
-                onClick={() => setShowKeyboardShortcuts(true)}
-              >
-                <span className="flex items-center gap-2">
-                  <HelpCircle className="h-3 w-3" />
-                  Show all shortcuts
-                </span>
-                <kbd className="text-xs text-muted-foreground">?</kbd>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </div>
 

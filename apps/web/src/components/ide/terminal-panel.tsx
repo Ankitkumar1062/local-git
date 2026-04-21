@@ -52,7 +52,7 @@ const xtermTheme = {
 
 export function TerminalPanel({ height, repoId, owner, repo }: TerminalPanelProps) {
   const { terminalOutputs, clearTerminal } = useIDEStore();
-  const [activeTab, setActiveTab] = useState<TerminalTab>('output');
+  const [activeTab, setActiveTab] = useState<TerminalTab>('sandbox');
   const [sandboxState, setSandboxState] = useState<SandboxState>('disconnected');
   
   // Output terminal refs (xterm.js for proper terminal rendering)
@@ -136,10 +136,6 @@ export function TerminalPanel({ height, repoId, owner, repo }: TerminalPanelProp
       requestAnimationFrame(fitTerminal);
     });
     resizeObserver.observe(outputContainerRef.current);
-
-    // Welcome message
-    xterm.writeln('\x1b[90m─── Agent Terminal Output ───\x1b[0m');
-    xterm.writeln('');
 
     // Write existing outputs
     for (const output of terminalOutputs) {
@@ -384,8 +380,6 @@ export function TerminalPanel({ height, repoId, owner, repo }: TerminalPanelProp
   const clearOutputTerminal = useCallback(() => {
     if (outputXtermRef.current) {
       outputXtermRef.current.clear();
-      outputXtermRef.current.writeln('\x1b[90m─── Agent Terminal Output ───\x1b[0m');
-      outputXtermRef.current.writeln('');
     }
     clearTerminal(); // Also clear the store
     lastOutputCountRef.current = 0;
@@ -428,17 +422,6 @@ export function TerminalPanel({ height, repoId, owner, repo }: TerminalPanelProp
           
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as TerminalTab)}>
             <TabsList className="h-7 bg-transparent p-0 gap-0.5">
-              <TabsTrigger 
-                value="output" 
-                className={cn(
-                  "h-7 px-3 text-xs font-medium rounded-md transition-all",
-                  "data-[state=active]:bg-zinc-800/80 data-[state=active]:text-zinc-100",
-                  "data-[state=inactive]:text-zinc-500 data-[state=inactive]:hover:text-zinc-300"
-                )}
-              >
-                <Terminal className="h-3 w-3 mr-1.5" />
-                Output
-              </TabsTrigger>
               <TabsTrigger 
                 value="sandbox" 
                 className={cn(
@@ -515,7 +498,7 @@ export function TerminalPanel({ height, repoId, owner, repo }: TerminalPanelProp
             variant="ghost"
             size="icon-sm"
             className="h-6 w-6 text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800/50 transition-all"
-            onClick={activeTab === 'output' ? clearOutputTerminal : clearSandboxTerminal}
+            onClick={clearSandboxTerminal}
             title="Clear terminal"
           >
             <Trash2 className="h-3.5 w-3.5" />
@@ -524,48 +507,39 @@ export function TerminalPanel({ height, repoId, owner, repo }: TerminalPanelProp
       </div>
 
       {/* Terminal Content Area */}
-      {activeTab === 'output' ? (
-        /* Output Tab - xterm.js terminal for agent command results */
-        <div 
-          ref={outputContainerRef} 
-          className="terminal-content flex-1 min-h-0"
-        />
-      ) : (
-        /* Sandbox Tab - xterm.js Interactive terminal */
-        <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-          {!sandboxAvailable ? (
-            <div className="terminal-empty-state p-6 flex flex-col items-center justify-center h-full text-center">
-              <div className="w-12 h-12 rounded-xl bg-zinc-800/50 flex items-center justify-center mb-4">
-                <Terminal className="h-6 w-6 text-zinc-500" />
-              </div>
-              {sandboxStatus?.provider === 'docker' && sandboxStatus?.dockerAvailable === false ? (
-                <>
-                  <p className="text-amber-400 font-medium text-sm mb-2">Docker Not Available</p>
-                  <p className="text-zinc-500 text-xs max-w-sm">
-                    Docker sandbox is configured but Docker is not running.
-                    Install Docker or switch to E2B/Daytona provider in{' '}
-                    <span className="text-zinc-300">Settings → Sandbox</span>.
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p className="text-zinc-300 font-medium text-sm mb-2">Sandbox Not Configured</p>
-                  <p className="text-zinc-500 text-xs max-w-sm">
-                    Enable sandbox execution in{' '}
-                    <span className="text-emerald-400">Settings → Sandbox</span>{' '}
-                    to run commands in an isolated environment.
-                  </p>
-                </>
-              )}
+      <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+        {!sandboxAvailable ? (
+          <div className="terminal-empty-state p-6 flex flex-col items-center justify-center h-full text-center">
+            <div className="w-12 h-12 rounded-xl bg-zinc-800/50 flex items-center justify-center mb-4">
+              <Terminal className="h-6 w-6 text-zinc-500" />
             </div>
-          ) : (
-            <div 
-              ref={sandboxContainerRef} 
-              className="terminal-content flex-1 min-h-0"
-            />
-          )}
-        </div>
-      )}
+            {sandboxStatus?.provider === 'docker' && sandboxStatus?.dockerAvailable === false ? (
+              <>
+                <p className="text-amber-400 font-medium text-sm mb-2">Docker Not Available</p>
+                <p className="text-zinc-500 text-xs max-w-sm">
+                  Docker sandbox is configured but Docker is not running.
+                  Install Docker or switch to E2B/Daytona provider in{' '}
+                  <span className="text-zinc-300">Settings → Sandbox</span>.
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-zinc-300 font-medium text-sm mb-2">Sandbox Not Configured</p>
+                <p className="text-zinc-500 text-xs max-w-sm">
+                  Enable sandbox execution in{' '}
+                  <span className="text-emerald-400">Settings → Sandbox</span>{' '}
+                  to run commands in an isolated environment.
+                </p>
+              </>
+            )}
+          </div>
+        ) : (
+          <div 
+            ref={sandboxContainerRef} 
+            className="terminal-content flex-1 min-h-0"
+          />
+        )}
+      </div>
     </div>
   );
 }

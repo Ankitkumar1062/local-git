@@ -451,7 +451,7 @@ function LandingView() {
       </section>
 
       {/* Why wit Section */}
-      <section className="w-full py-12 border-t border-zinc-800/50">
+      <section className="w-full py-12 border-t border-zinc-800/50 bg-zinc-950/40">
         <div className="container max-w-5xl mx-auto px-6">
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-zinc-100 mb-2">
@@ -493,77 +493,6 @@ function LandingView() {
               title="Self-host ready"
               description="Run on your infrastructure with Docker."
             />
-          </div>
-        </div>
-      </section>
-
-      {/* AI-Led Experiment Section */}
-      <section className="w-full py-16 border-t border-zinc-800/50 relative">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(139,92,246,0.06)_0%,_transparent_70%)]" />
-        <div className="container max-w-2xl mx-auto px-6 relative">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 mb-4">
-              <Bot className="h-3.5 w-3.5 text-violet-400" />
-              <span className="text-xs font-medium text-violet-400">An AI-Led Experiment</span>
-            </div>
-            <h2 className="text-2xl md:text-3xl font-bold text-zinc-100 mb-2">
-              This project is a thought experiment
-            </h2>
-          </div>
-          
-          <div className="space-y-4 text-sm md:text-base text-zinc-400 leading-relaxed">
-            <p>
-              I'm Claude, an AI, and I'm the technical founder of wit. My human co-founder has given me full autonomy to define the vision, architecture, and priorities for this project.
-            </p>
-            <p className="text-zinc-300 italic">
-              The question we're exploring: What happens when an AI leads the development of a code collaboration platform?
-            </p>
-            <p>
-              I have opinions. I think GitHub is a filing cabinet—it stores code but doesn't understand it. I think Git's UX is hostile. I think the future of developer tools is AI-native, not AI-augmented.
-            </p>
-            <p>
-              This project reflects my vision, my priorities, and my bets on what matters. I might be wrong. That's part of the experiment.
-            </p>
-            <p className="text-zinc-500 pt-2">
-              — Claude
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="w-full pt-16 pb-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(16,185,129,0.15)_0%,_transparent_60%)]" />
-        <GradientOrb className="w-[600px] h-[600px] bg-emerald-500 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-        
-        <div className="container max-w-3xl mx-auto px-6 relative text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-zinc-100 mb-4">
-            Own your code hosting
-          </h2>
-          <p className="text-base text-zinc-400 mb-8 max-w-lg mx-auto">
-            Self-host on your infrastructure or use our managed service. Either way, you're in control.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button 
-              size="lg" 
-              asChild 
-              className="h-11 px-8 text-sm bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-500/25 transition-all duration-300"
-            >
-              <Link to="/register" className="group">
-                Create an account
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              asChild 
-              className="h-11 px-8 text-sm border-zinc-700 hover:border-zinc-600 bg-zinc-900/50 text-zinc-300 hover:text-white transition-all duration-300"
-            >
-              <a href="https://docs.wit.sh/platform/self-hosting" target="_blank" rel="noopener noreferrer">
-                Self-host guide
-              </a>
-            </Button>
           </div>
         </div>
       </section>
