@@ -529,8 +529,10 @@ async function loadHostKeys(options: ServerOptions): Promise<Buffer[]> {
 export function createRepository(reposDir: string, owner: string, name: string): Repository {
   // Normalize name - strip .myvcs/.git suffix and add .git for internal storage
   let repoName = name;
-  if (repoName.endsWith('.myvcs')) {
-    repoName = repoName.slice(0, -4) + '.git';
+  if (repoName.endsWith('.myvcs.git')) {
+    repoName = repoName.slice(0, -10) + '.git';
+  } else if (repoName.endsWith('.myvcs')) {
+    repoName = repoName.slice(0, -6) + '.git';
   } else if (!repoName.endsWith('.git')) {
     repoName = `${repoName}.git`;
   }

@@ -77,9 +77,9 @@ export class RepoManager {
     // Normalize name - strip .myvcs.git or .myvcs suffix and ensure .git extension
     let repoName = name;
     if (repoName.endsWith('.myvcs.git')) {
-      repoName = repoName.slice(0, -8) + '.git'; // repo5.myvcs.git -> repo5.git
+      repoName = repoName.slice(0, -10) + '.git'; // repo5.myvcs.git -> repo5.git
     } else if (repoName.endsWith('.myvcs')) {
-      repoName = repoName.slice(0, -4) + '.git'; // repo5.myvcs -> repo5.git
+      repoName = repoName.slice(0, -6) + '.git'; // repo5.myvcs -> repo5.git
     } else if (!repoName.endsWith('.git')) {
       repoName = `${repoName}.git`;
     }
