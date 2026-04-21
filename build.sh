@@ -12,38 +12,51 @@ if command -v apt &> /dev/null; then
 fi
 
 # NVM functionality is highly incompatible with set -e strict mode.
-# We turn off strict error checking during NVM sourcing and execution.
 set +e
 
-# Try to load nvm to ensure the correct Node version
-if ! command -v nvm &> /dev/null; then
-    echo "nvm not found in PATH. Attempting to load from ~/.nvm/nvm.sh"
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+export NVM_DIR="$HOME/.nvm"
+# Try to load existing nvm silently
+if ! command -v nvm &> /dev/null && [ -s "$NVM_DIR/nvm.sh" ]; then
+    echo "Loading NVM environment..."
+    \. "$NVM_DIR/nvm.sh"
 fi
 
 if command -v nvm &> /dev/null; then
-    echo "Ensuring correct Node.js version using nvm..."
-    # 'nvm install' automatically respects the .nvmrc or .node-version file
-    nvm install || nvm use
+    echo "NVM found. Syncing Node.js version..."
+    nvm install >/dev/null 2>&1 || nvm use >/dev/null 2>&1
 else
-    echo "nvm is not installed. Attempting to install nvm via curl..."
+    echo "NVM is missing. Installing specifically for this environment..."
     if command -v curl &> /dev/null; then
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-        echo "nvm installed. Reloading environment..."
-        source ~/.bashrc
-        export NVM_DIR="$HOME/.nvm"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
-        echo "Ensuring correct Node.js version using newly installed nvm..."
-        nvm install || nvm use
+        curl -s -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash >/dev/null 2>&1
+        source ~/.bashrc 2>/dev/null || true
+        \. "$NVM_DIR/nvm.sh"
+        echo "NVM installed successfully. Bootstrapping Node.js..."
+        nvm install >/dev/null 2>&1 || nvm use >/dev/null 2>&1
     else
-        echo "Error: curl is not installed. Cannot automatically install nvm. Please install curl or install nvm manually."
+        echo "Error: curl is required but not installed."
         exit 1
     fi
 fi
 
-# Re-enable strict error checking for the rest of the build script
+# Final safeguard check before continuing
+if ! command -v npm &> /dev/null; then
+    echo "NVM initialization failed. Falling back to native system installation of Node.js 22.x..."
+    if command -v apt &> /dev/null; then
+        curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - >/dev/null 2>&1
+        sudo apt install -y nodejs >/dev/null 2>&1
+    else
+        echo "FATAL: Could not install Node.js automatically."
+        exit 1
+    fi
+fi
+
+# Absolute final check
+if ! command -v npm &> /dev/null; then
+    echo "FATAL: Completely failed to install Node.js."
+    exit 1
+fi
+
+# Re-enable strict error checking
 set -e
 
 echo "1. Installing dependencies..."
