@@ -43,7 +43,7 @@ $ myvcs search "where do we handle authentication?"
 
 ```bash
 # Install
-git clone https://github.com/abhiaiyer91/myvcs.git && cd myvcs
+git clone https://github.com/Ankitkumar1062/local-git.git && cd local-git
 nvm use || nvm install
 npm install && npm run build && npm link
 
@@ -236,8 +236,8 @@ myvcs stands on the shoulders of these excellent open source projects:
 Contributions welcome! See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ```bash
-git clone https://github.com/abhiaiyer91/myvcs.git
-cd myvcs
+git clone https://github.com/Ankitkumar1062/local-git.git
+cd local-git
 npm install
 npm run build
 npm test

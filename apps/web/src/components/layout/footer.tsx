@@ -25,7 +25,7 @@ export function Footer() {
               Docs
             </a>
             <a
-              href="https://github.com/abhiaiyer91/myvcs"
+              href="https://github.com/Ankitkumar1062/local-git"
               target="_blank"
               rel="noopener noreferrer"
               className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/40 rounded-full transition-all duration-200"
