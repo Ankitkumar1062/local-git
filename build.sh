@@ -15,7 +15,9 @@ fi
 if ! command -v nvm &> /dev/null; then
     echo "nvm not found in PATH. Attempting to load from ~/.nvm/nvm.sh"
     export NVM_DIR="$HOME/.nvm"
+    set +e
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    set -e
 fi
 
 if command -v nvm &> /dev/null; then
@@ -28,7 +30,9 @@ else
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
         echo "nvm installed. Reloading environment..."
         export NVM_DIR="$HOME/.nvm"
+        set +e
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        set -e
 
         echo "Ensuring correct Node.js version using newly installed nvm..."
         nvm install || nvm use

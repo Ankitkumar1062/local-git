@@ -8,7 +8,9 @@ echo "Starting local-git frontend and backend..."
 # Load NVM if it's available to ensure Node environment is loaded
 if ! command -v npm &> /dev/null; then
     export NVM_DIR="$HOME/.nvm"
+    set +e
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    set -e
 fi
 
 # Defaults
