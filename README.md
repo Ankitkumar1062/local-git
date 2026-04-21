@@ -166,3 +166,94 @@ myvcs ai commit -a -x
 ```
 
 *For standard commands,  run `myvcs help` for in-terminal guides.*
+
+---
+
+## Troubleshooting & Common Bug Fixes
+
+During setup, you might encounter some common environmental issues—especially related to background services, binary permissions, and database configurations. If things aren't working as expected, refer to these known fixes.
+
+### 1. Zig Compiler Missing
+Some dependencies (like UI modules) require the Zig compiler. If you see errors related to `zig` missing:
+
+**Option 1: The Snap Method (The Quick Way)**
+If your Linux environment has snap enabled:
+```bash
+sudo snap install zig --classic
+```
+*Note: If you get a "System has not been booted with systemd" error, Snap is not running on your machine. Use Option 2.*
+
+**Option 2: Manual Archive Download**
+```bash
+# 1. Download the Zig archive
+wget https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz
+
+# 2. Extract the downloaded file
+tar -xf zig-linux-x86_64-0.13.0.tar.xz
+
+# 3. Move it to a permanent system directory
+sudo mv zig-linux-x86_64-0.13.0 /usr/local/zig
+
+# 4. Add Zig to your system $PATH
+echo 'export PATH="$PATH:/usr/local/zig"' >> ~/.bashrc
+
+# 5. Reload your terminal configuration
+source ~/.bashrc
+```
+Check it installed correctly by running `zig version`.
+
+### 2. Manual PostgreSQL Setup Fails
+If `build.sh` couldn't automate setting up your local database:
+
+```bash
+# Install PostgreSQL
+sudo apt-get update && sudo apt-get install -y postgresql postgresql-client
+
+# Start PostgreSQL service
+sudo systemctl start postgresql && sudo systemctl enable postgresql
+
+# Create DB and user manually
+sudo -u postgres psql -c "CREATE USER myvcs WITH PASSWORD 'myvcs' CREATEDB;"
+sudo -u postgres psql -c "CREATE DATABASE myvcs OWNER myvcs;"
+
+# Push schema directly
+npx drizzle-kit push
+```
+*(Make sure your `.env` contains: `DATABASE_URL=postgresql://myvcs:myvcs@localhost:5432/myvcs`)*
+
+### 3. Drizzle Connection Hanging (`pg_hba.conf` issue)
+Sometimes, PostgreSQL restricts password-based connection to local TCP ports due to an `md5` configuration.
+
+```bash
+# 1. Remove the bad md5 rule from pg_hba.conf (adjust '16' to your PostgreSQL version)
+sudo sed -i '/^host    all    all    127\.0\.0\.1\/32    md5$/d' /etc/postgresql/16/main/pg_hba.conf
+
+# 2. Reload PostgreSQL
+sudo systemctl reload postgresql
+```
+
+### 4. Database Name Contains a Hidden Carriage Return (`\r`)
+If you created your `.env` file from a Windows machine, the `\r` (carriage return) might bleed into your database creation, causing Drizzle to fail saying the database `"myvcs"` doesn't exist (because it's actually named `"myvcs\r"`).
+
+```bash
+# List all databases to confirm your databse name has a weird suffix
+sudo -u postgres psql -l
+
+# Drop the bad one (the $'' syntax helps bash target the hidden \r character)
+sudo -u postgres psql -c $'DROP DATABASE "myvcs\r";'
+
+# Recreate the correct one and assign the right owner
+sudo -u postgres psql -c "CREATE DATABASE myvcs OWNER myvcs;"
+```
+
+### 5. CLI Binary Lacks "Execute" Permissions
+If running the `myvcs` global command throws a "permission denied" error after `npm link`, you'll need to make the bin executable:
+
+```bash
+# Find where nvm/npm linked your binary, e.g., ~/.nvm/versions/node/v22.13.0/bin/myvcs
+# Ensure it is executable:
+chmod +x $(which myvcs)
+
+# (Or specify the direct path if the above isn't resolving:)
+chmod +x ~/.nvm/versions/node/v22.13.0/bin/myvcs
+```
