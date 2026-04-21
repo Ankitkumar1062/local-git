@@ -245,7 +245,7 @@ setup_local_database_if_localhost() {
     start_postgres_if_possible
     ensure_pg_hba_allows_password_auth
 
-    local role_exists db_exists escaped_password
+    local role_exists escaped_password
     escaped_password="${DB_PASSWORD//\'/\'\'}"
 
     role_exists="$(run_psql_query "SELECT 1 FROM pg_roles WHERE rolname = '${DB_USER}';" | tr -d '[:space:]' || true)"
@@ -256,12 +256,11 @@ setup_local_database_if_localhost() {
         run_psql_command "ALTER ROLE \"${DB_USER}\" LOGIN CREATEDB PASSWORD '${escaped_password}';"
     fi
 
-    db_exists="$(run_psql_query "SELECT 1 FROM pg_database WHERE datname = '${DB_NAME}';" | tr -d '[:space:]' || true)"
-    if [ "$db_exists" != "1" ]; then
-        run_psql_command "CREATE DATABASE \"${DB_NAME}\" OWNER \"${DB_USER}\";"
-    else
-        log "Database ${DB_NAME} already exists."
-    fi
+    # Always drop and recreate the database for a clean slate
+    log "Dropping database ${DB_NAME} (if exists) for a clean rebuild..."
+    run_psql_command "DROP DATABASE IF EXISTS \"${DB_NAME}\";"
+    log "Creating database ${DB_NAME}..."
+    run_psql_command "CREATE DATABASE \"${DB_NAME}\" OWNER \"${DB_USER}\";"
 }
 
 run_database_migrations() {
