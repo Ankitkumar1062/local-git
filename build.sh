@@ -31,6 +31,7 @@ else
     if command -v curl &> /dev/null; then
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
         echo "nvm installed. Reloading environment..."
+        source ~/.bashrc
         export NVM_DIR="$HOME/.nvm"
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
