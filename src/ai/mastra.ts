@@ -7,6 +7,7 @@
 
 import * as path from 'path';
 import * as os from 'os';
+import * as fs from 'fs';
 import { Mastra } from '@mastra/core';
 import { Agent } from '@mastra/core/agent';
 import { Memory } from '@mastra/memory';
@@ -87,7 +88,11 @@ export function getStorage(): LibSQLStore | PostgresStore {
       console.log('[Mastra] Using PostgresStore for storage');
     } else {
       // CLI mode: use local LibSQL
-      const dbPath = path.join(getWitDataDir(), 'agent.db');
+      const dirPath = getWitDataDir();
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+      }
+      const dbPath = path.join(dirPath, 'agent.db');
       storageInstance = new LibSQLStore({
         id: 'myvcs-agent-storage',
         url: `file:${dbPath}`,
