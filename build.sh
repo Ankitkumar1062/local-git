@@ -194,6 +194,37 @@ start_postgres_if_possible() {
     fi
 }
 
+ensure_pg_hba_allows_password_auth() {
+    # drizzle-kit connects via TCP (host 127.0.0.1 / ::1), which needs
+    # md5 or scram-sha-256 in pg_hba.conf.  The default Ubuntu/Mint config
+    # often only has "peer" for local Unix-socket connections.
+    local pg_hba
+    pg_hba="$(sudo -u postgres psql -tAc "SHOW hba_file;" 2>/dev/null | tr -d '[:space:]')" || true
+
+    if [ -z "$pg_hba" ] || [ ! -f "$pg_hba" ]; then
+        warn "Could not locate pg_hba.conf. If drizzle-kit hangs, add a TCP md5 rule manually."
+        return
+    fi
+
+    # Check if there's already an md5/scram rule for 127.0.0.1
+    if grep -qE '^host\s+all\s+all\s+127\.0\.0\.1/32\s+(md5|scram-sha-256)' "$pg_hba"; then
+        return  # already configured
+    fi
+
+    log "Adding password-auth rule for 127.0.0.1 to pg_hba.conf..."
+    # Insert before the first "host" line (or append if none exists)
+    sudo sed -i '1i host    all    all    127.0.0.1/32    md5' "$pg_hba" || \
+        echo 'host    all    all    127.0.0.1/32    md5' | sudo tee -a "$pg_hba" >/dev/null
+
+    # Reload PostgreSQL so the new rule takes effect
+    if command -v systemctl >/dev/null 2>&1; then
+        sudo systemctl reload postgresql || true
+    elif command -v service >/dev/null 2>&1; then
+        sudo service postgresql reload || true
+    fi
+    log "pg_hba.conf updated and PostgreSQL reloaded."
+}
+
 setup_local_database_if_localhost() {
     extract_database_settings
 
@@ -212,14 +243,17 @@ setup_local_database_if_localhost() {
     fi
 
     start_postgres_if_possible
+    ensure_pg_hba_allows_password_auth
 
     local role_exists db_exists escaped_password
+    escaped_password="${DB_PASSWORD//\'/\'\'}"
+
     role_exists="$(run_psql_query "SELECT 1 FROM pg_roles WHERE rolname = '${DB_USER}';" | tr -d '[:space:]' || true)"
     if [ "$role_exists" != "1" ]; then
-        escaped_password="${DB_PASSWORD//\'/\'\'}"
-        run_psql_command "CREATE ROLE \"${DB_USER}\" LOGIN PASSWORD '${escaped_password}';"
+        run_psql_command "CREATE ROLE \"${DB_USER}\" LOGIN CREATEDB PASSWORD '${escaped_password}';"
     else
-        log "Role ${DB_USER} already exists."
+        log "Role ${DB_USER} already exists. Syncing password..."
+        run_psql_command "ALTER ROLE \"${DB_USER}\" LOGIN CREATEDB PASSWORD '${escaped_password}';"
     fi
 
     db_exists="$(run_psql_query "SELECT 1 FROM pg_database WHERE datname = '${DB_NAME}';" | tr -d '[:space:]' || true)"
@@ -240,11 +274,9 @@ run_database_migrations() {
         log "Skipping db:generate for non-interactive local setup (set RUN_DB_GENERATE=1 to enable)."
     fi
 
-    log "Pushing schema to database..."
-    npm run db:push
+    log "Pushing schema to database (non-interactive)..."
+    npx drizzle-kit push --force
 
-    log "Seeding database (best-effort)..."
-    npm run db:seed || warn "db:seed failed; continue if your setup does not require seed data."
 }
 
 main() {
