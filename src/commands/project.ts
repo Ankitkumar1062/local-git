@@ -4,14 +4,14 @@
  * Manage Linear-style projects from the command line.
  *
  * Usage:
- *   wit project create <name>      Create a new project
- *   wit project list               List projects
- *   wit project view <name>        View project details
- *   wit project update <name>      Update a project
- *   wit project delete <name>      Delete a project
- *   wit project issues <name>      List issues in a project
- *   wit project progress <name>    Show project progress
- *   wit project complete <name>    Mark project as complete
+ *   myvcs project create <name>      Create a new project
+ *   myvcs project list               List projects
+ *   myvcs project view <name>        View project details
+ *   myvcs project update <name>      Update a project
+ *   myvcs project delete <name>      Delete a project
+ *   myvcs project issues <name>      List issues in a project
+ *   myvcs project progress <name>    Show project progress
+ *   myvcs project complete <name>    Mark project as complete
  */
 
 import { getApiClient, ApiError, getServerUrl } from '../api/client';
@@ -31,9 +31,9 @@ const STATUS_CONFIG: Record<string, { icon: string; color: (s: string) => string
 };
 
 export const PROJECT_HELP = `
-wit project - Manage projects (Linear-style)
+myvcs project - Manage projects (Linear-style)
 
-Usage: wit project <command> [options]
+Usage: myvcs project <command> [options]
 
 Commands:
   create <name>       Create a new project
@@ -56,15 +56,15 @@ Options:
   --icon              Project icon (emoji)
 
 Examples:
-  wit project create "Auth System"
-  wit project create "Q1 Features" -d "Features for Q1 2024" --status planned
-  wit project list
-  wit project list --status in_progress
-  wit project view "Auth System"
-  wit project update "Auth System" --status in_progress
-  wit project issues "Auth System"
-  wit project progress "Auth System"
-  wit project complete "Auth System"
+  myvcs project create "Auth System"
+  myvcs project create "Q1 Features" -d "Features for Q1 2024" --status planned
+  myvcs project list
+  myvcs project list --status in_progress
+  myvcs project view "Auth System"
+  myvcs project update "Auth System" --status in_progress
+  myvcs project issues "Auth System"
+  myvcs project progress "Auth System"
+  myvcs project complete "Auth System"
 `;
 
 /**
@@ -97,7 +97,7 @@ function getRemoteUrl(repo: Repository): string {
     throw new TsgitError(
       'No remote origin configured',
       ErrorCode.OPERATION_FAILED,
-      ['Add a remote with: wit remote add origin <url>']
+      ['Add a remote with: myvcs remote add origin <url>']
     );
   }
   return remote.url;
@@ -214,7 +214,7 @@ export async function handleProject(args: string[]): Promise<void> {
     if (error instanceof ApiError) {
       console.error(colors.red('error: ') + error.message);
       if (error.status === 0) {
-        console.error(colors.dim('hint: Start the server with: wit serve'));
+        console.error(colors.dim('hint: Start the server with: myvcs serve'));
       }
       process.exit(1);
     }
@@ -240,7 +240,7 @@ async function handleProjectCreate(args: string[]): Promise<void> {
   const name = positional[0];
   if (!name) {
     console.error(colors.red('error: ') + 'Project name required');
-    console.error('usage: wit project create "Project Name"');
+    console.error('usage: myvcs project create "Project Name"');
     process.exit(1);
   }
 
@@ -293,7 +293,7 @@ async function handleProjectList(args: string[]): Promise<void> {
 
   if (projects.length === 0) {
     console.log(colors.dim('No projects yet'));
-    console.log(colors.dim('Create one with: wit project create "Project Name"'));
+    console.log(colors.dim('Create one with: myvcs project create "Project Name"'));
     return;
   }
 
@@ -322,7 +322,7 @@ async function handleProjectView(args: string[]): Promise<void> {
 
   if (!name) {
     console.error(colors.red('error: ') + 'Project name required');
-    console.error('usage: wit project view "Project Name"');
+    console.error('usage: myvcs project view "Project Name"');
     process.exit(1);
   }
 
@@ -376,7 +376,7 @@ async function handleProjectUpdate(args: string[]): Promise<void> {
 
   if (!name) {
     console.error(colors.red('error: ') + 'Project name required');
-    console.error('usage: wit project update "Project Name" --status in_progress');
+    console.error('usage: myvcs project update "Project Name" --status in_progress');
     process.exit(1);
   }
 
@@ -404,7 +404,7 @@ async function handleProjectUpdate(args: string[]): Promise<void> {
 
   if (Object.keys(updates).length === 0) {
     console.error(colors.red('error: ') + 'No updates specified');
-    console.error('usage: wit project update "Name" --status in_progress');
+    console.error('usage: myvcs project update "Name" --status in_progress');
     process.exit(1);
   }
 
@@ -425,7 +425,7 @@ async function handleProjectDelete(args: string[]): Promise<void> {
 
   if (!name) {
     console.error(colors.red('error: ') + 'Project name required');
-    console.error('usage: wit project delete "Project Name"');
+    console.error('usage: myvcs project delete "Project Name"');
     process.exit(1);
   }
 
@@ -455,7 +455,7 @@ async function handleProjectIssues(args: string[]): Promise<void> {
 
   if (!name) {
     console.error(colors.red('error: ') + 'Project name required');
-    console.error('usage: wit project issues "Project Name"');
+    console.error('usage: myvcs project issues "Project Name"');
     process.exit(1);
   }
 
@@ -514,7 +514,7 @@ async function handleProjectProgress(args: string[]): Promise<void> {
 
   if (!name) {
     console.error(colors.red('error: ') + 'Project name required');
-    console.error('usage: wit project progress "Project Name"');
+    console.error('usage: myvcs project progress "Project Name"');
     process.exit(1);
   }
 
@@ -566,7 +566,7 @@ async function handleProjectComplete(args: string[]): Promise<void> {
 
   if (!name) {
     console.error(colors.red('error: ') + 'Project name required');
-    console.error('usage: wit project complete "Project Name"');
+    console.error('usage: myvcs project complete "Project Name"');
     process.exit(1);
   }
 

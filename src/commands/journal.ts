@@ -4,16 +4,16 @@
  * Notion-like documentation for repositories.
  *
  * Usage:
- *   wit journal                    List all pages (root level)
- *   wit journal create <title>     Create a new page
- *   wit journal view <slug>        View a page
- *   wit journal edit <slug>        Edit a page
- *   wit journal delete <slug>      Delete a page
- *   wit journal tree               Show page hierarchy
- *   wit journal search <query>     Search pages
- *   wit journal publish <slug>     Publish a page
- *   wit journal archive <slug>     Archive a page
- *   wit journal history <slug>     View page history
+ *   myvcs journal                    List all pages (root level)
+ *   myvcs journal create <title>     Create a new page
+ *   myvcs journal view <slug>        View a page
+ *   myvcs journal edit <slug>        Edit a page
+ *   myvcs journal delete <slug>      Delete a page
+ *   myvcs journal tree               Show page hierarchy
+ *   myvcs journal search <query>     Search pages
+ *   myvcs journal publish <slug>     Publish a page
+ *   myvcs journal archive <slug>     Archive a page
+ *   myvcs journal history <slug>     View page history
  */
 
 import { getApiClient, ApiError, getServerUrl } from '../api/client';
@@ -30,9 +30,9 @@ const STATUS_CONFIG: Record<string, { icon: string; color: (s: string) => string
 };
 
 export const JOURNAL_HELP = `
-wit journal - Repository documentation (Notion-like)
+myvcs journal - Repository documentation (Notion-like)
 
-Usage: wit journal <command> [options]
+Usage: myvcs journal <command> [options]
 
 Commands:
   (no command)        List all pages (root level)
@@ -58,16 +58,16 @@ Options:
   --status, -s        Filter by status (draft, published, archived)
 
 Examples:
-  wit journal                               # List root pages
-  wit journal create "Getting Started"      # Create a page
-  wit journal create "API Docs" -p getting-started  # Create nested page
-  wit journal view getting-started          # View page
-  wit journal edit getting-started -c "# Welcome"   # Update content
-  wit journal tree                          # Show hierarchy
-  wit journal search "authentication"       # Search pages
-  wit journal publish getting-started       # Publish page
-  wit journal history getting-started       # View history
-  wit journal restore getting-started 3     # Restore to version 3
+  myvcs journal                               # List root pages
+  myvcs journal create "Getting Started"      # Create a page
+  myvcs journal create "API Docs" -p getting-started  # Create nested page
+  myvcs journal view getting-started          # View page
+  myvcs journal edit getting-started -c "# Welcome"   # Update content
+  myvcs journal tree                          # Show hierarchy
+  myvcs journal search "authentication"       # Search pages
+  myvcs journal publish getting-started       # Publish page
+  myvcs journal history getting-started       # View history
+  myvcs journal restore getting-started 3     # Restore to version 3
 `;
 
 /**
@@ -100,7 +100,7 @@ function getRemoteUrl(repo: Repository): string {
     throw new TsgitError(
       'No remote origin configured',
       ErrorCode.OPERATION_FAILED,
-      ['Add a remote with: wit remote add origin <url>']
+      ['Add a remote with: myvcs remote add origin <url>']
     );
   }
   return remote.url;
@@ -264,7 +264,7 @@ export async function handleJournal(args: string[]): Promise<void> {
     if (error instanceof ApiError) {
       console.error(colors.red('error: ') + error.message);
       if (error.status === 0) {
-        console.error(colors.dim('hint: Start the server with: wit serve'));
+        console.error(colors.dim('hint: Start the server with: myvcs serve'));
       }
       process.exit(1);
     }
@@ -297,7 +297,7 @@ async function handleJournalList(args: string[]): Promise<void> {
 
   if (pages.length === 0) {
     console.log(colors.dim('No journal pages yet'));
-    console.log(colors.dim('Create one with: wit journal create "Page Title"'));
+    console.log(colors.dim('Create one with: myvcs journal create "Page Title"'));
     return;
   }
 
@@ -328,7 +328,7 @@ async function handleJournalCreate(args: string[]): Promise<void> {
   const title = positional[0];
   if (!title) {
     console.error(colors.red('error: ') + 'Page title required');
-    console.error('usage: wit journal create "Page Title"');
+    console.error('usage: myvcs journal create "Page Title"');
     process.exit(1);
   }
 
@@ -371,7 +371,7 @@ async function handleJournalView(args: string[]): Promise<void> {
 
   if (!slug) {
     console.error(colors.red('error: ') + 'Page slug required');
-    console.error('usage: wit journal view <slug>');
+    console.error('usage: myvcs journal view <slug>');
     process.exit(1);
   }
 
@@ -422,7 +422,7 @@ async function handleJournalEdit(args: string[]): Promise<void> {
 
   if (!slug) {
     console.error(colors.red('error: ') + 'Page slug required');
-    console.error('usage: wit journal edit <slug> --content "New content"');
+    console.error('usage: myvcs journal edit <slug> --content "New content"');
     process.exit(1);
   }
 
@@ -446,7 +446,7 @@ async function handleJournalEdit(args: string[]): Promise<void> {
 
   if (Object.keys(updates).length === 0) {
     console.error(colors.red('error: ') + 'No updates specified');
-    console.error('usage: wit journal edit <slug> --content "New content" --title "New Title"');
+    console.error('usage: myvcs journal edit <slug> --content "New content" --title "New Title"');
     process.exit(1);
   }
 
@@ -465,7 +465,7 @@ async function handleJournalDelete(args: string[]): Promise<void> {
 
   if (!slug) {
     console.error(colors.red('error: ') + 'Page slug required');
-    console.error('usage: wit journal delete <slug>');
+    console.error('usage: myvcs journal delete <slug>');
     process.exit(1);
   }
 
@@ -505,7 +505,7 @@ async function handleJournalTree(args: string[]): Promise<void> {
 
   if (tree.length === 0) {
     console.log(colors.dim('No journal pages yet'));
-    console.log(colors.dim('Create one with: wit journal create "Page Title"'));
+    console.log(colors.dim('Create one with: myvcs journal create "Page Title"'));
     return;
   }
 
@@ -523,7 +523,7 @@ async function handleJournalSearch(args: string[]): Promise<void> {
 
   if (!query) {
     console.error(colors.red('error: ') + 'Search query required');
-    console.error('usage: wit journal search <query>');
+    console.error('usage: myvcs journal search <query>');
     process.exit(1);
   }
 
@@ -570,7 +570,7 @@ async function handleJournalPublish(args: string[]): Promise<void> {
 
   if (!slug) {
     console.error(colors.red('error: ') + 'Page slug required');
-    console.error('usage: wit journal publish <slug>');
+    console.error('usage: myvcs journal publish <slug>');
     process.exit(1);
   }
 
@@ -595,7 +595,7 @@ async function handleJournalUnpublish(args: string[]): Promise<void> {
 
   if (!slug) {
     console.error(colors.red('error: ') + 'Page slug required');
-    console.error('usage: wit journal unpublish <slug>');
+    console.error('usage: myvcs journal unpublish <slug>');
     process.exit(1);
   }
 
@@ -619,7 +619,7 @@ async function handleJournalArchive(args: string[]): Promise<void> {
 
   if (!slug) {
     console.error(colors.red('error: ') + 'Page slug required');
-    console.error('usage: wit journal archive <slug>');
+    console.error('usage: myvcs journal archive <slug>');
     process.exit(1);
   }
 
@@ -643,7 +643,7 @@ async function handleJournalMove(args: string[]): Promise<void> {
 
   if (!slug) {
     console.error(colors.red('error: ') + 'Page slug required');
-    console.error('usage: wit journal move <slug> --parent <parent-slug>');
+    console.error('usage: myvcs journal move <slug> --parent <parent-slug>');
     process.exit(1);
   }
 
@@ -679,7 +679,7 @@ async function handleJournalHistory(args: string[]): Promise<void> {
 
   if (!slug) {
     console.error(colors.red('error: ') + 'Page slug required');
-    console.error('usage: wit journal history <slug>');
+    console.error('usage: myvcs journal history <slug>');
     process.exit(1);
   }
 
@@ -708,7 +708,7 @@ async function handleJournalHistory(args: string[]): Promise<void> {
   }
   
   console.log();
-  console.log(colors.dim(`Restore with: wit journal restore ${slug} <version>`));
+  console.log(colors.dim(`Restore with: myvcs journal restore ${slug} <version>`));
   console.log();
 }
 
@@ -722,7 +722,7 @@ async function handleJournalRestore(args: string[]): Promise<void> {
 
   if (!slug || !version) {
     console.error(colors.red('error: ') + 'Page slug and version required');
-    console.error('usage: wit journal restore <slug> <version>');
+    console.error('usage: myvcs journal restore <slug> <version>');
     process.exit(1);
   }
 

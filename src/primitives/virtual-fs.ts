@@ -1,7 +1,7 @@
 /**
  * Virtual Filesystem
  * 
- * An in-memory filesystem that can be committed directly to a wit repository
+ * An in-memory filesystem that can be committed directly to a myvcs repository
  * without requiring a physical working directory. This enables:
  * 
  * 1. IDE/web-based code editing without disk access

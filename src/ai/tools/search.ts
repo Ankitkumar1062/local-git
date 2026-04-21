@@ -9,7 +9,7 @@ import { Repository } from '../../core/repository.js';
 import { SearchEngine } from '../../ui/search.js';
 
 export const searchTool = createTool({
-  id: 'wit-search',
+  id: 'myvcs-search',
   description: 'Search the repository for commits, files, and content matching a query. Use this to find specific code, commits by message, or files by name. Supports glob patterns for file filtering.',
   inputSchema: z.object({
     query: z.string().describe('Search query string (text pattern or regex)'),
@@ -93,7 +93,7 @@ export const searchTool = createTool({
  * Find files by glob pattern only (no text query required)
  */
 export const globSearchTool = createTool({
-  id: 'wit-glob-search',
+  id: 'myvcs-glob-search',
   description: 'Find files matching a glob pattern. Use this to locate files by name pattern without searching content. Examples: "*.ts" for TypeScript files, "src/**/*.test.js" for test files in src.',
   inputSchema: z.object({
     pattern: z.string().describe('Glob pattern to match files (e.g., "*.ts", "**/*.test.js", "src/**/*.tsx")'),
@@ -138,7 +138,7 @@ export const globSearchTool = createTool({
  * Search for code patterns within specific files
  */
 export const contentSearchTool = createTool({
-  id: 'wit-content-search',
+  id: 'myvcs-content-search',
   description: 'Search for text/code patterns within files. Optionally filter by file type using glob patterns. Returns matching lines with context.',
   inputSchema: z.object({
     query: z.string().describe('Text or regex pattern to search for in file contents'),

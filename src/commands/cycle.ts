@@ -1,16 +1,16 @@
 /**
  * Cycle Command
- * Sprint/cycle management for wit issue tracking
+ * Sprint/cycle management for myvcs issue tracking
  *
  * Commands:
- * - wit cycle create                 Create a new cycle
- * - wit cycle list                   List all cycles
- * - wit cycle show [n]               Show cycle details
- * - wit cycle current                Show current active cycle
- * - wit cycle add <issue> [cycle]    Add issue to cycle
- * - wit cycle remove <issue>         Remove issue from cycle
- * - wit cycle complete [n]           Complete a cycle
- * - wit cycle velocity               Show velocity metrics
+ * - myvcs cycle create                 Create a new cycle
+ * - myvcs cycle list                   List all cycles
+ * - myvcs cycle show [n]               Show cycle details
+ * - myvcs cycle current                Show current active cycle
+ * - myvcs cycle add <issue> [cycle]    Add issue to cycle
+ * - myvcs cycle remove <issue>         Remove issue from cycle
+ * - myvcs cycle complete [n]           Complete a cycle
+ * - myvcs cycle velocity               Show velocity metrics
  */
 
 import { getApiClient, ApiError, getServerUrl, Cycle } from '../api/client';
@@ -20,9 +20,9 @@ import { TsgitError, ErrorCode } from '../core/errors';
 import { colors } from '../utils/colors';
 
 export const CYCLE_HELP = `
-wit cycle - Manage sprints/cycles (Linear-style)
+myvcs cycle - Manage sprints/cycles (Linear-style)
 
-Usage: wit cycle <command> [options]
+Usage: myvcs cycle <command> [options]
 
 Commands:
   create [name]       Create a new cycle
@@ -43,16 +43,16 @@ Options:
   --description, -d   Cycle description
 
 Examples:
-  wit cycle create "Sprint 1"
-  wit cycle create --weeks 2
-  wit cycle list
-  wit cycle show 1
-  wit cycle current
-  wit cycle add WIT-1
-  wit cycle add WIT-1 2
-  wit cycle remove WIT-1
-  wit cycle complete
-  wit cycle velocity
+  myvcs cycle create "Sprint 1"
+  myvcs cycle create --weeks 2
+  myvcs cycle list
+  myvcs cycle show 1
+  myvcs cycle current
+  myvcs cycle add myvcs-1
+  myvcs cycle add myvcs-1 2
+  myvcs cycle remove myvcs-1
+  myvcs cycle complete
+  myvcs cycle velocity
 `;
 
 /**
@@ -85,7 +85,7 @@ function getRemoteUrl(repo: Repository): string {
     throw new TsgitError(
       'No remote origin configured',
       ErrorCode.OPERATION_FAILED,
-      ['Add a remote with: wit remote add origin <url>']
+      ['Add a remote with: myvcs remote add origin <url>']
     );
   }
   return remote.url;
@@ -218,17 +218,17 @@ function renderProgressBar(percentage: number, width: number = 20): string {
 
 /**
  * Parse issue number from various formats
- * Accepts: "1", "WIT-1", "#1"
+ * Accepts: "1", "myvcs-1", "#1"
  */
 function parseIssueNumber(input: string): number {
   // Remove common prefixes
-  const cleaned = input.replace(/^(WIT-|#)/i, '');
+  const cleaned = input.replace(/^(myvcs-|#)/i, '');
   const num = parseInt(cleaned, 10);
   if (isNaN(num)) {
     throw new TsgitError(
       `Invalid issue number: ${input}`,
       ErrorCode.INVALID_ARGUMENT,
-      ['Use a number like "1" or "WIT-1"']
+      ['Use a number like "1" or "myvcs-1"']
     );
   }
   return num;
@@ -297,7 +297,7 @@ export async function handleCycle(args: string[]): Promise<void> {
         await handleCycleVelocity(args.slice(1));
         break;
       default:
-        // Check if it's a number (shortcut for wit cycle show N)
+        // Check if it's a number (shortcut for myvcs cycle show N)
         if (subcommand.match(/^\d+$/)) {
           await handleCycleShow([subcommand]);
         } else {
@@ -310,7 +310,7 @@ export async function handleCycle(args: string[]): Promise<void> {
     if (error instanceof ApiError) {
       console.error(colors.red('error: ') + error.message);
       if (error.status === 0) {
-        console.error(colors.dim('hint: Start the server with: wit serve'));
+        console.error(colors.dim('hint: Start the server with: myvcs serve'));
       }
       process.exit(1);
     }
@@ -382,7 +382,7 @@ async function handleCycleList(args: string[]): Promise<void> {
 
   if (cycles.length === 0) {
     console.log(colors.dim('No cycles yet'));
-    console.log(colors.dim('Create one with: wit cycle create --weeks 2'));
+    console.log(colors.dim('Create one with: myvcs cycle create --weeks 2'));
     return;
   }
 
@@ -441,7 +441,7 @@ async function handleCycleShow(args: string[]): Promise<void> {
     throw new TsgitError(
       cycleNum ? `Cycle ${cycleNum} not found` : 'No active cycle',
       ErrorCode.OBJECT_NOT_FOUND,
-      ['wit cycle list    # List all cycles']
+      ['myvcs cycle list    # List all cycles']
     );
   }
 
@@ -507,7 +507,7 @@ async function handleCycleCurrent(_args: string[]): Promise<void> {
 
   if (!cycle) {
     console.log(colors.dim('No active cycle'));
-    console.log(colors.dim('Create one with: wit cycle create --weeks 2'));
+    console.log(colors.dim('Create one with: myvcs cycle create --weeks 2'));
     return;
   }
 
@@ -532,7 +532,7 @@ async function handleCycleAdd(args: string[]): Promise<void> {
   const { positional } = parseArgs(args);
 
   if (!positional[0]) {
-    throw new TsgitError('Issue ID is required', ErrorCode.INVALID_ARGUMENT, ['wit cycle add WIT-1 1']);
+    throw new TsgitError('Issue ID is required', ErrorCode.INVALID_ARGUMENT, ['myvcs cycle add myvcs-1 1']);
   }
 
   const repo = Repository.find();
@@ -554,7 +554,7 @@ async function handleCycleAdd(args: string[]): Promise<void> {
 
   if (!cycle) {
     throw new TsgitError('No cycle specified and no active cycle', ErrorCode.OBJECT_NOT_FOUND, [
-      'wit cycle add WIT-1 1    # Add to cycle 1',
+      'myvcs cycle add myvcs-1 1    # Add to cycle 1',
     ]);
   }
 
@@ -569,7 +569,7 @@ async function handleCycleRemove(args: string[]): Promise<void> {
   const { positional } = parseArgs(args);
 
   if (!positional[0]) {
-    throw new TsgitError('Issue ID is required', ErrorCode.INVALID_ARGUMENT, ['wit cycle remove WIT-1']);
+    throw new TsgitError('Issue ID is required', ErrorCode.INVALID_ARGUMENT, ['myvcs cycle remove myvcs-1']);
   }
 
   const repo = Repository.find();

@@ -101,7 +101,7 @@ export class BranchStateManager {
     message?: string
   ): void {
     const files: FileState[] = [];
-    const excludeDirs = ['.wit/', 'node_modules/', '.git/'];
+    const excludeDirs = ['.myvcs/', 'node_modules/', '.git/'];
 
     // Walk working directory and capture modified files
     const allFiles = walkDir(this.workDir, excludeDirs);

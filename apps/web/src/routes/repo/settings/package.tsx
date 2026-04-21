@@ -338,7 +338,7 @@ export function PackageSettingsPage() {
                 <CardHeader>
                   <CardTitle>Installation</CardTitle>
                   <CardDescription>
-                    How to install this package from Wit's registry.
+                    How to install this package from myvcs's registry.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -413,7 +413,7 @@ export function PackageSettingsPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label>1. Login to Wit registry</Label>
+                    <Label>1. Login to myvcs registry</Label>
                     <div className="flex items-center gap-2">
                       <code className="flex-1 p-3 bg-muted rounded-md text-sm font-mono">
                         npm login --registry={registryUrl}

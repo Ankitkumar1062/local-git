@@ -44,7 +44,7 @@ export function branch(
     if (branches.length === 0) {
       console.log('No branches yet');
       console.log('\nhint:');
-      console.log('  wit commit -m "Initial commit"    # Create initial commit first');
+      console.log('  myvcs commit -m "Initial commit"    # Create initial commit first');
       return;
     }
 

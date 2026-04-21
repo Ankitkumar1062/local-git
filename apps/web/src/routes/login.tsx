@@ -70,7 +70,7 @@ export function LoginPage() {
           <div className="flex justify-center mb-4">
             <GitBranch className="h-10 w-10 text-primary" />
           </div>
-          <CardTitle className="text-2xl">Sign in to Wit</CardTitle>
+          <CardTitle className="text-2xl">Sign in to myvcs</CardTitle>
           <CardDescription>
             Enter your credentials to access your account
           </CardDescription>

@@ -6,14 +6,14 @@
  * a way to recover from mistakes.
  * 
  * Commands:
- * - wit reflog                    Show HEAD reflog
- * - wit reflog <ref>              Show reflog for specific ref
- * - wit reflog show <ref>         Same as above
- * - wit reflog expire             Prune old entries
- * - wit reflog delete <entry>     Delete specific entry
- * - wit reflog exists <ref>       Check if reflog exists
+ * - myvcs reflog                    Show HEAD reflog
+ * - myvcs reflog <ref>              Show reflog for specific ref
+ * - myvcs reflog show <ref>         Same as above
+ * - myvcs reflog expire             Prune old entries
+ * - myvcs reflog delete <entry>     Delete specific entry
+ * - myvcs reflog exists <ref>       Check if reflog exists
  * 
- * Reflog entries are stored in .wit/logs/
+ * Reflog entries are stored in .myvcs/logs/
  */
 
 import * as path from 'path';
@@ -593,12 +593,12 @@ export function handleReflog(args: string[]): void {
       default:
         console.error(colors.red('error: ') + `Unknown subcommand: ${subcommand}`);
         console.error('\nUsage:');
-        console.error('  wit reflog                  Show HEAD reflog');
-        console.error('  wit reflog <ref>            Show reflog for ref');
-        console.error('  wit reflog show <ref>       Show detailed reflog');
-        console.error('  wit reflog expire [--all]   Expire old entries');
-        console.error('  wit reflog delete <ref> [n] Delete reflog or entry');
-        console.error('  wit reflog exists <ref>     Check if reflog exists');
+        console.error('  myvcs reflog                  Show HEAD reflog');
+        console.error('  myvcs reflog <ref>            Show reflog for ref');
+        console.error('  myvcs reflog show <ref>       Show detailed reflog');
+        console.error('  myvcs reflog expire [--all]   Expire old entries');
+        console.error('  myvcs reflog delete <ref> [n] Delete reflog or entry');
+        console.error('  myvcs reflog exists <ref>     Check if reflog exists');
         process.exit(1);
     }
   } catch (error) {

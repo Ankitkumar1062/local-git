@@ -480,7 +480,7 @@ export function createSandboxManagerFromEnv(
           options: {
             socketPath: process.env.DOCKER_SOCKET_PATH,
             host: process.env.DOCKER_HOST,
-            image: process.env.SANDBOX_IMAGE || 'wit-sandbox:latest',
+            image: process.env.SANDBOX_IMAGE || 'myvcs-sandbox:latest',
             network: process.env.DOCKER_NETWORK,
           },
         },

@@ -23,7 +23,7 @@ import {
 
 /**
  * Parse a full package name into scope and name
- * @example "@wit/cli" -> { scope: "wit", name: "cli" }
+ * @example "@myvcs/cli" -> { scope: "myvcs", name: "cli" }
  * @example "lodash" -> { scope: null, name: "lodash" }
  */
 export function parsePackageName(fullName: string): { scope: string | null; name: string } {
@@ -36,7 +36,7 @@ export function parsePackageName(fullName: string): { scope: string | null; name
 
 /**
  * Get the full package name from scope and name
- * @example { scope: "wit", name: "cli" } -> "@wit/cli"
+ * @example { scope: "myvcs", name: "cli" } -> "@myvcs/cli"
  * @example { scope: null, name: "lodash" } -> "lodash"
  */
 export function getFullPackageName(scope: string | null, name: string): string {
@@ -87,7 +87,7 @@ export const packageModel = {
   },
 
   /**
-   * Get a package by full name (e.g., "@wit/cli" or "lodash")
+   * Get a package by full name (e.g., "@myvcs/cli" or "lodash")
    */
   async getByFullName(fullName: string): Promise<Package | null> {
     const { scope, name } = parsePackageName(fullName);

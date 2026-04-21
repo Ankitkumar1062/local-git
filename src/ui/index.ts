@@ -1,5 +1,5 @@
 /**
- * wit User Interface
+ * myvcs User Interface
  * Best-in-class UI components for git visualization
  */
 

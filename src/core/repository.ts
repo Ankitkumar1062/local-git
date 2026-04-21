@@ -70,13 +70,13 @@ export class Repository {
     
     // Determine which git directory to use
     // Override is used when find() locates a specific directory
-    // For new repos (init), we always use .wit
+    // For new repos (init), we always use .myvcs
     if (gitDirOverride) {
       this.gitDir = gitDirOverride;
     } else {
-      // Default to .wit - this is important for Repository.init()
-      // find() handles the .wit vs .git detection separately
-      this.gitDir = path.join(this.workDir, '.wit');
+      // Default to .myvcs - this is important for Repository.init()
+      // find() handles the .myvcs vs .git detection separately
+      this.gitDir = path.join(this.workDir, '.myvcs');
     }
 
     // Load config from existing repo if it exists
@@ -106,7 +106,7 @@ export class Repository {
   }
 
   /**
-   * Load configuration from .wit/config file if it exists
+   * Load configuration from .myvcs/config file if it exists
    */
   private loadStoredConfig(): Partial<RepositoryConfig> {
     const configPath = path.join(this.gitDir, 'config');
@@ -180,14 +180,14 @@ export class Repository {
     // Create HEAD pointing to main branch
     writeFile(path.join(repo.gitDir, 'HEAD'), 'ref: refs/heads/main\n');
 
-    // Create config file with wit improvements
+    // Create config file with myvcs improvements
     // Default to SHA-1 for Git interoperability
     const hashAlgo = options.hashAlgorithm || 'sha1';
     const config = `[core]
     repositoryformatversion = 1
     filemode = true
     bare = false
-[wit]
+[myvcs]
     hashAlgorithm = ${hashAlgo}
     largeFileThreshold = ${CHUNK_THRESHOLD}
     autoStashOnSwitch = true
@@ -210,7 +210,7 @@ export class Repository {
     repo.branchProtection.getManager().init();
     repo.collaborators.init();
 
-    console.log(`Initialized wit repository with ${hashAlgo} hashing`);
+    console.log(`Initialized myvcs repository with ${hashAlgo} hashing`);
 
     return repo;
   }
@@ -218,8 +218,8 @@ export class Repository {
   /**
    * Find a repository by walking up the directory tree
    * 
-   * wit can work with both .wit and .git directories. However, for full
-   * functionality with .git repos, wit init should be run to create a .wit
+   * myvcs can work with both .myvcs and .git directories. However, for full
+   * functionality with .git repos, myvcs init should be run to create a .myvcs
    * directory (which shares the same object format and can sync with .git).
    */
   static find(startPath: string = process.cwd()): Repository {
@@ -227,8 +227,8 @@ export class Repository {
     let foundGitDir: string | null = null;
 
     while (true) {
-      // Check for .wit first (native wit repo)
-      const witDir = path.join(currentPath, '.wit');
+      // Check for .myvcs first (native myvcs repo)
+      const witDir = path.join(currentPath, '.myvcs');
       if (exists(witDir) && (exists(path.join(witDir, 'HEAD')) || exists(path.join(witDir, 'objects')))) {
         return new Repository(currentPath, {}, witDir);
       }
@@ -241,24 +241,24 @@ export class Repository {
 
       const parent = path.dirname(currentPath);
       if (parent === currentPath) {
-        // No .wit found, but if we found .git, give helpful message
+        // No .myvcs found, but if we found .git, give helpful message
         if (foundGitDir) {
           throw new Error(
-            `Found git repository at ${foundGitDir}, but no wit repository.\n` +
-            `\nTo use wit with this git repo, run:\n` +
+            `Found git repository at ${foundGitDir}, but no myvcs repository.\n` +
+            `\nTo use myvcs with this git repo, run:\n` +
             `  cd ${foundGitDir}\n` +
-            `  wit init\n` +
-            `\nThis creates a .wit directory alongside .git for wit features.`
+            `  myvcs init\n` +
+            `\nThis creates a .myvcs directory alongside .git for myvcs features.`
           );
         }
-        throw new Error('Not a wit repository (or any parent up to root)');
+        throw new Error('Not a myvcs repository (or any parent up to root)');
       }
       currentPath = parent;
     }
   }
   
   /**
-   * Check if a .git directory exists alongside this .wit directory
+   * Check if a .git directory exists alongside this .myvcs directory
    */
   hasGitDirectory(): boolean {
     const gitDir = path.join(this.workDir, '.git');
@@ -565,7 +565,7 @@ export class Repository {
    * Clean up empty directories in the working directory
    */
   private cleanEmptyDirectories(): void {
-    const excludeDirs = ['.wit', 'node_modules', '.git', 'dist', 'build'];
+    const excludeDirs = ['.myvcs', 'node_modules', '.git', 'dist', 'build'];
     
     const cleanDir = (dir: string): boolean => {
       if (!exists(dir) || !isDirectory(dir)) return false;
@@ -682,7 +682,7 @@ export class Repository {
     let name = process.env.WIT_AUTHOR_NAME || process.env.GIT_AUTHOR_NAME;
     let email = process.env.WIT_AUTHOR_EMAIL || process.env.GIT_AUTHOR_EMAIL;
 
-    // If not set, try GitHub credentials (from `wit github login`)
+    // If not set, try GitHub credentials (from `myvcs github login`)
     if (!name || !email) {
       const githubInfo = this.readGitHubUserInfo();
       if (!name) name = githubInfo.name;

@@ -1,5 +1,5 @@
 /**
- * CodeRabbit CLI Integration for wit
+ * CodeRabbit CLI Integration for myvcs
  *
  * Provides integration with CodeRabbit CLI for AI-powered code reviews on pull requests.
  *
@@ -98,8 +98,8 @@ export function getCodeRabbitApiKey(): string | undefined {
     return process.env.CODERABBIT_API_KEY;
   }
 
-  // Check wit config file
-  const configPath = path.join(os.homedir(), '.config', 'wit', 'coderabbit.json');
+  // Check myvcs config file
+  const configPath = path.join(os.homedir(), '.config', 'myvcs', 'coderabbit.json');
   if (fs.existsSync(configPath)) {
     try {
       const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
@@ -128,10 +128,10 @@ export function getCodeRabbitApiKey(): string | undefined {
 }
 
 /**
- * Save CodeRabbit API key to wit config
+ * Save CodeRabbit API key to myvcs config
  */
 export function saveCodeRabbitApiKey(apiKey: string): void {
-  const configDir = path.join(os.homedir(), '.config', 'wit');
+  const configDir = path.join(os.homedir(), '.config', 'myvcs');
   const configPath = path.join(configDir, 'coderabbit.json');
 
   // Ensure directory exists

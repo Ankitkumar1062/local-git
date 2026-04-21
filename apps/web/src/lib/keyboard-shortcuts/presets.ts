@@ -11,7 +11,7 @@ export const PRESETS: ShortcutPreset[] = [
   {
     id: 'default',
     name: 'Default',
-    description: 'Standard wit keyboard shortcuts',
+    description: 'Standard myvcs keyboard shortcuts',
     shortcuts: {},
   },
   {

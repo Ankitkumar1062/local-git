@@ -52,7 +52,7 @@ const xtermTheme = {
 
 export function TerminalPanel({ height, repoId, owner, repo }: TerminalPanelProps) {
   const { terminalOutputs, clearTerminal } = useIDEStore();
-  const [activeTab, setActiveTab] = useState<TerminalTab>('sandbox');
+  const [activeTab, setActiveTab] = useState<TerminalTab>('output');
   const [sandboxState, setSandboxState] = useState<SandboxState>('disconnected');
   
   // Output terminal refs (xterm.js for proper terminal rendering)
@@ -420,80 +420,10 @@ export function TerminalPanel({ height, repoId, owner, repo }: TerminalPanelProp
             </button>
           </div>
           
-          <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as TerminalTab)}>
-            <TabsList className="h-7 bg-transparent p-0 gap-0.5">
-              <TabsTrigger 
-                value="sandbox" 
-                className={cn(
-                  "h-7 px-3 text-xs font-medium rounded-md transition-all",
-                  "data-[state=active]:bg-zinc-800/80 data-[state=active]:text-zinc-100",
-                  "data-[state=inactive]:text-zinc-500 data-[state=inactive]:hover:text-zinc-300",
-                  "disabled:opacity-40"
-                )}
-                disabled={!sandboxAvailable}
-              >
-                <Circle className={cn(
-                  "h-2 w-2 mr-1.5 transition-colors",
-                  sandboxAvailable ? "fill-emerald-500 text-emerald-500" : "fill-zinc-600 text-zinc-600"
-                )} />
-                Sandbox
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-
-          {/* Status badges */}
-          {activeTab === 'sandbox' && (
-            <div className="flex items-center">
-              {sandboxState === 'connecting' && (
-                <Badge variant="outline" className="h-5 text-[10px] font-medium bg-amber-500/10 text-amber-400 border-amber-500/30 shadow-sm shadow-amber-500/10">
-                  <Loader2 className="h-2.5 w-2.5 mr-1 animate-spin" />
-                  Connecting
-                </Badge>
-              )}
-              {sandboxState === 'connected' && (
-                <Badge variant="outline" className="h-5 text-[10px] font-medium bg-emerald-500/10 text-emerald-400 border-emerald-500/30 shadow-sm shadow-emerald-500/10">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse" />
-                  Connected
-                </Badge>
-              )}
-              {sandboxState === 'error' && (
-                <Badge variant="outline" className="h-5 text-[10px] font-medium bg-red-500/10 text-red-400 border-red-500/30 shadow-sm shadow-red-500/10">
-                  <AlertCircle className="h-2.5 w-2.5 mr-1" />
-                  Error
-                </Badge>
-              )}
-            </div>
-          )}
         </div>
 
         {/* Right side - Actions */}
         <div className="flex items-center gap-0.5">
-          {activeTab === 'sandbox' && sandboxAvailable && (
-            <>
-              {sandboxState === 'disconnected' || sandboxState === 'error' ? (
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  className="h-6 w-6 text-zinc-500 hover:text-emerald-400 hover:bg-emerald-500/10 transition-all"
-                  onClick={connectToSandbox}
-                  title="Connect to sandbox"
-                >
-                  <Power className="h-3.5 w-3.5" />
-                </Button>
-              ) : (
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  className="h-6 w-6 text-zinc-500 hover:text-red-400 hover:bg-red-500/10 transition-all"
-                  onClick={disconnectFromSandbox}
-                  disabled={sandboxState === 'connecting'}
-                  title="Disconnect from sandbox"
-                >
-                  <PowerOff className="h-3.5 w-3.5" />
-                </Button>
-              )}
-            </>
-          )}
           <Button
             variant="ghost"
             size="icon-sm"
@@ -508,37 +438,10 @@ export function TerminalPanel({ height, repoId, owner, repo }: TerminalPanelProp
 
       {/* Terminal Content Area */}
       <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-        {!sandboxAvailable ? (
-          <div className="terminal-empty-state p-6 flex flex-col items-center justify-center h-full text-center">
-            <div className="w-12 h-12 rounded-xl bg-zinc-800/50 flex items-center justify-center mb-4">
-              <Terminal className="h-6 w-6 text-zinc-500" />
-            </div>
-            {sandboxStatus?.provider === 'docker' && sandboxStatus?.dockerAvailable === false ? (
-              <>
-                <p className="text-amber-400 font-medium text-sm mb-2">Docker Not Available</p>
-                <p className="text-zinc-500 text-xs max-w-sm">
-                  Docker sandbox is configured but Docker is not running.
-                  Install Docker or switch to E2B/Daytona provider in{' '}
-                  <span className="text-zinc-300">Settings → Sandbox</span>.
-                </p>
-              </>
-            ) : (
-              <>
-                <p className="text-zinc-300 font-medium text-sm mb-2">Sandbox Not Configured</p>
-                <p className="text-zinc-500 text-xs max-w-sm">
-                  Enable sandbox execution in{' '}
-                  <span className="text-emerald-400">Settings → Sandbox</span>{' '}
-                  to run commands in an isolated environment.
-                </p>
-              </>
-            )}
-          </div>
-        ) : (
-          <div 
-            ref={sandboxContainerRef} 
-            className="terminal-content flex-1 min-h-0"
-          />
-        )}
+        <div 
+          ref={outputContainerRef} 
+          className="terminal-content flex-1 min-h-0"
+        />
       </div>
     </div>
   );

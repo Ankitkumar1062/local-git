@@ -10,11 +10,11 @@ import { getApiClient, ApiError } from '../../api/client.js';
 import { parseRemoteUrl } from '../../core/protocol/index.js';
 
 export const openPullRequestTool = createTool({
-  id: 'wit-open-pull-request',
+  id: 'myvcs-open-pull-request',
   description: `Create a pull request from the current branch to a target branch.
 Use this after making and committing changes to open a PR for review.
 Requires the repository to have a remote origin configured.
-The PR will be created on the wit server (requires authentication).`,
+The PR will be created on the myvcs server (requires authentication).`,
   inputSchema: z.object({
     title: z.string().describe('Title for the pull request'),
     body: z.string().optional().describe('Description/body of the pull request (supports markdown)'),
@@ -54,7 +54,7 @@ The PR will be created on the wit server (requires authentication).`,
       if (!remote) {
         return {
           success: false,
-          message: 'No remote origin configured. Add a remote with: wit remote add origin <url>',
+          message: 'No remote origin configured. Add a remote with: myvcs remote add origin <url>',
         };
       }
 
@@ -110,7 +110,7 @@ The PR will be created on the wit server (requires authentication).`,
         if (error.status === 0) {
           return {
             success: false,
-            message: 'Cannot connect to wit server. Is it running? Start with: wit serve',
+            message: 'Cannot connect to myvcs server. Is it running? Start with: myvcs serve',
           };
         }
         return {

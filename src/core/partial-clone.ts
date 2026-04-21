@@ -227,8 +227,8 @@ export class PartialCloneManager {
         `Object ${hash} not available locally or remotely`,
         ErrorCode.OBJECT_NOT_FOUND,
         [
-          'wit fetch    # Fetch objects from remote',
-          'wit clone --no-filter    # Clone without filtering',
+          'myvcs fetch    # Fetch objects from remote',
+          'myvcs clone --no-filter    # Clone without filtering',
         ]
       );
     }
@@ -237,7 +237,7 @@ export class PartialCloneManager {
     throw new TsgitError(
       `Object ${hash} requires fetching from remote`,
       ErrorCode.OBJECT_NOT_FOUND,
-      [`wit fetch-object ${hash}    # Fetch this specific object`]
+      [`myvcs fetch-object ${hash}    # Fetch this specific object`]
     );
   }
 

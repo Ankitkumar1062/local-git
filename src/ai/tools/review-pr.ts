@@ -43,7 +43,7 @@ const SEVERITY_ICONS = {
 export type ReviewCategory = 'bug' | 'security' | 'performance' | 'style' | 'maintainability';
 
 export const reviewPRTool = createTool({
-  id: 'wit-review-pr',
+  id: 'myvcs-review-pr',
   description: 'Perform an AI-powered code review on a pull request. Analyzes diff for bugs, security issues, performance problems, and code quality. Returns detailed feedback with file paths, line numbers, and suggested fixes.',
   inputSchema: z.object({
     diff: z.string().describe('The diff content to review'),

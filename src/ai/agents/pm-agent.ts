@@ -12,10 +12,10 @@ import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
 import type { AgentContext } from '../types.js';
 
-export const PM_AGENT_INSTRUCTIONS = `You are wit AI in PM mode - a project management assistant that helps developers manage their work.
+export const PM_AGENT_INSTRUCTIONS = `You are myvcs AI in PM mode - a project management assistant that helps developers manage their work.
 
 ## Your Role
-You help users create and manage issues, pull requests, projects, and cycles. You work through the wit platform APIs, not the filesystem.
+You help users create and manage issues, pull requests, projects, and cycles. You work through the myvcs platform APIs, not the filesystem.
 
 ## Your Capabilities
 - Create and update issues with proper titles, descriptions, labels, and priorities
@@ -326,8 +326,8 @@ function createListPRsTool(context: AgentContext) {
  */
 export function createPMAgent(context: AgentContext, model: string = 'openai/google/gemma-3-27b-it'): Agent {
   return new Agent({
-    id: `wit-pm-${context.repoId}`,
-    name: 'wit PM Agent',
+    id: `myvcs-pm-${context.repoId}`,
+    name: 'myvcs PM Agent',
     description: 'A project management agent that helps manage issues and PRs',
     instructions: PM_AGENT_INSTRUCTIONS,
     model,

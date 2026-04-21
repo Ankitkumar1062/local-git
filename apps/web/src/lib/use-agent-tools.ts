@@ -67,7 +67,7 @@ export function useAgentTools() {
       const createdMatch = content.match(/Created file:\s*([^\s\n]+)/i);
       if (createdMatch) {
         processAgentToolResult({
-          toolName: 'wit-write-file',
+          toolName: 'myvcs-write-file',
           success: true,
           filePath: createdMatch[1],
           message: 'File created by agent',
@@ -78,7 +78,7 @@ export function useAgentTools() {
       const updatedMatch = content.match(/Updated file:\s*([^\s\n]+)/i);
       if (updatedMatch) {
         processAgentToolResult({
-          toolName: 'wit-edit-file',
+          toolName: 'myvcs-edit-file',
           success: true,
           filePath: updatedMatch[1],
           message: 'File updated by agent',
@@ -89,7 +89,7 @@ export function useAgentTools() {
       const commandMatch = content.match(/Executed:\s*`([^`]+)`/i);
       if (commandMatch) {
         processAgentToolResult({
-          toolName: 'wit-run-command',
+          toolName: 'myvcs-run-command',
           success: true,
           command: commandMatch[1],
         });

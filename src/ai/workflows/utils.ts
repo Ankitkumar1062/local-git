@@ -1,7 +1,7 @@
 /**
  * Workflow Utilities
  * 
- * Helper functions for wit workflows that use wit's native APIs
+ * Helper functions for myvcs workflows that use myvcs's native APIs
  * instead of shelling out to git.
  */
 
@@ -11,7 +11,7 @@ import { exists, readFileText, writeFile, mkdirp, walkDir } from '../../utils/fs
 import * as path from 'path';
 
 /**
- * Check if a path is a bare repository (has objects/ directly, not .wit/objects)
+ * Check if a path is a bare repository (has objects/ directly, not .myvcs/objects)
  */
 function isBareRepo(repoPath: string): boolean {
   return exists(path.join(repoPath, 'objects')) && exists(path.join(repoPath, 'refs'));
@@ -79,7 +79,7 @@ export interface CommitDiff {
 }
 
 /**
- * Get the diff between two commits using wit's native APIs
+ * Get the diff between two commits using myvcs's native APIs
  */
 export function getCommitDiff(repoPath: string, baseSha: string, headSha: string): CommitDiff {
   const repo = Repository.find(repoPath);
@@ -175,7 +175,7 @@ function getTreeAtCommit(repo: Repository, commitSha: string): Map<string, strin
     const commit = repo.objects.readCommit(commitSha);
     flattenTree(repo, commit.treeHash, '', result);
   } catch (error) {
-    console.error(`[wit] Failed to read commit ${commitSha}:`, error);
+    console.error(`[myvcs] Failed to read commit ${commitSha}:`, error);
   }
   
   return result;
@@ -200,7 +200,7 @@ function flattenTree(repo: Repository, treeHash: string, prefix: string, result:
       }
     }
   } catch (error) {
-    console.error(`[wit] Failed to read tree ${treeHash}:`, error);
+    console.error(`[myvcs] Failed to read tree ${treeHash}:`, error);
   }
 }
 
@@ -212,7 +212,7 @@ function getFileContent(repo: Repository, blobHash: string): string {
     const blob = repo.objects.readBlob(blobHash);
     return blob.content.toString('utf-8');
   } catch (error) {
-    console.error(`[wit] Failed to read blob ${blobHash}:`, error);
+    console.error(`[myvcs] Failed to read blob ${blobHash}:`, error);
     return '';
   }
 }
@@ -249,7 +249,7 @@ export async function findFilesInRepo(repoPath: string, pattern?: RegExp): Promi
   } else {
     // Working directory - walk filesystem
     const repo = Repository.find(repoPath);
-    files = walkDir(repo.workDir, ['.wit', '.git', 'node_modules']);
+    files = walkDir(repo.workDir, ['.myvcs', '.git', 'node_modules']);
   }
   
   if (pattern) {
@@ -311,7 +311,7 @@ export async function searchInRepo(
 }
 
 /**
- * Get repository status using wit APIs
+ * Get repository status using myvcs APIs
  */
 export function getRepoStatus(repoPath: string): {
   staged: string[];
@@ -331,7 +331,7 @@ export function getRepoStatus(repoPath: string): {
 }
 
 /**
- * Create a branch using wit APIs
+ * Create a branch using myvcs APIs
  */
 export function createBranch(repoPath: string, branchName: string, checkout: boolean = true): {
   success: boolean;
@@ -362,7 +362,7 @@ export function createBranch(repoPath: string, branchName: string, checkout: boo
 }
 
 /**
- * Stage files using wit APIs
+ * Stage files using myvcs APIs
  */
 export function stageFiles(repoPath: string, files: string[]): {
   success: boolean;
@@ -392,7 +392,7 @@ export function stageFiles(repoPath: string, files: string[]): {
 }
 
 /**
- * Create a commit using wit APIs
+ * Create a commit using myvcs APIs
  */
 export function createCommit(
   repoPath: string,

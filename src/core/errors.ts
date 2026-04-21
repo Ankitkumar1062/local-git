@@ -1,5 +1,5 @@
 /**
- * Enhanced error handling for wit
+ * Enhanced error handling for myvcs
  * Provides structured, actionable error messages
  */
 
@@ -63,7 +63,7 @@ export interface ErrorContext {
 }
 
 /**
- * Main error class for wit
+ * Main error class for myvcs
  * Provides structured errors with suggestions and context
  */
 export class TsgitError extends Error {
@@ -116,8 +116,8 @@ export class TsgitError extends Error {
     if (this.suggestions.length > 0) {
       output += `\n${yellow}hint${reset}:\n`;
       for (const suggestion of this.suggestions) {
-        // Check if suggestion contains a command (has # or starts with wit/git)
-        if (suggestion.includes('#') || suggestion.startsWith('wit ') || suggestion.startsWith('git ')) {
+        // Check if suggestion contains a command (has # or starts with myvcs/git)
+        if (suggestion.includes('#') || suggestion.startsWith('myvcs ') || suggestion.startsWith('git ')) {
           output += `  ${cyan}${suggestion}${reset}\n`;
         } else {
           output += `  ${dim}${suggestion}${reset}\n`;
@@ -198,10 +198,10 @@ function levenshteinDistance(a: string, b: string): number {
 export const Errors = {
   notARepository(path: string): TsgitError {
     return new TsgitError(
-      `Not a wit repository (or any parent up to root): ${path}`,
+      `Not a myvcs repository (or any parent up to root): ${path}`,
       ErrorCode.NOT_A_REPOSITORY,
       [
-        'wit init    # Initialize a new repository here',
+        'myvcs init    # Initialize a new repository here',
         'cd <repo>     # Navigate to an existing repository',
       ],
       { path }
@@ -213,7 +213,7 @@ export const Errors = {
       `Repository already exists at ${path}`,
       ErrorCode.REPOSITORY_EXISTS,
       [
-        'cd .wit && ls    # Explore existing repository',
+        'cd .myvcs && ls    # Explore existing repository',
       ],
       { path }
     );
@@ -224,8 +224,8 @@ export const Errors = {
       `Object not found: ${hash}`,
       ErrorCode.OBJECT_NOT_FOUND,
       [
-        'wit log    # View existing commits',
-        'wit branch # List available branches',
+        'myvcs log    # View existing commits',
+        'myvcs branch # List available branches',
       ],
       { hash }
     );
@@ -236,10 +236,10 @@ export const Errors = {
     const suggestions: string[] = [];
 
     if (similar.length > 0) {
-      suggestions.push(...similar.map(b => `wit checkout ${b}`));
+      suggestions.push(...similar.map(b => `myvcs checkout ${b}`));
     }
-    suggestions.push(`wit checkout -b ${name}    # Create new branch`);
-    suggestions.push('wit branch                 # List all branches');
+    suggestions.push(`myvcs checkout -b ${name}    # Create new branch`);
+    suggestions.push('myvcs branch                 # List all branches');
 
     return new TsgitError(
       `Branch '${name}' not found`,
@@ -254,8 +254,8 @@ export const Errors = {
       `Branch '${name}' already exists`,
       ErrorCode.BRANCH_EXISTS,
       [
-        `wit checkout ${name}    # Switch to existing branch`,
-        `wit branch -d ${name} && wit branch ${name}    # Recreate branch`,
+        `myvcs checkout ${name}    # Switch to existing branch`,
+        `myvcs branch -d ${name} && myvcs branch ${name}    # Recreate branch`,
       ],
       { branch: name }
     );
@@ -266,8 +266,8 @@ export const Errors = {
       `Cannot delete the current branch '${name}'`,
       ErrorCode.CANNOT_DELETE_CURRENT_BRANCH,
       [
-        'wit checkout <other-branch>    # Switch to another branch first',
-        'wit checkout main              # Switch to main branch',
+        'myvcs checkout <other-branch>    # Switch to another branch first',
+        'myvcs checkout main              # Switch to main branch',
       ],
       { branch: name }
     );
@@ -276,7 +276,7 @@ export const Errors = {
   fileNotFound(filePath: string, cwd?: string): TsgitError {
     const suggestions: string[] = [
       'ls                    # Check files in current directory',
-      'wit status            # See tracked and untracked files',
+      'myvcs status            # See tracked and untracked files',
     ];
     
     // Add helpful context about where we looked
@@ -298,8 +298,8 @@ export const Errors = {
       `File '${filePath}' is not in the repository`,
       ErrorCode.FILE_NOT_FOUND,
       [
-        `wit add ${filePath}    # Add file to tracking`,
-        'wit status             # Check repository status',
+        `myvcs add ${filePath}    # Add file to tracking`,
+        'myvcs status             # Check repository status',
       ],
       { path: filePath }
     );
@@ -310,8 +310,8 @@ export const Errors = {
       'Nothing to commit, working tree clean',
       ErrorCode.NOTHING_TO_COMMIT,
       [
-        'wit status    # Check repository status',
-        'wit add <file>    # Stage files first',
+        'myvcs status    # Check repository status',
+        'myvcs add <file>    # Stage files first',
       ]
     );
   },
@@ -325,9 +325,9 @@ export const Errors = {
       `You have uncommitted changes that would be overwritten`,
       ErrorCode.UNCOMMITTED_CHANGES,
       [
-        'wit stash              # Stash your changes',
-        'wit commit -m "WIP"    # Commit your changes',
-        'wit checkout --force   # Discard changes (dangerous)',
+        'myvcs stash              # Stash your changes',
+        'myvcs commit -m "WIP"    # Commit your changes',
+        'myvcs checkout --force   # Discard changes (dangerous)',
       ],
       { files, affectedFiles: fileList }
     );
@@ -338,8 +338,8 @@ export const Errors = {
       'No commits yet in this repository',
       ErrorCode.NO_COMMITS_YET,
       [
-        'wit add .                       # Stage all files',
-        'wit commit -m "Initial commit"  # Create first commit',
+        'myvcs add .                       # Stage all files',
+        'myvcs commit -m "Initial commit"  # Create first commit',
       ]
     );
   },
@@ -352,10 +352,10 @@ export const Errors = {
       `Merge conflict in ${files.length} file(s): ${fileList.join(', ')}${moreCount}`,
       ErrorCode.MERGE_CONFLICT,
       [
-        'wit status              # See conflicting files',
-        'wit diff                # View conflicts',
-        'wit add <file>          # Mark file as resolved after fixing',
-        'wit merge --abort       # Abort the merge',
+        'myvcs status              # See conflicting files',
+        'myvcs diff                # View conflicts',
+        'myvcs add <file>          # Mark file as resolved after fixing',
+        'myvcs merge --abort       # Abort the merge',
       ],
       { files }
     );
@@ -375,8 +375,8 @@ export const Errors = {
       `Path '${path}' is outside the repository scope`,
       ErrorCode.SCOPE_VIOLATION,
       [
-        'wit scope show    # View current scope',
-        'wit scope add <path>    # Add path to scope',
+        'myvcs scope show    # View current scope',
+        'myvcs scope add <path>    # Add path to scope',
       ],
       { path, scope }
     );
@@ -401,8 +401,8 @@ export const Errors = {
       `Authentication failed for '${remote}'`,
       ErrorCode.OPERATION_FAILED,
       [
-        'wit github login        # Login to GitHub',
-        'wit token create <name> # Create a personal access token',
+        'myvcs github login        # Login to GitHub',
+        'myvcs token create <name> # Create a personal access token',
         'Check your credentials are correct',
       ],
       { remote }
@@ -415,8 +415,8 @@ export const Errors = {
     if (availableRemotes && availableRemotes.length > 0) {
       suggestions.push(`Available remotes: ${availableRemotes.join(', ')}`);
     }
-    suggestions.push(`wit remote add ${name} <url>    # Add the remote`);
-    suggestions.push('wit remote -v                   # List all remotes');
+    suggestions.push(`myvcs remote add ${name} <url>    # Add the remote`);
+    suggestions.push('myvcs remote -v                   # List all remotes');
 
     return new TsgitError(
       `Remote '${name}' not found`,
@@ -431,9 +431,9 @@ export const Errors = {
       `Push rejected for '${branch}'${reason ? `: ${reason}` : ''}`,
       ErrorCode.OPERATION_FAILED,
       [
-        'wit pull                # Fetch and integrate remote changes first',
-        'wit push --force        # Force push (overwrites remote, use carefully)',
-        'wit push --force-with-lease  # Safe force push',
+        'myvcs pull                # Fetch and integrate remote changes first',
+        'myvcs push --force        # Force push (overwrites remote, use carefully)',
+        'myvcs push --force-with-lease  # Safe force push',
       ],
       { branch, reason }
     );
@@ -444,11 +444,11 @@ export const Errors = {
       `Pull resulted in merge conflicts`,
       ErrorCode.MERGE_CONFLICT,
       [
-        'wit status              # See conflicting files',
-        'wit diff                # View conflicts',
-        'wit add <file>          # Mark resolved after fixing',
-        'wit commit              # Complete the merge',
-        'wit merge --abort       # Abort and return to previous state',
+        'myvcs status              # See conflicting files',
+        'myvcs diff                # View conflicts',
+        'myvcs add <file>          # Mark resolved after fixing',
+        'myvcs commit              # Complete the merge',
+        'myvcs merge --abort       # Abort and return to previous state',
       ],
       { files }
     );
@@ -461,8 +461,8 @@ export const Errors = {
     if (similar.length > 0) {
       suggestions.push(`Did you mean: ${similar.join(', ')}?`);
     }
-    suggestions.push(`wit tag ${name}    # Create this tag`);
-    suggestions.push('wit tag           # List all tags');
+    suggestions.push(`myvcs tag ${name}    # Create this tag`);
+    suggestions.push('myvcs tag           # List all tags');
 
     return new TsgitError(
       `Tag '${name}' not found`,
@@ -477,8 +477,8 @@ export const Errors = {
       `Tag '${name}' already exists`,
       ErrorCode.TAG_EXISTS,
       [
-        `wit tag -d ${name}    # Delete existing tag`,
-        `wit show ${name}      # View existing tag`,
+        `myvcs tag -d ${name}    # Delete existing tag`,
+        `myvcs show ${name}      # View existing tag`,
       ],
       { tag: name }
     );
@@ -492,9 +492,9 @@ export const Errors = {
       `Your local changes would be overwritten: ${fileList.join(', ')}${moreCount}`,
       ErrorCode.CHECKOUT_CONFLICT,
       [
-        'wit stash              # Stash changes first',
-        'wit commit -m "WIP"    # Commit changes first',
-        'wit checkout --force   # Discard changes (destructive)',
+        'myvcs stash              # Stash changes first',
+        'myvcs commit -m "WIP"    # Commit changes first',
+        'myvcs checkout --force   # Discard changes (destructive)',
       ],
       { files }
     );
@@ -505,8 +505,8 @@ export const Errors = {
       `HEAD is detached at ${commit.slice(0, 8)}`,
       ErrorCode.DETACHED_HEAD,
       [
-        'wit checkout -b <branch>    # Create a branch from here',
-        'wit checkout main           # Return to a branch',
+        'myvcs checkout -b <branch>    # Create a branch from here',
+        'myvcs checkout main           # Return to a branch',
       ],
       { commit }
     );
@@ -518,7 +518,7 @@ export const Errors = {
       ErrorCode.OPERATION_FAILED,
       [
         `rm -rf ${path}              # Remove directory (destructive)`,
-        `wit clone <url> ${path}-new # Use a different name`,
+        `myvcs clone <url> ${path}-new # Use a different name`,
       ],
       { path }
     );
@@ -542,8 +542,8 @@ export const Errors = {
       `PR number required for '${command}'`,
       ErrorCode.INVALID_ARGUMENT,
       [
-        `wit pr ${command} 123    # ${command} PR #123`,
-        'wit pr list             # List all PRs to find the number',
+        `myvcs pr ${command} 123    # ${command} PR #123`,
+        'myvcs pr list             # List all PRs to find the number',
       ]
     );
   },
@@ -551,11 +551,11 @@ export const Errors = {
   prNotOpen(prNumber: number, state: string): TsgitError {
     const suggestions: string[] = [];
     if (state === 'closed') {
-      suggestions.push(`wit pr reopen ${prNumber}    # Reopen the PR first`);
+      suggestions.push(`myvcs pr reopen ${prNumber}    # Reopen the PR first`);
     } else if (state === 'merged') {
       suggestions.push('This PR has already been merged');
     }
-    suggestions.push(`wit pr view ${prNumber}    # View PR details`);
+    suggestions.push(`myvcs pr view ${prNumber}    # View PR details`);
 
     return new TsgitError(
       `PR #${prNumber} is not open (current state: ${state})`,
@@ -568,11 +568,11 @@ export const Errors = {
   // Server connection errors
   serverNotRunning(url?: string): TsgitError {
     return new TsgitError(
-      `Cannot connect to wit server${url ? ` at ${url}` : ''}`,
+      `Cannot connect to myvcs server${url ? ` at ${url}` : ''}`,
       ErrorCode.OPERATION_FAILED,
       [
-        'wit serve              # Start the wit server',
-        'wit up                 # Start wit platform (server + database)',
+        'myvcs serve              # Start the myvcs server',
+        'myvcs up                 # Start myvcs platform (server + database)',
         'Check if the server is running on the expected port',
       ],
       { url }
@@ -583,9 +583,9 @@ export const Errors = {
   invalidBranchName(name: string, reason: string, suggestion?: string): TsgitError {
     const suggestions: string[] = [];
     if (suggestion) {
-      suggestions.push(`Try: wit branch ${suggestion}`);
+      suggestions.push(`Try: myvcs branch ${suggestion}`);
     }
-    suggestions.push('wit branch --help    # See naming rules');
+    suggestions.push('myvcs branch --help    # See naming rules');
 
     return new TsgitError(
       `Branch name '${name}' is invalid: ${reason}`,
@@ -601,8 +601,8 @@ export const Errors = {
       `No merge in progress to ${action}`,
       ErrorCode.OPERATION_FAILED,
       [
-        'wit status    # Check repository status',
-        'wit merge <branch>    # Start a new merge',
+        'myvcs status    # Check repository status',
+        'myvcs merge <branch>    # Start a new merge',
       ]
     );
   },
@@ -616,9 +616,9 @@ export const Errors = {
       ErrorCode.MERGE_CONFLICT,
       [
         `Unresolved: ${fileList}${moreCount}`,
-        'wit merge --conflicts    # View all conflicts',
-        'wit merge --resolve <file>    # Mark file as resolved',
-        'wit merge --abort    # Cancel the merge',
+        'myvcs merge --conflicts    # View all conflicts',
+        'myvcs merge --resolve <file>    # Mark file as resolved',
+        'myvcs merge --abort    # Cancel the merge',
       ],
       { files }
     );
@@ -630,8 +630,8 @@ export const Errors = {
       `No rebase in progress to ${action}`,
       ErrorCode.OPERATION_FAILED,
       [
-        'wit status    # Check repository status',
-        'wit rebase <branch>    # Start a new rebase',
+        'myvcs status    # Check repository status',
+        'myvcs rebase <branch>    # Start a new rebase',
       ]
     );
   },
@@ -642,8 +642,8 @@ export const Errors = {
       'No stash entries found',
       ErrorCode.OPERATION_FAILED,
       [
-        'wit stash list    # List all stashes (empty)',
-        'wit stash         # Create a new stash first',
+        'myvcs stash list    # List all stashes (empty)',
+        'myvcs stash         # Create a new stash first',
       ]
     );
   },
@@ -653,8 +653,8 @@ export const Errors = {
       `Stash '${stashId}' not found`,
       ErrorCode.OPERATION_FAILED,
       [
-        'wit stash list    # List available stashes',
-        'wit stash pop     # Pop the most recent stash',
+        'myvcs stash list    # List available stashes',
+        'myvcs stash pop     # Pop the most recent stash',
       ],
       { stashId }
     );
@@ -668,7 +668,7 @@ export const Errors = {
       [
         'Check that you are in the correct directory',
         'Use a path relative to the repository root',
-        'wit status    # See files in the repository',
+        'myvcs status    # See files in the repository',
       ],
       { path }
     );
@@ -680,7 +680,7 @@ export const Errors = {
       ErrorCode.FILE_NOT_FOUND,
       [
         'ls                    # Check files in current directory',
-        'wit status            # See tracked and untracked files',
+        'myvcs status            # See tracked and untracked files',
         'Check spelling and path case sensitivity',
       ],
       { pathspec }

@@ -240,7 +240,7 @@ export const useShortcutStore = create<ShortcutStoreState>()(
       },
     }),
     {
-      name: 'wit-keyboard-shortcuts',
+      name: 'myvcs-keyboard-shortcuts',
       partialize: (state) => ({
         customBindings: state.customBindings,
         disabledShortcuts: state.disabledShortcuts,

@@ -3,19 +3,19 @@
  * Update remote refs along with associated objects
  * 
  * Usage:
- *   wit push                      # Push current branch to origin
- *   wit push <remote>             # Push to specific remote
- *   wit push <remote> <branch>    # Push specific branch
- *   wit push -u <remote> <branch> # Push and set upstream
- *   wit push --force              # Force push
- *   wit push --force-with-lease   # Safe force push
- *   wit push --tags               # Push all tags
- *   wit push --delete <branch>    # Delete remote branch
+ *   myvcs push                      # Push current branch to origin
+ *   myvcs push <remote>             # Push to specific remote
+ *   myvcs push <remote> <branch>    # Push specific branch
+ *   myvcs push -u <remote> <branch> # Push and set upstream
+ *   myvcs push --force              # Force push
+ *   myvcs push --force-with-lease   # Safe force push
+ *   myvcs push --tags               # Push all tags
+ *   myvcs push --delete <branch>    # Delete remote branch
  * 
  * Dual-push (push to multiple remotes):
- *   wit push --also <remote>      # Push to origin AND specified remote
- *   wit push --all-remotes        # Push to ALL configured remotes
- *   wit push origin --also github # Push to both origin and github remotes
+ *   myvcs push --also <remote>      # Push to origin AND specified remote
+ *   myvcs push --all-remotes        # Push to ALL configured remotes
+ *   myvcs push origin --also github # Push to both origin and github remotes
  */
 
 import * as path from 'path';
@@ -128,7 +128,7 @@ function pushToLocal(
   };
 
   // Get destination repository
-  const destGitDir = path.join(remoteUrl, '.wit');
+  const destGitDir = path.join(remoteUrl, '.myvcs');
 
   if (!exists(destGitDir)) {
     throw new TsgitError(
@@ -669,7 +669,7 @@ function pushTags(
     return results;
   }
 
-  const destGitDir = path.join(remoteUrl, '.wit');
+  const destGitDir = path.join(remoteUrl, '.myvcs');
   const destRepo = new Repository(remoteUrl);
 
   const localTags = repo.refs.listTags();
@@ -722,8 +722,8 @@ async function pushToSingleRemoteAsync(
       `No such remote: '${remoteName}'`,
       ErrorCode.REF_NOT_FOUND,
       [
-        'wit remote add origin <url>    # Add origin remote',
-        'wit remote -v                  # List configured remotes',
+        'myvcs remote add origin <url>    # Add origin remote',
+        'myvcs remote -v                  # List configured remotes',
       ]
     );
   }
@@ -743,7 +743,7 @@ async function pushToSingleRemoteAsync(
       throw new TsgitError(
         'You must specify a branch to delete',
         ErrorCode.INVALID_ARGUMENT,
-        ['wit push --delete origin <branch>']
+        ['myvcs push --delete origin <branch>']
       );
     }
     refs.push({ local: branchName, remote: branchName });
@@ -801,8 +801,8 @@ export async function pushAsync(
       'You are not currently on a branch',
       ErrorCode.DETACHED_HEAD,
       [
-        'wit checkout <branch>    # Switch to a branch first',
-        'wit push origin <branch> # Or specify a branch to push',
+        'myvcs checkout <branch>    # Switch to a branch first',
+        'myvcs push origin <branch> # Or specify a branch to push',
       ]
     );
   }
@@ -843,8 +843,8 @@ export async function pushMultiAsync(
       'You are not currently on a branch',
       ErrorCode.DETACHED_HEAD,
       [
-        'wit checkout <branch>    # Switch to a branch first',
-        'wit push origin <branch> # Or specify a branch to push',
+        'myvcs checkout <branch>    # Switch to a branch first',
+        'myvcs push origin <branch> # Or specify a branch to push',
       ]
     );
   }
@@ -970,7 +970,7 @@ function formatPushResults(result: PushResult, verbose: boolean): void {
     console.log(colors.red('error: ') + 'failed to push some refs');
     console.log(colors.dim('hint: Updates were rejected because the tip of your current branch is behind'));
     console.log(colors.dim('hint: its remote counterpart. Integrate the remote changes (e.g.'));
-    console.log(colors.dim('hint: \'wit pull ...\') before pushing again.'));
+    console.log(colors.dim('hint: \'myvcs pull ...\') before pushing again.'));
   }
 }
 
@@ -1010,7 +1010,7 @@ async function handlePushAsync(args: string[]): Promise<void> {
         throw new TsgitError(
           '--also requires a remote name',
           ErrorCode.INVALID_ARGUMENT,
-          ['Usage: wit push --also <remote>', 'Example: wit push origin main --also github']
+          ['Usage: myvcs push --also <remote>', 'Example: myvcs push origin main --also github']
         );
       }
     } else if (arg === '--all-remotes') {

@@ -3,12 +3,12 @@
  * Apply changes from specific commits to the current branch
  * 
  * Usage:
- *   wit cherry-pick <commit>           Apply a single commit
- *   wit cherry-pick <c1> <c2>          Apply multiple commits
- *   wit cherry-pick --continue         Continue after conflict resolution
- *   wit cherry-pick --abort            Abort the operation
- *   wit cherry-pick --skip             Skip current commit
- *   wit cherry-pick -n <commit>        Apply without committing
+ *   myvcs cherry-pick <commit>           Apply a single commit
+ *   myvcs cherry-pick <c1> <c2>          Apply multiple commits
+ *   myvcs cherry-pick --continue         Continue after conflict resolution
+ *   myvcs cherry-pick --abort            Abort the operation
+ *   myvcs cherry-pick --skip             Skip current commit
+ *   myvcs cherry-pick -n <commit>        Apply without committing
  */
 
 import * as path from 'path';
@@ -113,8 +113,8 @@ export class CherryPickManager {
         'A cherry-pick is already in progress',
         ErrorCode.OPERATION_FAILED,
         [
-          'wit cherry-pick --continue    # Continue after resolving conflicts',
-          'wit cherry-pick --abort       # Abort the cherry-pick',
+          'myvcs cherry-pick --continue    # Continue after resolving conflicts',
+          'myvcs cherry-pick --abort       # Abort the cherry-pick',
         ]
       );
     }
@@ -127,7 +127,7 @@ export class CherryPickManager {
         throw new TsgitError(
           `bad revision '${ref}'`,
           ErrorCode.REF_NOT_FOUND,
-          ['wit log    # View existing commits']
+          ['myvcs log    # View existing commits']
         );
       }
       commits.push(hash);
@@ -137,7 +137,7 @@ export class CherryPickManager {
       throw new TsgitError(
         'No commits specified',
         ErrorCode.INVALID_ARGUMENT,
-        ['wit cherry-pick <commit>    # Specify a commit to cherry-pick']
+        ['myvcs cherry-pick <commit>    # Specify a commit to cherry-pick']
       );
     }
 
@@ -148,8 +148,8 @@ export class CherryPickManager {
         'You have uncommitted changes',
         ErrorCode.UNCOMMITTED_CHANGES,
         [
-          'wit stash              # Stash your changes',
-          'wit commit -m "WIP"    # Commit your changes first',
+          'myvcs stash              # Stash your changes',
+          'myvcs commit -m "WIP"    # Commit your changes first',
         ]
       );
     }
@@ -711,7 +711,7 @@ export function handleCherryPick(args: string[]): void {
             }
           }
           console.error('\nResolve conflicts and run:');
-          console.error('  wit cherry-pick --continue');
+          console.error('  myvcs cherry-pick --continue');
           process.exit(1);
         }
         break;
@@ -741,7 +741,7 @@ export function handleCherryPick(args: string[]): void {
       default: {
         if (commits.length === 0) {
           console.error('error: No commit specified');
-          console.error('\nUsage: wit cherry-pick [options] <commit>...');
+          console.error('\nUsage: myvcs cherry-pick [options] <commit>...');
           console.error('\nOptions:');
           console.error('  --continue        Continue after conflict resolution');
           console.error('  --abort           Abort the operation');
@@ -766,9 +766,9 @@ export function handleCherryPick(args: string[]): void {
             }
           }
           console.error('\nResolve conflicts and run:');
-          console.error('  wit cherry-pick --continue');
+          console.error('  myvcs cherry-pick --continue');
           console.error('\nOr abort with:');
-          console.error('  wit cherry-pick --abort');
+          console.error('  myvcs cherry-pick --abort');
           process.exit(1);
         }
         break;

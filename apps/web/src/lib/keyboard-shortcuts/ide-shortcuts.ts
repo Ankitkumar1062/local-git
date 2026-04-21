@@ -1,7 +1,7 @@
 /**
  * Comprehensive IDE keyboard shortcuts configuration
  * 
- * This defines all the keyboard shortcuts available in wit's IDE mode
+ * This defines all the keyboard shortcuts available in myvcs's IDE mode
  * for a keyboard-first, ultra-fast coding experience.
  */
 

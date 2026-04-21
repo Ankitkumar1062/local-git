@@ -11,7 +11,7 @@ import { Repository } from '../../core/repository.js';
 import { exists, isDirectory, readDir, loadIgnorePatterns } from '../../utils/fs.js';
 
 export const listDirectoryTool = createTool({
-  id: 'wit-list-directory',
+  id: 'myvcs-list-directory',
   description: `List files and directories in the repository.
 Use this to explore the codebase structure and find relevant files.
 By default, respects .gitignore patterns.
@@ -222,8 +222,8 @@ function shouldIgnore(relativePath: string, patterns: string[]): boolean {
     }
   }
 
-  // Always ignore .wit and .git
-  if (pathParts.includes('.wit') || pathParts.includes('.git')) {
+  // Always ignore .myvcs and .git
+  if (pathParts.includes('.myvcs') || pathParts.includes('.git')) {
     return true;
   }
 

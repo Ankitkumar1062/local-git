@@ -3,12 +3,12 @@
  * Parse revision (or other objects) and output SHA-256/SHA-1 hashes
  * 
  * Usage:
- * - wit rev-parse HEAD             # Output: commit hash
- * - wit rev-parse HEAD~3           # 3 commits back
- * - wit rev-parse --short HEAD     # Short hash
- * - wit rev-parse --verify <ref>   # Verify ref exists (silent if not)
- * - wit rev-parse --git-dir        # Output: .wit
- * - wit rev-parse --show-toplevel  # Output: repo root
+ * - myvcs rev-parse HEAD             # Output: commit hash
+ * - myvcs rev-parse HEAD~3           # 3 commits back
+ * - myvcs rev-parse --short HEAD     # Short hash
+ * - myvcs rev-parse --verify <ref>   # Verify ref exists (silent if not)
+ * - myvcs rev-parse --git-dir        # Output: .myvcs
+ * - myvcs rev-parse --show-toplevel  # Output: repo root
  * 
  * This is a plumbing command for scripting and advanced usage.
  */

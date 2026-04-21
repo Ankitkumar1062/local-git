@@ -1,7 +1,7 @@
 /**
  * Public REST API v1
  *
- * This module exports the official public REST API for wit.
+ * This module exports the official public REST API for myvcs.
  * All endpoints are versioned under /api/v1/ and follow REST conventions.
  *
  * Authentication:
@@ -36,9 +36,9 @@ export function createPublicApiV1(): Hono {
   // API root - returns API information
   app.get('/', (c) => {
     return c.json({
-      name: 'Wit API',
+      name: 'myvcs API',
       version: 'v1',
-      documentation_url: 'https://docs.wit.dev/api',
+      documentation_url: 'https://docs.myvcs.dev/api',
       endpoints: {
         user: '/api/v1/user',
         users: '/api/v1/users/{username}',

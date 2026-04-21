@@ -3,11 +3,11 @@
  * Create commits that undo the changes from previous commits
  * 
  * Usage:
- *   wit revert <commit>           Revert a single commit
- *   wit revert <c1> <c2>          Revert multiple commits
- *   wit revert --no-commit <c>    Revert without committing
- *   wit revert --continue         Continue after conflict resolution
- *   wit revert --abort            Abort the operation
+ *   myvcs revert <commit>           Revert a single commit
+ *   myvcs revert <c1> <c2>          Revert multiple commits
+ *   myvcs revert --no-commit <c>    Revert without committing
+ *   myvcs revert --continue         Continue after conflict resolution
+ *   myvcs revert --abort            Abort the operation
  */
 
 import * as path from 'path';
@@ -114,8 +114,8 @@ export class RevertManager {
         'A revert is already in progress',
         ErrorCode.OPERATION_FAILED,
         [
-          'wit revert --continue    # Continue after resolving conflicts',
-          'wit revert --abort        # Abort the revert',
+          'myvcs revert --continue    # Continue after resolving conflicts',
+          'myvcs revert --abort        # Abort the revert',
         ]
       );
     }
@@ -128,7 +128,7 @@ export class RevertManager {
         throw new TsgitError(
           `bad revision '${ref}'`,
           ErrorCode.REF_NOT_FOUND,
-          ['wit log    # View existing commits']
+          ['myvcs log    # View existing commits']
         );
       }
       commits.push(hash);
@@ -138,7 +138,7 @@ export class RevertManager {
       throw new TsgitError(
         'No commits specified',
         ErrorCode.INVALID_ARGUMENT,
-        ['wit revert <commit>    # Specify a commit to revert']
+        ['myvcs revert <commit>    # Specify a commit to revert']
       );
     }
 
@@ -150,9 +150,9 @@ export class RevertManager {
           'You have uncommitted changes',
           ErrorCode.UNCOMMITTED_CHANGES,
           [
-            'wit stash              # Stash your changes',
-            'wit commit -m "WIP"    # Commit your changes first',
-            'wit revert -n <commit> # Revert without committing',
+            'myvcs stash              # Stash your changes',
+            'myvcs commit -m "WIP"    # Commit your changes first',
+            'myvcs revert -n <commit> # Revert without committing',
           ]
         );
       }
@@ -222,8 +222,8 @@ export class RevertManager {
           `Commit ${commitHash.slice(0, 8)} is a merge commit. Use -m to specify the parent.`,
           ErrorCode.INVALID_ARGUMENT,
           [
-            'wit revert -m 1 <commit>    # Use first parent',
-            'wit revert -m 2 <commit>    # Use second parent',
+            'myvcs revert -m 1 <commit>    # Use first parent',
+            'myvcs revert -m 2 <commit>    # Use second parent',
           ]
         );
       }
@@ -746,7 +746,7 @@ export function handleRevert(args: string[]): void {
             }
           }
           console.error('\nResolve conflicts and run:');
-          console.error('  wit revert --continue');
+          console.error('  myvcs revert --continue');
           process.exit(1);
         }
         break;
@@ -776,7 +776,7 @@ export function handleRevert(args: string[]): void {
       default: {
         if (commits.length === 0) {
           console.error('error: No commit specified');
-          console.error('\nUsage: wit revert [options] <commit>...');
+          console.error('\nUsage: myvcs revert [options] <commit>...');
           console.error('\nOptions:');
           console.error('  --continue           Continue after conflict resolution');
           console.error('  --abort              Abort the operation');
@@ -785,9 +785,9 @@ export function handleRevert(args: string[]): void {
           console.error('  -m, --mainline <n>   Parent number for merge commits');
           console.error('  -s, --signoff        Add signed-off-by line');
           console.error('\nExamples:');
-          console.error('  wit revert abc123              # Revert commit abc123');
-          console.error('  wit revert -n abc123           # Revert without committing');
-          console.error('  wit revert -m 1 <merge>        # Revert merge using first parent');
+          console.error('  myvcs revert abc123              # Revert commit abc123');
+          console.error('  myvcs revert -n abc123           # Revert without committing');
+          console.error('  myvcs revert -m 1 <merge>        # Revert merge using first parent');
           process.exit(1);
         }
 
@@ -795,7 +795,7 @@ export function handleRevert(args: string[]): void {
         if (result.success) {
           if (options.noCommit) {
             console.log(colors.green('✓') + ' Changes applied to working directory');
-            console.log(colors.dim('  Use `wit commit` to commit the reverted changes'));
+            console.log(colors.dim('  Use `myvcs commit` to commit the reverted changes'));
           } else {
             console.log(colors.green('✓') + ` Revert completed: ${result.commits.length} commit(s) created`);
             for (const hash of result.commits) {
@@ -811,9 +811,9 @@ export function handleRevert(args: string[]): void {
             }
           }
           console.error('\nResolve conflicts and run:');
-          console.error('  wit revert --continue');
+          console.error('  myvcs revert --continue');
           console.error('\nOr abort with:');
-          console.error('  wit revert --abort');
+          console.error('  myvcs revert --abort');
           process.exit(1);
         }
         break;

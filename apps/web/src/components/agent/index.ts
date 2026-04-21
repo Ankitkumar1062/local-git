@@ -1,4 +1,4 @@
-// Agent components for wit IDE
+// Agent components for myvcs IDE
 export { AgentPanel } from './agent-panel';
 export { AgentPlanVisualization, useAgentPlan, type AgentPlan, type PlanStep } from './agent-plan';
 export { SmartChatInput } from './smart-chat-input';

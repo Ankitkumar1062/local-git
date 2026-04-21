@@ -81,10 +81,10 @@ function getEncryptionKey(): Buffer {
       throw new Error('ENCRYPTION_KEY or BETTER_AUTH_SECRET is required in production');
     }
     console.warn('WARNING: Using default encryption key. Set ENCRYPTION_KEY in production.');
-    return scryptSync('dev-only-insecure-key', 'wit-sandbox-keys-salt', KEY_LENGTH);
+    return scryptSync('dev-only-insecure-key', 'myvcs-sandbox-keys-salt', KEY_LENGTH);
   }
 
-  return scryptSync(secret, 'wit-sandbox-keys-salt', KEY_LENGTH);
+  return scryptSync(secret, 'myvcs-sandbox-keys-salt', KEY_LENGTH);
 }
 
 /**
@@ -149,7 +149,7 @@ export function getDefaultConfig(repoId: string, userId: string): Omit<SandboxCo
     e2bTemplateId: null,
     daytonaSnapshot: null,
     daytonaAutoStop: 15,
-    dockerImage: 'wit-sandbox:latest',
+    dockerImage: 'myvcs-sandbox:latest',
     vercelProjectId: null,
     vercelTeamId: null,
     vercelRuntime: 'node22',

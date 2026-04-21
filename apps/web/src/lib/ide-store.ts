@@ -190,12 +190,12 @@ export const useIDEStore = create<IDEState>()(
       processAgentToolResult: (result) => {
         const { openOrUpdateFile, addPendingChange, addTerminalOutput, setShowTerminal, onFileTreeRefreshNeeded } = get();
 
-        // Normalize tool names (handle both wit-* and camelCase variations)
-        const isWriteTool = ['wit-write-file', 'writeFile', 'write-file'].includes(result.toolName);
-        const isEditTool = ['wit-edit-file', 'editFile', 'edit-file'].includes(result.toolName);
-        const isDeleteTool = ['wit-delete-file', 'deleteFile', 'delete-file'].includes(result.toolName);
-        const isReadTool = ['wit-read-file', 'readFile', 'read-file'].includes(result.toolName);
-        const isCommandTool = ['wit-run-command', 'runCommand', 'run-command'].includes(result.toolName);
+        // Normalize tool names (handle both myvcs-* and camelCase variations)
+        const isWriteTool = ['myvcs-write-file', 'writeFile', 'write-file'].includes(result.toolName);
+        const isEditTool = ['myvcs-edit-file', 'editFile', 'edit-file'].includes(result.toolName);
+        const isDeleteTool = ['myvcs-delete-file', 'deleteFile', 'delete-file'].includes(result.toolName);
+        const isReadTool = ['myvcs-read-file', 'readFile', 'read-file'].includes(result.toolName);
+        const isCommandTool = ['myvcs-run-command', 'runCommand', 'run-command'].includes(result.toolName);
 
         // Handle file write/edit tools
         if ((isWriteTool || isEditTool) && result.success && result.filePath && result.content) {
@@ -317,7 +317,7 @@ export const useIDEStore = create<IDEState>()(
       setShowFileTree: (show) => set({ showFileTree: show }),
     }),
     {
-      name: 'wit-ide-store',
+      name: 'myvcs-ide-store',
       partialize: (state) => ({
         isIDEMode: state.isIDEMode,
         sidebarWidth: state.sidebarWidth,

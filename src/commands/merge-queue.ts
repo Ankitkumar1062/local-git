@@ -4,11 +4,11 @@
  * Manage the merge queue from the command line.
  *
  * Usage:
- *   wit merge-queue add [<pr-number>]     Add a PR to the merge queue
- *   wit merge-queue remove [<pr-number>]  Remove a PR from the queue
- *   wit merge-queue status                Show queue status
- *   wit merge-queue list                  List PRs in the queue
- *   wit merge-queue config                Configure merge queue settings
+ *   myvcs merge-queue add [<pr-number>]     Add a PR to the merge queue
+ *   myvcs merge-queue remove [<pr-number>]  Remove a PR from the queue
+ *   myvcs merge-queue status                Show queue status
+ *   myvcs merge-queue list                  List PRs in the queue
+ *   myvcs merge-queue config                Configure merge queue settings
  */
 
 import { getApiClient, ApiError } from '../api/client';
@@ -18,9 +18,9 @@ import { TsgitError, ErrorCode } from '../core/errors';
 import { colors } from '../utils/colors';
 
 export const MERGE_QUEUE_HELP = `
-wit merge-queue - Manage the merge queue
+myvcs merge-queue - Manage the merge queue
 
-Usage: wit merge-queue <command> [options]
+Usage: myvcs merge-queue <command> [options]
 
 Commands:
   add [<pr>]        Add a PR to the merge queue (defaults to current branch's PR)
@@ -39,15 +39,15 @@ Options:
   --json            Output in JSON format
 
 Examples:
-  wit merge-queue add                Add current branch's PR to queue
-  wit merge-queue add 123            Add PR #123 to queue
-  wit merge-queue add 123 -p 50      Add PR #123 with priority 50
-  wit merge-queue remove 123         Remove PR #123 from queue
-  wit merge-queue status             Show current PR's queue position
-  wit merge-queue list               List all queued PRs
-  wit merge-queue stats              Show queue statistics
-  wit merge-queue config --strategy adaptive    Set merge strategy
-  wit merge-queue enable             Enable merge queue for main
+  myvcs merge-queue add                Add current branch's PR to queue
+  myvcs merge-queue add 123            Add PR #123 to queue
+  myvcs merge-queue add 123 -p 50      Add PR #123 with priority 50
+  myvcs merge-queue remove 123         Remove PR #123 from queue
+  myvcs merge-queue status             Show current PR's queue position
+  myvcs merge-queue list               List all queued PRs
+  myvcs merge-queue stats              Show queue statistics
+  myvcs merge-queue config --strategy adaptive    Set merge strategy
+  myvcs merge-queue enable             Enable merge queue for main
 `;
 
 /**
@@ -89,7 +89,7 @@ function getRemoteUrl(repo: Repository): string {
       'No remote origin configured',
       ErrorCode.OPERATION_FAILED,
       [
-        'Add a remote with: wit remote add origin <url>',
+        'Add a remote with: myvcs remote add origin <url>',
         'Or clone from a remote repository',
       ]
     );
@@ -168,7 +168,7 @@ export async function handleMergeQueue(args: string[]): Promise<void> {
     if (error instanceof ApiError) {
       console.error(colors.red(`Error: ${error.message}`));
       if (error.status === 401) {
-        console.log(colors.dim('Run "wit auth login" to authenticate'));
+        console.log(colors.dim('Run "myvcs auth login" to authenticate'));
       }
       process.exit(1);
     }

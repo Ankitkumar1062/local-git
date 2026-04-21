@@ -120,9 +120,9 @@ import { printGraph } from './ui/graph';
 const VERSION = '2.0.0';
 
 const HELP = `
-wit - A Modern Git Implementation in TypeScript
+myvcs - A Modern Git Implementation in TypeScript
 
-wit improves on Git with:
+myvcs improves on Git with:
   • SHA-256 hashing (more secure than SHA-1)
   • Large file chunking (better binary file handling)
   • Operation undo/history (easily undo mistakes)
@@ -134,7 +134,7 @@ wit improves on Git with:
   • AI-powered features (commit messages, code review, conflict resolution)
   • Quality of life commands (amend, wip, uncommit, etc.)
 
-Usage: wit <command> [<args>]
+Usage: myvcs <command> [<args>]
 
 Visual Interface:
   ui                    Launch interactive terminal UI (TUI)
@@ -142,7 +142,7 @@ Visual Interface:
   graph                 Show commit graph in terminal
 
 Core Commands:
-  init                  Create an empty wit repository
+  init                  Create an empty myvcs repository
   add <file>...         Add file contents to the index
   commit -m <message>   Record changes to the repository
   status                Show the working tree status
@@ -280,8 +280,8 @@ Platform Commands:
   issue comment <n>     Add comment to issue
 
 Self-Hosting (run your own GitHub):
-  up                    Start the wit platform (database + server + web UI)
-  down                  Stop all wit services
+  up                    Start the myvcs platform (database + server + web UI)
+  down                  Stop all myvcs services
   platform-status       Show status of running services
 
 Authentication:
@@ -323,7 +323,7 @@ Quality of Life:
 Issue Tracking (Linear-inspired):
   issue create "Title"  Create a new issue
   issue list            List issues (--status, --priority, --assignee)
-  issue show <id>       Show issue details (e.g., WIT-123)
+  issue show <id>       Show issue details (e.g., myvcs-123)
   issue start <id>      Start working on an issue
   issue close <id>      Close an issue
   issue board           Show kanban board view
@@ -406,50 +406,50 @@ Environment Variables:
   GITHUB_TOKEN          GitHub personal access token (recommended)
   GH_TOKEN              Alternative to GITHUB_TOKEN
   WIT_GITHUB_CLIENT_ID  OAuth App client ID (for device flow login)
-  WIT_TOKEN             Generic wit authentication token
+  WIT_TOKEN             Generic myvcs authentication token
   GIT_TOKEN             Generic git authentication token
 
 Examples:
-  wit ui                    # Launch terminal UI
-  wit web                   # Launch web UI
-  wit agent                 # Start interactive coding agent
-  wit agent "add tests"     # One-shot agent query
-  wit init
-  wit add .
-  wit commit -m "Initial commit"
-  wit commit -a -m "Update all tracked files"
-  wit switch -c feature
-  wit merge feature
-  wit undo
-  wit scope use frontend
-  wit ai "what files changed?"
-  wit ai commit -a -x
-  wit wip -a                # Quick save all changes
-  wit amend -m "New msg"    # Fix last commit message
-  wit uncommit              # Undo commit, keep changes
-  wit cleanup --dry-run     # Preview branch cleanup
-  wit stats                 # View repo statistics
-  wit snapshot create       # Create checkpoint
-  wit blame file.ts         # See who changed what
-  wit remote add origin /path/to/repo  # Add remote
-  wit clone ./source ./dest  # Clone a repository
-  wit fetch origin           # Fetch from origin
-  wit pull                   # Pull current branch
-  wit push -u origin main    # Push and set upstream
-  wit github login           # Login to GitHub
-  wit github status          # Check GitHub auth status
-  wit serve --port 3000      # Start Git server
-  wit review                 # AI code review before push
-  wit review --branch        # Review all branch changes
+  myvcs ui                    # Launch terminal UI
+  myvcs web                   # Launch web UI
+  myvcs agent                 # Start interactive coding agent
+  myvcs agent "add tests"     # One-shot agent query
+  myvcs init
+  myvcs add .
+  myvcs commit -m "Initial commit"
+  myvcs commit -a -m "Update all tracked files"
+  myvcs switch -c feature
+  myvcs merge feature
+  myvcs undo
+  myvcs scope use frontend
+  myvcs ai "what files changed?"
+  myvcs ai commit -a -x
+  myvcs wip -a                # Quick save all changes
+  myvcs amend -m "New msg"    # Fix last commit message
+  myvcs uncommit              # Undo commit, keep changes
+  myvcs cleanup --dry-run     # Preview branch cleanup
+  myvcs stats                 # View repo statistics
+  myvcs snapshot create       # Create checkpoint
+  myvcs blame file.ts         # See who changed what
+  myvcs remote add origin /path/to/repo  # Add remote
+  myvcs clone ./source ./dest  # Clone a repository
+  myvcs fetch origin           # Fetch from origin
+  myvcs pull                   # Pull current branch
+  myvcs push -u origin main    # Push and set upstream
+  myvcs github login           # Login to GitHub
+  myvcs github status          # Check GitHub auth status
+  myvcs serve --port 3000      # Start Git server
+  myvcs review                 # AI code review before push
+  myvcs review --branch        # Review all branch changes
 
 Issue Tracking:
-  wit issue create "Fix login bug"    # Create issue
-  wit issue list                      # List open issues
-  wit issue start WIT-1               # Start working on issue
-  wit issue board                     # Kanban board view
-  wit commit -m "Fix bug" --closes WIT-1  # Close issue on commit
-  wit cycle create --weeks 2          # Create 2-week sprint
-  wit cycle add WIT-1                 # Add issue to sprint
+  myvcs issue create "Fix login bug"    # Create issue
+  myvcs issue list                      # List open issues
+  myvcs issue start myvcs-1               # Start working on issue
+  myvcs issue board                     # Kanban board view
+  myvcs commit -m "Fix bug" --closes myvcs-1  # Close issue on commit
+  myvcs cycle create --weeks 2          # Create 2-week sprint
+  myvcs cycle add myvcs-1                 # Add issue to sprint
 `;
 
 const COMMANDS = [
@@ -584,14 +584,14 @@ function main(): void {
   const rawArgs = args.slice(1);
 
   // Check for --help or -h flag on a specific command first
-  // This handles: wit add --help, wit commit -h, etc.
+  // This handles: myvcs add --help, myvcs commit -h, etc.
   if (command && COMMANDS.includes(command) && command !== 'help' && (options.help || hasHelpFlag(rawArgs))) {
     if (printCommandHelp(command)) {
       return;
     }
   }
 
-  // Check for general help: wit --help, wit help, wit help <command>
+  // Check for general help: myvcs --help, myvcs help, myvcs help <command>
   if (options.help || command === 'help') {
     // Check if help is requested for a specific command
     if (command === 'help' && cmdArgs.length > 0) {
@@ -604,7 +604,7 @@ function main(): void {
   }
 
   if (options.version) {
-    console.log(`wit version ${VERSION}`);
+    console.log(`myvcs version ${VERSION}`);
     return;
   }
 
@@ -619,7 +619,7 @@ function main(): void {
       case 'add':
         if (cmdArgs.length === 0) {
           console.error('Nothing specified, nothing added.');
-          console.error('hint: Maybe you wanted to say "wit add ."?');
+          console.error('hint: Maybe you wanted to say "myvcs add ."?');
           process.exit(1);
         }
         add(cmdArgs);
@@ -1233,7 +1233,7 @@ function main(): void {
       default: {
         // Provide suggestions for unknown commands
         const similar = findSimilar(command, COMMANDS);
-        console.error(`wit: '${command}' is not a wit command. See 'wit --help'.`);
+        console.error(`myvcs: '${command}' is not a myvcs command. See 'myvcs --help'.`);
         if (similar.length > 0) {
           console.error('\nDid you mean one of these?');
           for (const cmd of similar) {

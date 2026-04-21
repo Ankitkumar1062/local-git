@@ -248,7 +248,7 @@ function getFileStats(repo: Repository): { files: number; lines: number; languag
         
         if (entry.isDirectory()) {
           // Skip ignored directories
-          if (['node_modules', '.wit', '.git', 'dist', 'build', 'coverage'].includes(entry.name)) {
+          if (['node_modules', '.myvcs', '.git', 'dist', 'build', 'coverage'].includes(entry.name)) {
             continue;
           }
           walkDir(fullPath);

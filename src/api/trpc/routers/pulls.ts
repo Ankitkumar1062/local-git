@@ -251,7 +251,7 @@ function buildTreeFromFiles(repo: BareRepository, files: Map<string, { hash: str
 }
 
 /**
- * Get commits between two refs using wit's TS API
+ * Get commits between two refs using myvcs's TS API
  */
 function getCommitsBetween(repoPath: string, baseSha: string, headSha: string): Array<{
   sha: string;
@@ -1248,7 +1248,7 @@ export const pullsRouter = router({
       }
 
       try {
-        // Read the current file content from the source branch using wit's TS API
+        // Read the current file content from the source branch using myvcs's TS API
         const bareRepo = new BareRepository(diskPath);
         const branchHash = bareRepo.refs.resolve(`refs/heads/${pr.sourceBranch}`);
         if (!branchHash) {
@@ -1462,13 +1462,13 @@ export const pullsRouter = router({
         });
       }
 
-      // Get reviews and find the AI review (from wit-bot user)
+      // Get reviews and find the AI review (from myvcs-bot user)
       const reviews = await prReviewModel.listByPr(input.prId);
       
-      // Find AI reviews - look for reviews from wit-bot or reviews with AI marker in body
+      // Find AI reviews - look for reviews from myvcs-bot or reviews with AI marker in body
       const aiReview = reviews.find(r => {
         // Check if body contains AI review marker
-        if (r.body?.includes('AI Review:') || r.body?.includes('wit AI')) {
+        if (r.body?.includes('AI Review:') || r.body?.includes('myvcs AI')) {
           return true;
         }
         return false;
@@ -1478,7 +1478,7 @@ export const pullsRouter = router({
         // Check comments as fallback
         const comments = await prCommentModel.listByPr(input.prId);
         const aiComment = comments.find(c => 
-          c.body?.includes('AI Review:') || c.body?.includes('wit AI')
+          c.body?.includes('AI Review:') || c.body?.includes('myvcs AI')
         );
 
         if (aiComment) {
@@ -1589,7 +1589,7 @@ export const pullsRouter = router({
       }
 
       try {
-        // Use wit's TS API to generate diff
+        // Use myvcs's TS API to generate diff
         const repo = new BareRepository(diskPath);
         
         const baseCommit = repo.objects.readCommit(pr.baseSha);

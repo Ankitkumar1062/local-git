@@ -4,11 +4,11 @@
  * Manage continuous integration workflows from the command line.
  *
  * Usage:
- *   wit ci run [workflow]        Run a workflow locally
- *   wit ci list                  List available workflows
- *   wit ci validate [file]       Validate workflow YAML
- *   wit ci runs                  Show recent workflow runs
- *   wit ci view <run-id>         View workflow run details
+ *   myvcs ci run [workflow]        Run a workflow locally
+ *   myvcs ci list                  List available workflows
+ *   myvcs ci validate [file]       Validate workflow YAML
+ *   myvcs ci runs                  Show recent workflow runs
+ *   myvcs ci view <run-id>         View workflow run details
  */
 
 import * as path from 'path';
@@ -20,9 +20,9 @@ import { createExecutor } from '../ci/executor';
 import { colors } from '../utils/colors';
 
 export const CI_HELP = `
-wit ci - Manage CI/CD workflows
+myvcs ci - Manage CI/CD workflows
 
-Usage: wit ci <command> [options]
+Usage: myvcs ci <command> [options]
 
 Commands:
   run [workflow]        Run a workflow locally (defaults to all matching workflows)
@@ -38,12 +38,12 @@ Options:
   --verbose             Show detailed output
 
 Examples:
-  wit ci list                       List all workflows
-  wit ci run                        Run all matching workflows for current branch
-  wit ci run ci.yml                 Run specific workflow
-  wit ci run --job build            Run only the 'build' job
-  wit ci validate                   Validate all workflows
-  wit ci validate .wit/workflows/ci.yml  Validate specific file
+  myvcs ci list                       List all workflows
+  myvcs ci run                        Run all matching workflows for current branch
+  myvcs ci run ci.yml                 Run specific workflow
+  myvcs ci run --job build            Run only the 'build' job
+  myvcs ci validate                   Validate all workflows
+  myvcs ci validate .myvcs/workflows/ci.yml  Validate specific file
 `;
 
 /**
@@ -155,7 +155,7 @@ async function handleCIRun(args: string[]): Promise<void> {
 
   if (workflows.length === 0) {
     console.log(colors.yellow('No workflows found'));
-    console.log(colors.dim('Create workflows in .wit/workflows/'));
+    console.log(colors.dim('Create workflows in .myvcs/workflows/'));
     return;
   }
 
@@ -296,9 +296,9 @@ async function handleCIList(_args: string[]): Promise<void> {
   if (workflows.length === 0) {
     console.log(colors.yellow('No workflows found'));
     console.log();
-    console.log('Create workflows in .wit/workflows/');
+    console.log('Create workflows in .myvcs/workflows/');
     console.log();
-    console.log('Example workflow (.wit/workflows/ci.yml):');
+    console.log('Example workflow (.myvcs/workflows/ci.yml):');
     console.log(colors.dim(`
 name: CI
 
@@ -374,10 +374,10 @@ async function handleCIValidate(args: string[]): Promise<void> {
     filesToValidate = [absolutePath];
   } else {
     // Validate all workflows
-    const workflowsDir = path.join(repoPath, '.wit', 'workflows');
+    const workflowsDir = path.join(repoPath, '.myvcs', 'workflows');
     if (!fs.existsSync(workflowsDir)) {
       console.log(colors.yellow('No workflows directory found'));
-      console.log(colors.dim('Create workflows in .wit/workflows/'));
+      console.log(colors.dim('Create workflows in .myvcs/workflows/'));
       return;
     }
 
@@ -427,10 +427,10 @@ async function handleCIValidate(args: string[]): Promise<void> {
  * Show recent workflow runs (requires server connection)
  */
 async function handleCIRuns(_args: string[]): Promise<void> {
-  console.log(colors.yellow('This command requires a connection to the wit server.'));
+  console.log(colors.yellow('This command requires a connection to the myvcs server.'));
   console.log();
   console.log('To view workflow runs:');
-  console.log('  1. Start the server: wit serve');
+  console.log('  1. Start the server: myvcs serve');
   console.log('  2. View runs in the web UI: http://localhost:3000/:owner/:repo/actions');
   console.log();
   console.log('Or use the API:');
@@ -446,14 +446,14 @@ async function handleCIView(args: string[]): Promise<void> {
 
   if (!runId) {
     console.error(colors.red('error: ') + 'Run ID required');
-    console.error('usage: wit ci view <run-id>');
+    console.error('usage: myvcs ci view <run-id>');
     process.exit(1);
   }
 
-  console.log(colors.yellow('This command requires a connection to the wit server.'));
+  console.log(colors.yellow('This command requires a connection to the myvcs server.'));
   console.log();
   console.log('To view workflow run details:');
-  console.log('  1. Start the server: wit serve');
+  console.log('  1. Start the server: myvcs serve');
   console.log(`  2. View in web UI: http://localhost:3000/runs/${runId}`);
   console.log();
   console.log('Or use the API:');

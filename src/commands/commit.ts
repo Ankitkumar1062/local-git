@@ -23,7 +23,7 @@ export interface CommitOptions {
   author?: string;             // Override author
   noVerify?: boolean;          // Skip pre-commit hooks
   dryRun?: boolean;            // Show what would be committed
-  closes?: string[];           // Issue IDs to close (e.g., WIT-1, WIT-2)
+  closes?: string[];           // Issue IDs to close (e.g., myvcs-1, myvcs-2)
   refs?: string[];             // Issue IDs to reference without closing
 }
 
@@ -46,16 +46,16 @@ export interface CommitResult {
  * 
  * @example
  * // Standard commit (requires staging first)
- * wit commit -m "message"
+ * myvcs commit -m "message"
  * 
  * // Commit all tracked changes (skip staging)
- * wit commit -a -m "message"
+ * myvcs commit -a -m "message"
  * 
  * // Commit specific files directly (skip staging)
- * wit commit file1.ts file2.ts -m "message"
+ * myvcs commit file1.ts file2.ts -m "message"
  * 
  * // Amend previous commit
- * wit commit --amend -m "new message"
+ * myvcs commit --amend -m "new message"
  */
 export async function commitWithOptions(
   repo: Repository,
@@ -70,8 +70,8 @@ export async function commitWithOptions(
       'Commit message cannot be empty',
       ErrorCode.INVALID_ARGUMENT,
       [
-        'wit commit -m "Your commit message"',
-        'wit ai commit    # Let AI generate a commit message',
+        'myvcs commit -m "Your commit message"',
+        'myvcs ai commit    # Let AI generate a commit message',
       ]
     );
   }
@@ -106,8 +106,8 @@ export async function commitWithOptions(
           ErrorCode.FILE_NOT_FOUND,
           [
             `Check the file exists: ls ${file}`,
-            'wit status    # See tracked and untracked files',
-            'wit add <file>    # Stage the file first if needed',
+            'myvcs status    # See tracked and untracked files',
+            'myvcs add <file>    # Stage the file first if needed',
           ],
           { file, originalError: error instanceof Error ? error.message : 'Unknown error' }
         );
@@ -344,8 +344,8 @@ export async function commit(message: string): Promise<void> {
       'Commit message cannot be empty',
       ErrorCode.INVALID_ARGUMENT,
       [
-        'wit commit -m "Your commit message"',
-        'wit ai commit    # Let AI generate a commit message',
+        'myvcs commit -m "Your commit message"',
+        'myvcs ai commit    # Let AI generate a commit message',
       ]
     );
     console.error(error.format());
@@ -425,9 +425,9 @@ export async function handleCommit(args: string[]): Promise<void> {
       'Commit message is required',
       ErrorCode.INVALID_ARGUMENT,
       [
-        'wit commit -m "Your message"    # Commit with a message',
-        'wit ai commit                   # Let AI generate a commit message',
-        'wit commit --help               # See all options',
+        'myvcs commit -m "Your message"    # Commit with a message',
+        'myvcs ai commit                   # Let AI generate a commit message',
+        'myvcs commit --help               # See all options',
       ]
     );
   }

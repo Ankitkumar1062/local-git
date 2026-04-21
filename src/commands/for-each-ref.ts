@@ -3,10 +3,10 @@
  * Iterate over refs and output information about each one
  * 
  * Usage:
- * - wit for-each-ref                           # List all refs
- * - wit for-each-ref refs/heads                # List branches
- * - wit for-each-ref refs/tags                 # List tags
- * - wit for-each-ref --format='%(refname)'     # Custom format
+ * - myvcs for-each-ref                           # List all refs
+ * - myvcs for-each-ref refs/heads                # List branches
+ * - myvcs for-each-ref refs/tags                 # List tags
+ * - myvcs for-each-ref --format='%(refname)'     # Custom format
  * 
  * Format placeholders:
  * - %(objectname)     - Full SHA hash

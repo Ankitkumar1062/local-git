@@ -3,11 +3,11 @@
  * Remove untracked files from working directory
  * 
  * Usage:
- * - wit clean -n                  # Dry run (show what would be deleted)
- * - wit clean -f                  # Force delete untracked files
- * - wit clean -fd                 # Delete untracked files and directories
- * - wit clean -fx                 # Also delete ignored files
- * - wit clean -i                  # Interactive mode
+ * - myvcs clean -n                  # Dry run (show what would be deleted)
+ * - myvcs clean -f                  # Force delete untracked files
+ * - myvcs clean -fd                 # Delete untracked files and directories
+ * - myvcs clean -fx                 # Also delete ignored files
+ * - myvcs clean -i                  # Interactive mode
  */
 
 import * as path from 'path';
@@ -83,8 +83,8 @@ export function getUntrackedItems(
             : entry.name;
           const fullPath = path.join(dir, entry.name);
 
-          // Skip .wit, .git, node_modules
-          if (entry.name === '.wit' || entry.name === '.git' || entry.name === 'node_modules') {
+          // Skip .myvcs, .git, node_modules
+          if (entry.name === '.myvcs' || entry.name === '.git' || entry.name === 'node_modules') {
             continue;
           }
 
@@ -158,8 +158,8 @@ export function clean(repo: Repository, options: CleanOptions = {}): CleanResult
       'Clean requires -f (force) or -n (dry-run) to prevent accidental data loss',
       ErrorCode.OPERATION_FAILED,
       [
-        'wit clean -n    # Preview what would be deleted',
-        'wit clean -f    # Actually delete files'
+        'myvcs clean -n    # Preview what would be deleted',
+        'myvcs clean -f    # Actually delete files'
       ]
     );
   }

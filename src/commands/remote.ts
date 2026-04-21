@@ -3,13 +3,13 @@
  * Manage remote repositories
  * 
  * Usage:
- *   wit remote                    # List remotes
- *   wit remote -v                 # List with URLs
- *   wit remote add <name> <url>   # Add remote
- *   wit remote remove <name>      # Remove remote
- *   wit remote rename <old> <new> # Rename remote
- *   wit remote get-url <name>     # Show URL
- *   wit remote set-url <name> <url> # Change URL
+ *   myvcs remote                    # List remotes
+ *   myvcs remote -v                 # List with URLs
+ *   myvcs remote add <name> <url>   # Add remote
+ *   myvcs remote remove <name>      # Remove remote
+ *   myvcs remote rename <old> <new> # Rename remote
+ *   myvcs remote get-url <name>     # Show URL
+ *   myvcs remote set-url <name> <url> # Change URL
  */
 
 import { Repository } from '../core/repository';
@@ -178,7 +178,7 @@ export function handleRemote(args: string[]): void {
         const url = positional[2];
         
         if (!name || !url) {
-          console.error(colors.red('error: ') + 'usage: wit remote add <name> <url>');
+          console.error(colors.red('error: ') + 'usage: myvcs remote add <name> <url>');
           process.exit(1);
         }
         
@@ -191,7 +191,7 @@ export function handleRemote(args: string[]): void {
         const name = positional[1];
         
         if (!name) {
-          console.error(colors.red('error: ') + 'usage: wit remote remove <name>');
+          console.error(colors.red('error: ') + 'usage: myvcs remote remove <name>');
           process.exit(1);
         }
         
@@ -204,7 +204,7 @@ export function handleRemote(args: string[]): void {
         const newName = positional[2];
         
         if (!oldName || !newName) {
-          console.error(colors.red('error: ') + 'usage: wit remote rename <old> <new>');
+          console.error(colors.red('error: ') + 'usage: myvcs remote rename <old> <new>');
           process.exit(1);
         }
         
@@ -216,7 +216,7 @@ export function handleRemote(args: string[]): void {
         const name = positional[1];
         
         if (!name) {
-          console.error(colors.red('error: ') + 'usage: wit remote get-url <name>');
+          console.error(colors.red('error: ') + 'usage: myvcs remote get-url <name>');
           process.exit(1);
         }
         
@@ -229,7 +229,7 @@ export function handleRemote(args: string[]): void {
         const url = positional[2];
         
         if (!name || !url) {
-          console.error(colors.red('error: ') + 'usage: wit remote set-url <name> <url>');
+          console.error(colors.red('error: ') + 'usage: myvcs remote set-url <name> <url>');
           process.exit(1);
         }
         
@@ -253,7 +253,7 @@ export function handleRemote(args: string[]): void {
         const name = positional[1];
         
         if (!name) {
-          console.error(colors.red('error: ') + 'usage: wit remote prune <name>');
+          console.error(colors.red('error: ') + 'usage: myvcs remote prune <name>');
           process.exit(1);
         }
         
@@ -271,14 +271,14 @@ export function handleRemote(args: string[]): void {
         } else {
           console.error(colors.red('error: ') + `Unknown subcommand: ${subcommand}`);
           console.error('\nUsage:');
-          console.error('  wit remote                      List remotes');
-          console.error('  wit remote -v                   List with URLs');
-          console.error('  wit remote add <name> <url>     Add remote');
-          console.error('  wit remote remove <name>        Remove remote');
-          console.error('  wit remote rename <old> <new>   Rename remote');
-          console.error('  wit remote get-url <name>       Show URL');
-          console.error('  wit remote set-url <name> <url> Change URL');
-          console.error('  wit remote show <name>          Show remote details');
+          console.error('  myvcs remote                      List remotes');
+          console.error('  myvcs remote -v                   List with URLs');
+          console.error('  myvcs remote add <name> <url>     Add remote');
+          console.error('  myvcs remote remove <name>        Remove remote');
+          console.error('  myvcs remote rename <old> <new>   Rename remote');
+          console.error('  myvcs remote get-url <name>       Show URL');
+          console.error('  myvcs remote set-url <name> <url> Change URL');
+          console.error('  myvcs remote show <name>          Show remote details');
           process.exit(1);
         }
       }

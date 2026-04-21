@@ -1,6 +1,6 @@
-# wit AI Examples
+# myvcs AI Examples
 
-This guide shows how to use wit's AI-powered features using `@mastra/core`.
+This guide shows how to use myvcs's AI-powered features using `@mastra/core`.
 
 ## Setup
 
@@ -20,7 +20,7 @@ export WIT_AI_MODEL=anthropic/claude-opus-4-5
 Check your configuration:
 
 ```bash
-wit ai status
+myvcs ai status
 ```
 
 ---
@@ -31,21 +31,21 @@ Ask questions or give commands in plain English:
 
 ```bash
 # Check status
-wit ai "what files have I changed?"
-wit ai "show me unstaged changes"
+myvcs ai "what files have I changed?"
+myvcs ai "show me unstaged changes"
 
 # View history
-wit ai "show me the last 5 commits"
-wit ai "what did I commit yesterday?"
+myvcs ai "show me the last 5 commits"
+myvcs ai "what did I commit yesterday?"
 
 # Branch operations
-wit ai "what branch am I on?"
-wit ai "list all branches"
-wit ai "switch to the main branch"
+myvcs ai "what branch am I on?"
+myvcs ai "list all branches"
+myvcs ai "switch to the main branch"
 
 # Search
-wit ai "find commits mentioning 'login'"
-wit ai "search for files containing 'TODO'"
+myvcs ai "find commits mentioning 'login'"
+myvcs ai "search for files containing 'TODO'"
 ```
 
 ---
@@ -56,10 +56,10 @@ Generate meaningful commit messages based on your changes:
 
 ```bash
 # First, stage your changes
-wit add .
+myvcs add .
 
 # Generate a commit message
-wit ai commit
+myvcs ai commit
 
 # Output:
 # 📝 Suggested commit message:
@@ -76,13 +76,13 @@ wit ai commit
 
 ```bash
 # Stage all tracked files AND generate message
-wit ai commit -a
+myvcs ai commit -a
 
 # Generate AND execute the commit
-wit ai commit -x
+myvcs ai commit -x
 
 # Stage all, generate, and commit in one command
-wit ai commit -a -x
+myvcs ai commit -a -x
 ```
 
 ---
@@ -93,10 +93,10 @@ Get AI feedback on your changes:
 
 ```bash
 # Review all changes (staged + unstaged)
-wit ai review
+myvcs ai review
 
 # Review only staged changes
-wit ai review --staged
+myvcs ai review --staged
 ```
 
 Example output:
@@ -131,11 +131,11 @@ Understand what a commit does:
 
 ```bash
 # Explain the latest commit
-wit ai explain
+myvcs ai explain
 
 # Explain a specific commit
-wit ai explain HEAD~3
-wit ai explain abc1234
+myvcs ai explain HEAD~3
+myvcs ai explain abc1234
 ```
 
 Example output:
@@ -167,13 +167,13 @@ Get help resolving merge conflicts:
 
 ```bash
 # Start a merge
-wit merge feature-branch
+myvcs merge feature-branch
 
 # If there are conflicts, ask for help
-wit ai resolve
+myvcs ai resolve
 
 # Or resolve a specific file
-wit ai resolve src/config.ts
+myvcs ai resolve src/config.ts
 ```
 
 Example output:
@@ -220,17 +220,17 @@ Would you like me to apply this resolution?
 
 ## 6. Undo with AI Help
 
-Use wit's undo feature with AI guidance:
+Use myvcs's undo feature with AI guidance:
 
 ```bash
 # See what can be undone
-wit ai "what operations can I undo?"
+myvcs ai "what operations can I undo?"
 
 # Preview undo
-wit ai "show me what undo would do"
+myvcs ai "show me what undo would do"
 
 # Actually undo
-wit undo
+myvcs undo
 ```
 
 ---
@@ -240,7 +240,7 @@ wit undo
 You can also use the AI features programmatically:
 
 ```typescript
-import { getTsgitAgent, createTsgitMastra } from 'wit/ai';
+import { getTsgitAgent, createTsgitMastra } from 'myvcs/ai';
 
 // Create a Mastra instance
 const mastra = createTsgitMastra({
@@ -265,7 +265,7 @@ for await (const chunk of stream.textStream) {
 ### Using Individual Tools
 
 ```typescript
-import { witTools } from 'wit/ai';
+import { witTools } from 'myvcs/ai';
 
 // Get repository status
 const status = await witTools.getStatus.execute({ path: '.' });
@@ -302,7 +302,7 @@ console.log('Committed:', commit.shortHash);
    - Stage related changes together
    - Don't mix unrelated changes in one commit
 
-5. **Code review**: Run `wit ai review` before pushing to catch issues early
+5. **Code review**: Run `myvcs ai review` before pushing to catch issues early
 
 ---
 

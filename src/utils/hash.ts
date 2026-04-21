@@ -21,7 +21,7 @@ const HASH_CONFIGS: Record<HashAlgorithm, HashConfig> = {
 
 // Default to SHA-1 for Git interoperability
 // Git servers (GitHub, GitLab, etc.) use SHA-1
-// SHA-256 can be enabled for wit-to-wit repos if desired
+// SHA-256 can be enabled for myvcs-to-myvcs repos if desired
 let currentAlgorithm: HashAlgorithm = 'sha1';
 
 /**

@@ -220,12 +220,12 @@ export const webhookDelivery = {
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      'X-Wit-Event': event,
-      'X-Wit-Delivery': crypto.randomUUID(),
+      'X-myvcs-Event': event,
+      'X-myvcs-Delivery': crypto.randomUUID(),
     };
 
     if (webhook.secret) {
-      headers['X-Wit-Signature-256'] = await this.generateSignature(
+      headers['X-myvcs-Signature-256'] = await this.generateSignature(
         body,
         webhook.secret
       );

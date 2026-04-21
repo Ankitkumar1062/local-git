@@ -1,7 +1,7 @@
 /**
  * CI/CD Workflow Parser
  * 
- * Parses and validates workflow YAML files from .wit/workflows/*.yml
+ * Parses and validates workflow YAML files from .myvcs/workflows/*.yml
  */
 
 import * as fs from 'fs';
@@ -907,7 +907,7 @@ function normalizeSteps(steps: unknown[]): Step[] {
  * Load all workflow files from a repository
  */
 export function loadWorkflows(repoPath: string): ParsedWorkflow[] {
-  const workflowDir = path.join(repoPath, '.wit', 'workflows');
+  const workflowDir = path.join(repoPath, '.myvcs', 'workflows');
   const workflows: ParsedWorkflow[] = [];
   
   if (!fs.existsSync(workflowDir)) {

@@ -15,7 +15,7 @@
  *
  * // Create manager with E2B provider
  * const manager = createSandboxManager({
- *   repoRoot: '/var/lib/wit/repos',
+ *   repoRoot: '/var/lib/myvcs/repos',
  *   provider: {
  *     type: 'e2b',
  *     options: {
@@ -26,7 +26,7 @@
  *
  * // Or with Vercel Sandbox provider
  * const vercelManager = createSandboxManager({
- *   repoRoot: '/var/lib/wit/repos',
+ *   repoRoot: '/var/lib/myvcs/repos',
  *   provider: {
  *     type: 'vercel',
  *     options: {

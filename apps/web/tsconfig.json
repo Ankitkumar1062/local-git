@@ -18,8 +18,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "wit": ["../../dist"],
-      "wit/*": ["../../dist/*"]
+      "myvcs": ["../../dist"],
+      "myvcs/*": ["../../dist/*"]
     }
   },
   "include": ["src"]

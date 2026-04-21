@@ -110,7 +110,7 @@ export function LoginPage() {
             <Shield className="h-10 w-10 text-primary" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold">Wit Admin Portal</h1>
+            <h1 className="text-2xl font-bold">myvcs Admin Portal</h1>
             <p className="text-muted-foreground">Sign in to continue</p>
           </div>
         </div>

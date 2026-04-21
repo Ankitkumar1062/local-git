@@ -115,7 +115,7 @@ export function VerifyEmailPage() {
               <CardFooter>
                 <Button asChild className="w-full">
                   <Link to="/">
-                    Continue to wit
+                    Continue to myvcs
                   </Link>
                 </Button>
               </CardFooter>

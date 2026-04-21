@@ -32,7 +32,7 @@ export function checkout(ref: string, options: { createBranch?: boolean } = {}):
       console.log("by switching to another branch.");
       console.log();
       console.log("To create a new branch from this commit:");
-      console.log(`  wit checkout -b <new-branch-name>`);
+      console.log(`  myvcs checkout -b <new-branch-name>`);
     }
   } catch (error) {
     if (error instanceof TsgitError) {

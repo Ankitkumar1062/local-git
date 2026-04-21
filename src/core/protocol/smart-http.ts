@@ -30,7 +30,7 @@ import { loadGitHubCredentials } from '../github';
 export class SmartHttpClient {
   private baseUrl: string;
   private credentials?: Credentials;
-  private userAgent: string = 'wit/2.0';
+  private userAgent: string = 'myvcs/2.0';
 
   constructor(baseUrl: string, credentials?: Credentials) {
     // Normalize URL
@@ -57,7 +57,7 @@ export class SmartHttpClient {
       };
     }
 
-    // Check for stored GitHub credentials from 'wit github login'
+    // Check for stored GitHub credentials from 'myvcs github login'
     const storedGitHub = loadGitHubCredentials();
     if (storedGitHub) {
       return {
@@ -329,7 +329,7 @@ export class SmartHttpClient {
     const caps = [
       'report-status',
       'side-band-64k',
-      'agent=wit/2.0.0',
+      'agent=myvcs/2.0.0',
     ];
 
     if (options?.atomic) {

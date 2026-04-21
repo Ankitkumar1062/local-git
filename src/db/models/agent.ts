@@ -1,7 +1,7 @@
 /**
  * Agent Session and File Change Models
  * 
- * Handles database operations for the wit coding agent's
+ * Handles database operations for the myvcs coding agent's
  * session management and file change tracking.
  * 
  * NOTE: Conversation history is managed by Mastra Memory.

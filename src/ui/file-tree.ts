@@ -169,7 +169,7 @@ export function buildFileTree(repo: Repository): TreeNode {
     expanded: true,
   };
 
-  const excludeDirs = ['.wit', 'node_modules', '.git', 'dist', 'build'];
+  const excludeDirs = ['.myvcs', 'node_modules', '.git', 'dist', 'build'];
   
   try {
     buildTreeRecursive(repo.workDir, root, '', statusMap, excludeDirs);

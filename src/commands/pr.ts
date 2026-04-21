@@ -4,13 +4,13 @@
  * Manage pull requests from the command line.
  *
  * Usage:
- *   wit pr create           Create a pull request from current branch
- *   wit pr list             List pull requests
- *   wit pr view <number>    View pull request details
- *   wit pr checkout <num>   Checkout a pull request locally
- *   wit pr merge <number>   Merge a pull request
- *   wit pr close <number>   Close a pull request
- *   wit pr review <number>  Review a pull request with CodeRabbit AI
+ *   myvcs pr create           Create a pull request from current branch
+ *   myvcs pr list             List pull requests
+ *   myvcs pr view <number>    View pull request details
+ *   myvcs pr checkout <num>   Checkout a pull request locally
+ *   myvcs pr merge <number>   Merge a pull request
+ *   myvcs pr close <number>   Close a pull request
+ *   myvcs pr review <number>  Review a pull request with CodeRabbit AI
  */
 
 import { getApiClient, ApiError, getServerUrl } from '../api/client';
@@ -28,9 +28,9 @@ import {
 import { colors } from '../utils/colors';
 
 export const PR_HELP = `
-wit pr - Manage pull requests
+myvcs pr - Manage pull requests
 
-Usage: wit pr <command> [options]
+Usage: myvcs pr <command> [options]
 
 Commands:
   create          Create a pull request from current branch
@@ -53,24 +53,24 @@ Options:
   --method        Merge method: merge, squash, rebase (for merge command)
 
 Examples:
-  wit pr create                     Create PR from current branch to main
-  wit pr create -b develop          Create PR targeting develop branch
-  wit pr create -t "Add feature"    Create PR with title
-  wit pr create --draft             Create a draft PR
-  wit pr list                       List open PRs
-  wit pr list --state closed        List closed PRs
-  wit pr list --state all           List all PRs
-  wit pr view 123                   View PR #123
-  wit pr checkout 123               Fetch and checkout PR #123
-  wit pr merge 123                  Merge PR #123
-  wit pr merge 123 --method squash  Squash merge PR #123
-  wit pr close 123                  Close PR #123
-  wit pr reopen 123                 Reopen PR #123
-  wit pr ready 123                  Mark draft PR #123 as ready for review
-  wit pr review 123                 AI review of PR #123 using CodeRabbit
-  wit pr review 123 --json          Output review as JSON
-  wit pr review --configure         Configure CodeRabbit API key
-  wit pr review-status              Check CodeRabbit installation status
+  myvcs pr create                     Create PR from current branch to main
+  myvcs pr create -b develop          Create PR targeting develop branch
+  myvcs pr create -t "Add feature"    Create PR with title
+  myvcs pr create --draft             Create a draft PR
+  myvcs pr list                       List open PRs
+  myvcs pr list --state closed        List closed PRs
+  myvcs pr list --state all           List all PRs
+  myvcs pr view 123                   View PR #123
+  myvcs pr checkout 123               Fetch and checkout PR #123
+  myvcs pr merge 123                  Merge PR #123
+  myvcs pr merge 123 --method squash  Squash merge PR #123
+  myvcs pr close 123                  Close PR #123
+  myvcs pr reopen 123                 Reopen PR #123
+  myvcs pr ready 123                  Mark draft PR #123 as ready for review
+  myvcs pr review 123                 AI review of PR #123 using CodeRabbit
+  myvcs pr review 123 --json          Output review as JSON
+  myvcs pr review --configure         Configure CodeRabbit API key
+  myvcs pr review-status              Check CodeRabbit installation status
 `;
 
 /**
@@ -114,7 +114,7 @@ function getRemoteUrl(repo: Repository): string {
       'No remote origin configured',
       ErrorCode.OPERATION_FAILED,
       [
-        'Add a remote with: wit remote add origin <url>',
+        'Add a remote with: myvcs remote add origin <url>',
         'Or clone from a remote repository',
       ]
     );
@@ -174,7 +174,7 @@ export async function handlePr(args: string[]): Promise<void> {
     if (error instanceof ApiError) {
       console.error(colors.red('error: ') + error.message);
       if (error.status === 0) {
-        console.error(colors.dim('hint: Start the server with: wit serve'));
+        console.error(colors.dim('hint: Start the server with: myvcs serve'));
       }
       process.exit(1);
     }
@@ -248,7 +248,7 @@ async function handlePrCreate(args: string[]): Promise<void> {
     throw new TsgitError(
       'Not on a branch (detached HEAD)',
       ErrorCode.DETACHED_HEAD,
-      ['Switch to a branch with: wit switch <branch>']
+      ['Switch to a branch with: myvcs switch <branch>']
     );
   }
 
@@ -256,7 +256,7 @@ async function handlePrCreate(args: string[]): Promise<void> {
     throw new TsgitError(
       `Cannot create PR from ${currentBranch} branch`,
       ErrorCode.INVALID_ARGUMENT,
-      ['Create a feature branch first: wit switch -c my-feature']
+      ['Create a feature branch first: myvcs switch -c my-feature']
     );
   }
 
@@ -286,8 +286,8 @@ async function handlePrCreate(args: string[]): Promise<void> {
       `Cannot resolve target branch: ${targetBranch}`,
       ErrorCode.REF_NOT_FOUND,
       [
-        `Make sure ${targetBranch} exists locally or fetch it: wit fetch origin ${targetBranch}`,
-        `Or specify a different base branch: wit pr create -b <branch>`,
+        `Make sure ${targetBranch} exists locally or fetch it: myvcs fetch origin ${targetBranch}`,
+        `Or specify a different base branch: myvcs pr create -b <branch>`,
       ]
     );
   }
@@ -326,7 +326,7 @@ async function handlePrCreate(args: string[]): Promise<void> {
   console.log(colors.green('✓') + ` Created ${isDraft ? 'draft ' : ''}pull request #${pr.number}`);
   console.log(`  ${colors.dim(`${getServerUrl()}/${owner}/${repoName}/pulls/${pr.number}`)}`);
   if (isDraft) {
-    console.log(`  ${colors.dim('Use `wit pr ready ' + pr.number + '` when ready for review')}`);
+    console.log(`  ${colors.dim('Use `myvcs pr ready ' + pr.number + '` when ready for review')}`);
   }
 }
 
@@ -382,8 +382,8 @@ async function handlePrView(args: string[]): Promise<void> {
       'PR number required to view details',
       ErrorCode.INVALID_ARGUMENT,
       [
-        'wit pr view 123    # View PR #123',
-        'wit pr list        # List all PRs to find the number',
+        'myvcs pr view 123    # View PR #123',
+        'myvcs pr list        # List all PRs to find the number',
       ]
     );
   }
@@ -437,8 +437,8 @@ async function handlePrCheckout(args: string[]): Promise<void> {
       'PR number required to checkout',
       ErrorCode.INVALID_ARGUMENT,
       [
-        'wit pr checkout 123    # Checkout PR #123 locally',
-        'wit pr list            # List all PRs to find the number',
+        'myvcs pr checkout 123    # Checkout PR #123 locally',
+        'myvcs pr list            # List all PRs to find the number',
       ]
     );
   }
@@ -463,7 +463,7 @@ async function handlePrCheckout(args: string[]): Promise<void> {
     // In a real implementation, we would fetch from remote here
     console.log(
       colors.yellow('!') +
-        ` Commit not found locally. Run: wit fetch origin ${pr.sourceBranch}`
+        ` Commit not found locally. Run: myvcs fetch origin ${pr.sourceBranch}`
     );
     process.exit(1);
   }
@@ -494,9 +494,9 @@ async function handlePrMerge(args: string[]): Promise<void> {
       'PR number required to merge',
       ErrorCode.INVALID_ARGUMENT,
       [
-        'wit pr merge 123              # Merge PR #123',
-        'wit pr merge 123 --squash     # Squash merge PR #123',
-        'wit pr list                   # List all PRs to find the number',
+        'myvcs pr merge 123              # Merge PR #123',
+        'myvcs pr merge 123 --squash     # Squash merge PR #123',
+        'myvcs pr list                   # List all PRs to find the number',
       ]
     );
   }
@@ -514,7 +514,7 @@ async function handlePrMerge(args: string[]): Promise<void> {
     throw new TsgitError(
       `PR #${prNumber} is not open (state: ${pr.state})`,
       ErrorCode.OPERATION_FAILED,
-      pr.state === 'merged' ? [] : ['Reopen the PR first: wit pr reopen ' + prNumber]
+      pr.state === 'merged' ? [] : ['Reopen the PR first: myvcs pr reopen ' + prNumber]
     );
   }
 
@@ -531,7 +531,7 @@ async function handlePrMerge(args: string[]): Promise<void> {
       `Failed to merge PR #${prNumber}`,
       ErrorCode.OPERATION_FAILED,
       [
-        'wit pr view ' + prNumber + '    # Check PR status and conflicts',
+        'myvcs pr view ' + prNumber + '    # Check PR status and conflicts',
         'The PR may have merge conflicts or failed checks',
       ]
     );
@@ -550,8 +550,8 @@ async function handlePrClose(args: string[]): Promise<void> {
       'PR number required to close',
       ErrorCode.INVALID_ARGUMENT,
       [
-        'wit pr close 123    # Close PR #123',
-        'wit pr list         # List all PRs to find the number',
+        'myvcs pr close 123    # Close PR #123',
+        'myvcs pr list         # List all PRs to find the number',
       ]
     );
   }
@@ -578,8 +578,8 @@ async function handlePrReopen(args: string[]): Promise<void> {
       'PR number required to reopen',
       ErrorCode.INVALID_ARGUMENT,
       [
-        'wit pr reopen 123    # Reopen PR #123',
-        'wit pr list --state closed    # List closed PRs',
+        'myvcs pr reopen 123    # Reopen PR #123',
+        'myvcs pr list --state closed    # List closed PRs',
       ]
     );
   }
@@ -606,8 +606,8 @@ async function handlePrReady(args: string[]): Promise<void> {
       'PR number required to mark as ready',
       ErrorCode.INVALID_ARGUMENT,
       [
-        'wit pr ready 123    # Mark draft PR #123 as ready for review',
-        'wit pr list         # List all PRs to find the number',
+        'myvcs pr ready 123    # Mark draft PR #123 as ready for review',
+        'myvcs pr list         # List all PRs to find the number',
       ]
     );
   }
@@ -695,7 +695,7 @@ async function handleLocalReview(flags: Record<string, string | boolean>): Promi
 
   if (filesToReview.length === 0) {
     console.log('No changes to review.');
-    console.log('Stage some changes with: wit add <files>');
+    console.log('Stage some changes with: myvcs add <files>');
     return;
   }
 
@@ -755,7 +755,7 @@ async function handleReviewConfigure(): Promise<void> {
     if (apiKey.trim()) {
       saveCodeRabbitApiKey(apiKey.trim());
       console.log(colors.green('\n✓') + ' API key saved successfully');
-      console.log(colors.dim('  Stored in: ~/.config/wit/coderabbit.json'));
+      console.log(colors.dim('  Stored in: ~/.config/myvcs/coderabbit.json'));
     } else {
       console.log('\nSkipped. You can also set the CODERABBIT_API_KEY environment variable.');
     }
@@ -795,7 +795,7 @@ async function handleReviewStatus(): Promise<void> {
   if (!status.apiKeyConfigured) {
     console.log('');
     console.log('To configure:');
-    console.log(colors.cyan('  wit pr review --configure'));
+    console.log(colors.cyan('  myvcs pr review --configure'));
     console.log('');
     console.log('Or set the environment variable:');
     console.log(colors.cyan('  export CODERABBIT_API_KEY=your-api-key'));

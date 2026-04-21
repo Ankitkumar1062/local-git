@@ -146,7 +146,7 @@ const TOOL_CONFIG: Record<string, { icon: React.ElementType; label: string; colo
   'get-history': { icon: GitCommit, label: 'Git history', color: 'text-cyan-400' },
   'get-status': { icon: GitCommit, label: 'Git status', color: 'text-cyan-400' },
   'run-command': { icon: Terminal, label: 'Run command', color: 'text-amber-400' },
-  'wit-run-command': { icon: Terminal, label: 'Run command', color: 'text-amber-400' },
+  'myvcs-run-command': { icon: Terminal, label: 'Run command', color: 'text-amber-400' },
 };
 
 // Simple code block component with copy button and file path
@@ -426,7 +426,7 @@ function ToolCallDisplay({ tool, isLast }: { tool: ToolCall; isLast?: boolean })
   const errorMessage = result.errorMessage as string | undefined;
   
   // Check if this is a command tool
-  const isCommandTool = toolName === 'runCommand' || toolName === 'run-command' || toolName === 'wit-run-command';
+  const isCommandTool = toolName === 'runCommand' || toolName === 'run-command' || toolName === 'myvcs-run-command';
   const fullCommand = command ? (commandArgs?.length ? `${command} ${commandArgs.join(' ')}` : command) : '';
   const commandOutput = stdout || output || '';
   const commandSuccess = result.success !== undefined ? result.success : (exitCode === 0 || exitCode === undefined);
@@ -716,7 +716,7 @@ function MessageBubble({
             {/* Role label with time */}
             <div className="flex items-center gap-2">
               <span className="text-xs font-medium text-zinc-400">
-                {isUser ? 'You' : isSystem ? 'System' : 'wit'}
+                {isUser ? 'You' : isSystem ? 'System' : 'myvcs'}
               </span>
               {message.thinkingTime && (
                 <span className="text-[10px] text-zinc-600 flex items-center gap-1">
@@ -898,7 +898,7 @@ function ChatInput({
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={mode === 'code' ? 'Ask wit to write or edit code...' : 'Ask wit anything...'}
+          placeholder={mode === 'code' ? 'Ask myvcs to write or edit code...' : 'Ask myvcs anything...'}
           disabled={isLoading || disabled}
           className={cn(
             "min-h-[60px] max-h-[150px] resize-none border-0 bg-transparent",
@@ -1024,7 +1024,7 @@ function WelcomeScreen({ mode, onPrompt }: { mode: AgentMode; onPrompt: (prompt:
         <Icon className="h-8 w-8 text-white" />
       </div>
       <h2 className="text-xl font-semibold mb-1 text-zinc-100">
-        {mode === 'code' ? 'Code with wit' : 'Ask wit'}
+        {mode === 'code' ? 'Code with myvcs' : 'Ask myvcs'}
       </h2>
       <p className="text-sm text-zinc-500 mb-8 text-center max-w-xs">
         {config.description}
@@ -1564,7 +1564,7 @@ export function AgentPanel({ isOpen, onClose, repoId, repoName, owner, embedded 
       <div className="border-t border-zinc-800 p-3 bg-zinc-900/80 backdrop-blur-sm flex-shrink-0">
         <ChatInput onSend={handleSend} isLoading={isLoading} mode={selectedMode} />
         <p className="text-[10px] text-zinc-600 text-center mt-2">
-          wit can make mistakes. Review important changes.
+          myvcs can make mistakes. Review important changes.
         </p>
       </div>
     </PanelWrapper>
@@ -1650,7 +1650,7 @@ function PanelWrapper({
               <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
                 <Sparkles className="h-4 w-4 text-white" />
               </div>
-              <span className="font-semibold text-sm text-zinc-100">wit AI</span>
+              <span className="font-semibold text-sm text-zinc-100">myvcs AI</span>
             </div>
             <Button 
               variant="ghost" 
@@ -1697,7 +1697,7 @@ function PanelWrapper({
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center m-0">
               <Sparkles className="h-4 w-4 text-white" />
             </div>
-            <span className="font-semibold text-sm text-zinc-100 m-0">wit AI</span>
+            <span className="font-semibold text-sm text-zinc-100 m-0">myvcs AI</span>
             {repoName && (
               <span className="text-xs text-zinc-500 m-0">{owner}/{repoName}</span>
             )}

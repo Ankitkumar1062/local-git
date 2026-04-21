@@ -331,7 +331,7 @@ export function SettingsPage() {
         <CardHeader>
           <CardTitle>Developer Settings</CardTitle>
           <CardDescription>
-            Build integrations and applications with wit.
+            Build integrations and applications with myvcs.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">

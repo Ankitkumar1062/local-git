@@ -115,7 +115,7 @@ export class EmailService {
     this.replyTo = config.replyTo;
     this.repositoryName = config.repositoryName;
     this.repositoryUrl = config.repositoryUrl;
-    this.inviteBaseUrl = config.inviteBaseUrl || 'https://wit.dev/invite';
+    this.inviteBaseUrl = config.inviteBaseUrl || 'https://myvcs.dev/invite';
     this.logoUrl = config.logoUrl;
     this.primaryColor = config.primaryColor || '#6366f1';
   }
@@ -586,7 +586,7 @@ export function createEmailService(config: {
   return new EmailService({
     apiKey: config.resendApiKey,
     fromAddress: config.emailFromAddress,
-    fromName: config.emailFromName || 'wit',
+    fromName: config.emailFromName || 'myvcs',
     repositoryName: config.repositoryName,
     repositoryUrl: config.repositoryUrl,
   });
@@ -625,7 +625,7 @@ export class GlobalEmailService {
     this.fromAddress = config.fromAddress;
     this.fromName = config.fromName;
     this.appUrl = config.appUrl;
-    this.appName = config.appName || 'wit';
+    this.appName = config.appName || 'myvcs';
     this.logoUrl = config.logoUrl;
     this.primaryColor = config.primaryColor || '#6366f1';
   }
@@ -1230,10 +1230,10 @@ export function getGlobalEmailService(): GlobalEmailService {
   if (!globalEmailServiceInstance) {
     globalEmailServiceInstance = new GlobalEmailService({
       apiKey: process.env.RESEND_API_KEY || '',
-      fromAddress: process.env.EMAIL_FROM_ADDRESS || 'noreply@wit.dev',
-      fromName: process.env.EMAIL_FROM_NAME || 'wit',
+      fromAddress: process.env.EMAIL_FROM_ADDRESS || 'noreply@myvcs.dev',
+      fromName: process.env.EMAIL_FROM_NAME || 'myvcs',
       appUrl: process.env.APP_URL || process.env.AUTH_BASE_URL || 'http://localhost:5173',
-      appName: 'wit',
+      appName: 'myvcs',
     });
   }
   return globalEmailServiceInstance;

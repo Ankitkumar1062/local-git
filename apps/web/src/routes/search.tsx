@@ -143,7 +143,7 @@ function EmptyState() {
     <Card>
       <CardContent className="p-12 text-center">
         <Search className="h-16 w-16 mx-auto mb-6 text-muted-foreground/30" />
-        <h2 className="text-xl font-semibold mb-2">Search wit</h2>
+        <h2 className="text-xl font-semibold mb-2">Search myvcs</h2>
         <p className="text-muted-foreground max-w-md mx-auto">
           Search for repositories, code, issues, and pull requests. 
           Use natural language for code search - find code by what it does, not just keywords.

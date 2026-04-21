@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS "repo_sandbox_config" (
   "e2b_template_id" text,
   "daytona_snapshot" text,
   "daytona_auto_stop" integer DEFAULT 15 NOT NULL,
-  "docker_image" text DEFAULT 'wit-sandbox:latest' NOT NULL,
+  "docker_image" text DEFAULT 'myvcs-sandbox:latest' NOT NULL,
   "updated_by_id" text NOT NULL,
   "created_at" timestamp with time zone DEFAULT now() NOT NULL,
   "updated_at" timestamp with time zone DEFAULT now() NOT NULL,

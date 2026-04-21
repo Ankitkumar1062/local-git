@@ -57,7 +57,7 @@ export function PrivacyPage() {
           <li>With your consent or at your direction</li>
           <li>With service providers who perform services on our behalf</li>
           <li>To comply with legal obligations</li>
-          <li>To protect the rights and safety of Wit, our users, and others</li>
+          <li>To protect the rights and safety of myvcs, our users, and others</li>
           <li>In connection with a merger, sale, or acquisition</li>
         </ul>
 
@@ -93,7 +93,7 @@ export function PrivacyPage() {
 
         <h2>8. Third-Party Services</h2>
         <p>
-          Our Service may contain links to third-party websites or services that are not owned or controlled by wit.
+          Our Service may contain links to third-party websites or services that are not owned or controlled by myvcs.
           We have no control over and assume no responsibility for the content, privacy policies, or practices of any
           third-party sites or services.
         </p>
@@ -120,8 +120,8 @@ export function PrivacyPage() {
         <h2>12. Contact Us</h2>
         <p>
           If you have any questions about this Privacy Policy, please contact us at{' '}
-          <a href="mailto:privacy@wit.sh" className="text-primary hover:underline">
-            privacy@wit.sh
+          <a href="mailto:privacy@myvcs.sh" className="text-primary hover:underline">
+            privacy@myvcs.sh
           </a>
         </p>
       </div>

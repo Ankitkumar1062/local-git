@@ -162,7 +162,7 @@ export function handleScope(args: string[]): void {
     case 'set':
       if (subArgs.length === 0) {
         console.error('error: paths required');
-        console.error('Usage: wit scope set <path>... [--name <name>]');
+        console.error('Usage: myvcs scope set <path>... [--name <name>]');
         process.exit(1);
       }
       const nameIndex = subArgs.indexOf('--name');
@@ -178,7 +178,7 @@ export function handleScope(args: string[]): void {
     case 'use':
       if (subArgs.length === 0) {
         console.error('error: scope name required');
-        console.error('Usage: wit scope use <name>');
+        console.error('Usage: myvcs scope use <name>');
         process.exit(1);
       }
       useScope(subArgs[0]);
@@ -226,7 +226,7 @@ export function handleScope(args: string[]): void {
 
     default:
       console.error(`Unknown subcommand: ${subcommand}`);
-      console.error('\nUsage: wit scope <subcommand>');
+      console.error('\nUsage: myvcs scope <subcommand>');
       console.error('\nSubcommands:');
       console.error('  show               Show current scope');
       console.error('  set <path>...      Set scope to specific paths');

@@ -13,7 +13,7 @@ import { Pool } from 'pg';
 
 // Create a pool for the CLI (uses DATABASE_URL env var)
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://wit:wit@localhost:5432/wit',
+  connectionString: process.env.DATABASE_URL || 'postgresql://myvcs:myvcs@localhost:5432/myvcs',
 });
 
 const db = drizzle(pool);

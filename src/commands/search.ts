@@ -1,15 +1,15 @@
 /**
- * wit search - The killer semantic search command
+ * myvcs search - The killer semantic search command
  * 
  * Ask questions about your codebase in natural language.
  * This is the feature that makes developers say "holy shit."
  * 
  * Examples:
- *   wit search "where do we handle authentication"
- *   wit search "how does the PR merge work"
- *   wit search "find all API endpoints"
- *   wit search index         # Index repo for semantic search
- *   wit search status        # Show index health
+ *   myvcs search "where do we handle authentication"
+ *   myvcs search "how does the PR merge work"
+ *   myvcs search "find all API endpoints"
+ *   myvcs search index         # Index repo for semantic search
+ *   myvcs search status        # Show index health
  */
 
 import * as readline from 'readline';
@@ -40,7 +40,7 @@ function hasApiKey(): boolean {
  */
 function printHeader(query: string, mode: 'semantic' | 'text'): void {
   console.log();
-  console.log(`  ${c('bold', c('cyan', 'wit search'))} ${c('dim', '·')} ${c('white', `"${query}"`)}`);
+  console.log(`  ${c('bold', c('cyan', 'myvcs search'))} ${c('dim', '·')} ${c('white', `"${query}"`)}`);
   if (mode === 'semantic') {
     console.log(`  ${c('dim', 'Using AI-powered semantic search')}`);
   } else {
@@ -142,7 +142,7 @@ async function handleIndex(repo: Repository, args: string[]): Promise<void> {
   const force = args.includes('--force') || args.includes('-f');
   
   console.log();
-  console.log(`  ${c('cyan', 'wit search index')} ${c('dim', '· Indexing repository for semantic search')}`);
+  console.log(`  ${c('cyan', 'myvcs search index')} ${c('dim', '· Indexing repository for semantic search')}`);
   console.log();
   
   if (force) {
@@ -182,7 +182,7 @@ async function handleStatus(repo: Repository): Promise<void> {
   const searchModule = await getSemanticSearch();
   
   console.log();
-  console.log(`  ${c('cyan', 'wit search status')} ${c('dim', '· Index health')}`);
+  console.log(`  ${c('cyan', 'myvcs search status')} ${c('dim', '· Index health')}`);
   console.log();
   
   if (!searchModule) {
@@ -206,7 +206,7 @@ async function handleStatus(repo: Repository): Promise<void> {
     
     if (stats.vectorCount === 0) {
       console.log(`  ${c('yellow', '!')} Index is empty`);
-      console.log(`  ${c('dim', 'Run:')} ${c('cyan', 'wit search index')} ${c('dim', 'to index your repository')}`);
+      console.log(`  ${c('dim', 'Run:')} ${c('cyan', 'myvcs search index')} ${c('dim', 'to index your repository')}`);
     } else {
       console.log(`  ${c('green', '✓')} Index is ready`);
       console.log();
@@ -252,7 +252,7 @@ async function doSemanticSearch(repo: Repository, query: string, limit: number):
     // Check if index exists
     if (stats.vectorCount === 0) {
       console.log(`  ${c('yellow', '!')} Repository not indexed yet`);
-      console.log(`  ${c('dim', 'Run:')} ${c('cyan', 'wit search index')} ${c('dim', 'first, or using text search...')}`);
+      console.log(`  ${c('dim', 'Run:')} ${c('cyan', 'myvcs search index')} ${c('dim', 'first, or using text search...')}`);
       console.log();
       return false;
     }
@@ -267,7 +267,7 @@ async function doSemanticSearch(repo: Repository, query: string, limit: number):
     if (results.length === 0) {
       console.log(`  ${c('dim', 'No results found')}`);
       console.log();
-      console.log(`  ${c('dim', 'Try:')} ${c('cyan', 'wit search --text "' + query + '"')} ${c('dim', 'for literal text search')}`);
+      console.log(`  ${c('dim', 'Try:')} ${c('cyan', 'myvcs search --text "' + query + '"')} ${c('dim', 'for literal text search')}`);
       console.log();
       return true;
     }
@@ -384,7 +384,7 @@ async function interactiveMode(repo: Repository): Promise<void> {
   });
   
   console.log();
-  console.log(`  ${c('bold', c('cyan', 'wit search'))} ${c('dim', '· Interactive mode')}`);
+  console.log(`  ${c('bold', c('cyan', 'myvcs search'))} ${c('dim', '· Interactive mode')}`);
   console.log(`  ${c('dim', 'Ask questions about your codebase. Press Ctrl+C to exit.')}`);
   console.log();
   
@@ -450,8 +450,8 @@ export async function handleSearch(args: string[]): Promise<void> {
     repo = Repository.find();
   } catch {
     console.log();
-    console.log(`  ${c('red', '✗')} Not in a wit repository`);
-    console.log(`  ${c('dim', 'Run:')} ${c('cyan', 'wit init')} ${c('dim', 'to create one')}`);
+    console.log(`  ${c('red', '✗')} Not in a myvcs repository`);
+    console.log(`  ${c('dim', 'Run:')} ${c('cyan', 'myvcs init')} ${c('dim', 'to create one')}`);
     console.log();
     return;
   }
@@ -507,21 +507,21 @@ export async function handleSearch(args: string[]): Promise<void> {
   // No query provided
   if (!query) {
     console.log();
-    console.log(`  ${c('bold', c('cyan', 'wit search'))} ${c('dim', '· Search your codebase')}`);
+    console.log(`  ${c('bold', c('cyan', 'myvcs search'))} ${c('dim', '· Search your codebase')}`);
     console.log();
     console.log(`  ${c('dim', 'Usage:')}`);
-    console.log(`    ${c('cyan', 'wit search')} ${c('white', '"where do we handle auth"')}`);
-    console.log(`    ${c('cyan', 'wit search')} ${c('white', '"find all API endpoints"')}`);
-    console.log(`    ${c('cyan', 'wit search index')}     ${c('dim', '· Index repo for semantic search')}`);
-    console.log(`    ${c('cyan', 'wit search status')}    ${c('dim', '· Check index health')}`);
-    console.log(`    ${c('cyan', 'wit search -i')}        ${c('dim', '· Interactive mode')}`);
-    console.log(`    ${c('cyan', 'wit search -t')} ${c('white', '"foo"')} ${c('dim', '· Force text search')}`);
+    console.log(`    ${c('cyan', 'myvcs search')} ${c('white', '"where do we handle auth"')}`);
+    console.log(`    ${c('cyan', 'myvcs search')} ${c('white', '"find all API endpoints"')}`);
+    console.log(`    ${c('cyan', 'myvcs search index')}     ${c('dim', '· Index repo for semantic search')}`);
+    console.log(`    ${c('cyan', 'myvcs search status')}    ${c('dim', '· Check index health')}`);
+    console.log(`    ${c('cyan', 'myvcs search -i')}        ${c('dim', '· Interactive mode')}`);
+    console.log(`    ${c('cyan', 'myvcs search -t')} ${c('white', '"foo"')} ${c('dim', '· Force text search')}`);
     console.log();
     console.log(`  ${c('dim', 'File/Content Search:')}`);
-    console.log(`    ${c('cyan', 'wit search files')} ${c('white', '"*.ts"')}       ${c('dim', '· Find files by glob pattern')}`);
-    console.log(`    ${c('cyan', 'wit search')} ${c('white', '"foo"')} ${c('cyan', '--in')} ${c('white', '"*.ts"')} ${c('dim', '· Search in specific files')}`);
-    console.log(`    ${c('cyan', 'wit search --files')} ${c('white', '"pattern"')} ${c('dim', '· Search file names only')}`);
-    console.log(`    ${c('cyan', 'wit search --content')} ${c('white', '"pattern"')} ${c('dim', '· Search file contents only')}`);
+    console.log(`    ${c('cyan', 'myvcs search files')} ${c('white', '"*.ts"')}       ${c('dim', '· Find files by glob pattern')}`);
+    console.log(`    ${c('cyan', 'myvcs search')} ${c('white', '"foo"')} ${c('cyan', '--in')} ${c('white', '"*.ts"')} ${c('dim', '· Search in specific files')}`);
+    console.log(`    ${c('cyan', 'myvcs search --files')} ${c('white', '"pattern"')} ${c('dim', '· Search file names only')}`);
+    console.log(`    ${c('cyan', 'myvcs search --content')} ${c('white', '"pattern"')} ${c('dim', '· Search file contents only')}`);
     console.log();
     return;
   }
@@ -532,7 +532,7 @@ export async function handleSearch(args: string[]): Promise<void> {
   // File pattern only search (glob search)
   if (filesOnly) {
     console.log();
-    console.log(`  ${c('bold', c('cyan', 'wit search --files'))} ${c('dim', '·')} ${c('white', `"${query}"`)}`);
+    console.log(`  ${c('bold', c('cyan', 'myvcs search --files'))} ${c('dim', '·')} ${c('white', `"${query}"`)}`);
     console.log(`  ${c('dim', 'Searching file names...')}`);
     console.log();
     doGlobSearch(repo, query, limit);
@@ -542,7 +542,7 @@ export async function handleSearch(args: string[]): Promise<void> {
   // Content only search (optionally in specific files)
   if (contentOnly || filePattern) {
     console.log();
-    console.log(`  ${c('bold', c('cyan', 'wit search'))} ${c('dim', '·')} ${c('white', `"${query}"`)}`);
+    console.log(`  ${c('bold', c('cyan', 'myvcs search'))} ${c('dim', '·')} ${c('white', `"${query}"`)}`);
     if (filePattern) {
       console.log(`  ${c('dim', `Searching in files matching: ${filePattern}`)}`);
     } else {

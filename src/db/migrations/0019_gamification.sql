@@ -178,7 +178,7 @@ INSERT INTO "achievements" ("key", "name", "description", "category", "rarity", 
   ('halloween_commit', 'Spooky Coder', 'Make a commit on Halloween (October 31st)', 'special', 'rare', 150, '🎃', true, 74),
   ('speedrun', 'Speedrunner', 'Open and merge a PR within 10 minutes', 'special', 'rare', 200, '⚡', true, 75),
   ('perfectionist', 'Perfectionist', 'Get a PR approved with no requested changes', 'special', 'uncommon', 100, '✨', false, 76),
-  ('ai_native', 'AI Native', 'Use wit ai commit for 10 commits', 'special', 'uncommon', 150, '🤖', false, 77),
+  ('ai_native', 'AI Native', 'Use myvcs ai commit for 10 commits', 'special', 'uncommon', 150, '🤖', false, 77),
   ('polyglot', 'Polyglot', 'Commit code in 5 different programming languages', 'special', 'rare', 300, '🌐', false, 78),
   ('community_contributor', 'Community Contributor', 'Get a PR merged in a repository you don''t own', 'special', 'uncommon', 200, '🤝', false, 79)
 ON CONFLICT ("key") DO NOTHING;

@@ -1,7 +1,7 @@
 /**
- * Wit Primitives
+ * myvcs Primitives
  * 
- * High-level abstractions built on top of wit core for agent workspaces.
+ * High-level abstractions built on top of myvcs core for agent workspaces.
  * Building blocks for agent-centric applications backed by Git.
  */
 

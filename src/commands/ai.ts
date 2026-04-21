@@ -1,5 +1,5 @@
 /**
- * AI Commands for wit
+ * AI Commands for myvcs
  * 
  * Provides AI-powered features including:
  * - Natural language commands
@@ -46,7 +46,7 @@ function formatDiffOutput(file: string, diffLines: DiffLine[], contextLines: num
 }
 
 /**
- * Handle the main `wit ai` command for natural language interaction
+ * Handle the main `myvcs ai` command for natural language interaction
  */
 export async function handleAI(args: string[]): Promise<void> {
   if (args.length === 0) {
@@ -67,7 +67,7 @@ export async function handleAI(args: string[]): Promise<void> {
     console.error('AI features require an API key.');
     console.error('Set OPENROUTER_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, or ANTHROPIC_API_KEY.');
     console.error('\nAlternatively, set WIT_AI_MODEL to use a different provider.');
-    console.error('\nRun "wit ai status" to see current configuration.');
+    console.error('\nRun "myvcs ai status" to see current configuration.');
     process.exit(1);
   }
 
@@ -102,13 +102,13 @@ async function handleChat(args: string[]): Promise<void> {
   
   if (!query) {
     console.error('Please provide a question or command.');
-    console.error('Example: wit ai "what files have I changed?"');
+    console.error('Example: myvcs ai "what files have I changed?"');
     process.exit(1);
   }
 
   const agent = getTsgitAgent();
   
-  console.log('\n🤖 wit AI\n');
+  console.log('\n🤖 myvcs AI\n');
   
   try {
     const result = await agent.stream(query);
@@ -172,7 +172,7 @@ async function handleAICommit(args: string[]): Promise<void> {
   
   if (stagedFiles.length === 0) {
     console.error('No changes staged for commit.');
-    console.error('Use "wit add <files>" to stage files first, or use "wit ai commit -a" to stage all.');
+    console.error('Use "myvcs add <files>" to stage files first, or use "myvcs ai commit -a" to stage all.');
     process.exit(1);
   }
   
@@ -288,7 +288,7 @@ ${diffContent}`;
     } else {
       console.log('\nDry run mode - commit NOT created.');
       console.log('\nTo create the commit, run without --dry-run:');
-      console.log('  wit ai commit');
+      console.log('  myvcs ai commit');
     }
   } catch (error) {
     console.error('Error generating commit message:', error instanceof Error ? error.message : 'Unknown error');
@@ -442,7 +442,7 @@ async function handleResolve(args: string[]): Promise<void> {
   
   if (unresolvedConflicts.length === 0) {
     console.log('All conflicts have been resolved.');
-    console.log('Run "wit merge --continue" to complete the merge.');
+    console.log('Run "myvcs merge --continue" to complete the merge.');
     return;
   }
   
@@ -510,7 +510,7 @@ If you can provide a merged resolution, output it in a code block labeled "RESOL
 function printAIStatus(): void {
   const info = getAIInfo();
   
-  console.log('\n🤖 wit AI Status\n');
+  console.log('\n🤖 myvcs AI Status\n');
   console.log(`Available: ${info.available ? '✅ Yes' : '❌ No'}`);
   console.log(`Model: ${info.model}`);
   console.log(`Provider: ${info.provider}`);
@@ -537,17 +537,17 @@ function printAIStatus(): void {
  */
 function printAIHelp(): void {
   console.log(`
-wit ai - AI-powered git assistant
+myvcs ai - AI-powered git assistant
 
-Usage: wit ai <command> [options]
+Usage: myvcs ai <command> [options]
 
 Commands:
-  wit ai <query>              Ask a question or give a natural language command
-  wit ai commit [-a]          Generate commit message and create commit
-  wit ai review [--staged]    Review code changes
-  wit ai explain [ref]        Explain a commit
-  wit ai resolve [file]       Help resolve merge conflicts
-  wit ai status               Show AI configuration status
+  myvcs ai <query>              Ask a question or give a natural language command
+  myvcs ai commit [-a]          Generate commit message and create commit
+  myvcs ai review [--staged]    Review code changes
+  myvcs ai explain [ref]        Explain a commit
+  myvcs ai resolve [file]       Help resolve merge conflicts
+  myvcs ai status               Show AI configuration status
 
 Options:
   -a, --all        Stage all tracked files before commit
@@ -555,13 +555,13 @@ Options:
   --staged         Review only staged changes
 
 Examples:
-  wit ai "what files have changed?"
-  wit ai "show me the last 5 commits"
-  wit ai "create a branch for the login feature"
-  wit ai commit -a           # Stage all and commit with AI message
-  wit ai commit --dry-run    # Preview message only
-  wit ai review --staged
-  wit ai resolve src/utils.ts
+  myvcs ai "what files have changed?"
+  myvcs ai "show me the last 5 commits"
+  myvcs ai "create a branch for the login feature"
+  myvcs ai commit -a           # Stage all and commit with AI message
+  myvcs ai commit --dry-run    # Preview message only
+  myvcs ai review --staged
+  myvcs ai resolve src/utils.ts
 
 Environment:
   OPENROUTER_API_KEY   OpenRouter API key (recommended for Gemma)

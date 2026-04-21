@@ -1,6 +1,6 @@
-# Wit Web Application
+# myvcs Web Application
 
-A modern, beautiful web application for browsing repositories, managing pull requests, and handling issues. This is the GitHub.com equivalent for Wit.
+A modern, beautiful web application for browsing repositories, managing pull requests, and handling issues. This is the GitHub.com equivalent for myvcs.
 
 ## Tech Stack
 

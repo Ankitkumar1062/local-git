@@ -519,7 +519,7 @@ Return a valid JSON execution plan. Use plan ID "${planId}", version ${inputData
 
     if (mastra) {
       try {
-        const agent = mastra.getAgent('wit');
+        const agent = mastra.getAgent('myvcs');
         if (agent) {
           const response = await agent.generate(PLANNER_AGENT_INSTRUCTIONS + '\n\n' + prompt);
           
@@ -681,8 +681,8 @@ const executePlanStep = createStep({
               .join(', ')}`;
             
             const commitResult = createCommit(inputData.repoPath, commitMessage, {
-              name: 'wit AI Planner',
-              email: 'ai-planner@wit.dev',
+              name: 'myvcs AI Planner',
+              email: 'ai-planner@myvcs.dev',
             });
             
             if (commitResult.success && commitResult.commitHash) {
@@ -748,7 +748,7 @@ async function executeSubtask(
       };
     }
 
-    const agent = mastra.getAgent('wit');
+    const agent = mastra.getAgent('myvcs');
     if (!agent) {
       return {
         subtaskId: subtask.id,
@@ -857,7 +857,7 @@ Review these results and provide your assessment in the specified JSON format.`;
 
     if (mastra) {
       try {
-        const agent = mastra.getAgent('wit');
+        const agent = mastra.getAgent('myvcs');
         if (agent) {
           const response = await agent.generate(prompt);
           

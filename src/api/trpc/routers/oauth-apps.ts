@@ -1,7 +1,7 @@
 /**
  * OAuth Apps tRPC Router
  *
- * Provides API endpoints for managing Wit Apps (OAuth applications).
+ * Provides API endpoints for managing myvcs Apps (OAuth applications).
  * Users can create, update, delete, and manage their OAuth apps.
  */
 

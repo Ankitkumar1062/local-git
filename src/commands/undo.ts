@@ -29,13 +29,13 @@ export interface UndoResult {
  * 
  * @example
  * // Undo last operation
- * wit undo
+ * myvcs undo
  * 
  * // Undo last 3 operations
- * wit undo --steps 3
+ * myvcs undo --steps 3
  * 
  * // Show what would be undone
- * wit undo --dry-run
+ * myvcs undo --dry-run
  */
 export function undo(
   repo: Repository,
@@ -49,7 +49,7 @@ export function undo(
     throw new TsgitError(
       'Nothing to undo',
       ErrorCode.OPERATION_FAILED,
-      ['wit history    # View operation history']
+      ['myvcs history    # View operation history']
     );
   }
 

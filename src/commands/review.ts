@@ -5,12 +5,12 @@
  * Powered by CodeRabbit (https://coderabbit.ai) - our AI code review partner.
  *
  * Usage:
- *   wit review                     Review uncommitted changes
- *   wit review --staged            Review only staged changes
- *   wit review --branch            Review changes since branching from main
- *   wit review --commits HEAD~3..  Review specific commits
- *   wit review --configure         Configure CodeRabbit API key
- *   wit review --status            Show CodeRabbit configuration status
+ *   myvcs review                     Review uncommitted changes
+ *   myvcs review --staged            Review only staged changes
+ *   myvcs review --branch            Review changes since branching from main
+ *   myvcs review --commits HEAD~3..  Review specific commits
+ *   myvcs review --configure         Configure CodeRabbit API key
+ *   myvcs review --status            Show CodeRabbit configuration status
  */
 
 import * as fs from 'fs';
@@ -29,9 +29,9 @@ import {
 import { colors } from '../utils/colors';
 
 export const REVIEW_HELP = `
-wit review - AI-powered code review using CodeRabbit
+myvcs review - AI-powered code review using CodeRabbit
 
-Usage: wit review [options]
+Usage: myvcs review [options]
 
 Review your code before pushing. Powered by CodeRabbit.
 
@@ -48,21 +48,21 @@ Options:
   -h, --help        Show this help message
 
 Examples:
-  wit review                      Review all uncommitted changes
-  wit review --staged             Review only staged changes (pre-commit)
-  wit review --branch             Review changes since branching from main
-  wit review --commits HEAD~3..   Review last 3 commits
-  wit review --strict             Fail if issues found (for CI)
-  wit review --configure          Configure CodeRabbit API key
+  myvcs review                      Review all uncommitted changes
+  myvcs review --staged             Review only staged changes (pre-commit)
+  myvcs review --branch             Review changes since branching from main
+  myvcs review --commits HEAD~3..   Review last 3 commits
+  myvcs review --strict             Fail if issues found (for CI)
+  myvcs review --configure          Configure CodeRabbit API key
 
 Pre-push hook:
-  Add to .wit/hooks/pre-push:
+  Add to .myvcs/hooks/pre-push:
     #!/bin/sh
-    wit review --branch --strict
+    myvcs review --branch --strict
 
 CodeRabbit:
   Get your API key at https://coderabbit.ai
-  Set via: wit review --configure
+  Set via: myvcs review --configure
   Or: export CODERABBIT_API_KEY=your-key
 `;
 
@@ -160,7 +160,7 @@ export async function handleCodeReview(args: string[]): Promise<void> {
     console.log('Get your free API key at: ' + colors.cyan('https://coderabbit.ai'));
     console.log('');
     console.log('To configure:');
-    console.log(colors.cyan('  wit review --configure'));
+    console.log(colors.cyan('  myvcs review --configure'));
     console.log('');
     console.log('Or set the environment variable:');
     console.log(colors.cyan('  export CODERABBIT_API_KEY=your-key'));
@@ -202,7 +202,7 @@ export async function handleCodeReview(args: string[]): Promise<void> {
   if (!diffContent || diffContent.trim().length === 0) {
     console.log(colors.dim('\nNo changes to review.\n'));
     if (options.staged) {
-      console.log('Stage some changes with: ' + colors.cyan('wit add <files>'));
+      console.log('Stage some changes with: ' + colors.cyan('myvcs add <files>'));
     } else if (options.branch) {
       console.log('Make some commits on your branch first.');
     } else {
@@ -298,7 +298,7 @@ async function getBranchDiff(repo: Repository, baseBranch: string): Promise<{ di
       ErrorCode.REF_NOT_FOUND,
       [
         `Make sure ${baseBranch} exists`,
-        `Try: wit fetch origin ${baseBranch}`,
+        `Try: myvcs fetch origin ${baseBranch}`,
       ]
     );
   }
@@ -587,7 +587,7 @@ async function showStatus(): Promise<void> {
 
   if (!apiKey) {
     console.log('To configure:');
-    console.log(colors.cyan('  wit review --configure'));
+    console.log(colors.cyan('  myvcs review --configure'));
     console.log('');
     console.log('Or set environment variable:');
     console.log(colors.cyan('  export CODERABBIT_API_KEY=your-key'));
@@ -595,7 +595,7 @@ async function showStatus(): Promise<void> {
     console.log('Get your API key at: ' + colors.cyan('https://coderabbit.ai'));
   } else {
     console.log(colors.green('Ready to review!'));
-    console.log(colors.dim('Try: wit review'));
+    console.log(colors.dim('Try: myvcs review'));
   }
 
   console.log('');
@@ -638,9 +638,9 @@ async function configure(): Promise<void> {
     if (apiKey.trim()) {
       saveCodeRabbitApiKey(apiKey.trim());
       console.log(colors.green('\n✓') + ' API key saved successfully');
-      console.log(colors.dim('  Stored in: ~/.config/wit/coderabbit.json'));
+      console.log(colors.dim('  Stored in: ~/.config/myvcs/coderabbit.json'));
       console.log('');
-      console.log('You can now run: ' + colors.cyan('wit review'));
+      console.log('You can now run: ' + colors.cyan('myvcs review'));
     } else {
       console.log('\nSkipped.');
       console.log('You can also set: ' + colors.cyan('export CODERABBIT_API_KEY=your-key'));

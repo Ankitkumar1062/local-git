@@ -1,5 +1,5 @@
 /**
- * wit - A Modern Git Implementation in TypeScript
+ * myvcs - A Modern Git Implementation in TypeScript
  * 
  * Improvements over Git:
  * - SHA-256 hashing by default (more secure than SHA-1)
@@ -12,7 +12,7 @@
  * 
  * @example
  * ```typescript
- * import { Repository } from 'wit';
+ * import { Repository } from 'myvcs';
  * 
  * // Initialize a new repository
  * const repo = Repository.init('/path/to/project');

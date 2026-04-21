@@ -315,8 +315,8 @@ export class ScopeManager {
         `Scope '${name}' not found`,
         ErrorCode.INVALID_ARGUMENT,
         [
-          'wit scope list    # List available scopes',
-          ...SCOPE_PRESETS.map(p => `wit scope use ${p.name}    # ${p.description}`),
+          'myvcs scope list    # List available scopes',
+          ...SCOPE_PRESETS.map(p => `myvcs scope use ${p.name}    # ${p.description}`),
         ]
       );
     }
@@ -434,9 +434,9 @@ export class ScopedRepository {
         `Path '${filePath}' is outside the current scope`,
         ErrorCode.SCOPE_VIOLATION,
         [
-          'wit scope show    # View current scope',
-          `wit scope add ${filePath}    # Add path to scope`,
-          'wit scope clear    # Clear scope restrictions',
+          'myvcs scope show    # View current scope',
+          `myvcs scope add ${filePath}    # Add path to scope`,
+          'myvcs scope clear    # Clear scope restrictions',
         ]
       );
     }

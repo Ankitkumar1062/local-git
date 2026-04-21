@@ -1,16 +1,16 @@
 /**
  * Garbage Collection Command
  * 
- * Cleans up and optimizes the wit repository.
+ * Cleans up and optimizes the myvcs repository.
  * 
  * Commands:
- * - wit gc                       Run garbage collection
- * - wit gc --aggressive          More aggressive optimization
- * - wit gc --prune=now           Prune immediately (no grace period)
- * - wit gc --prune=<date>        Prune objects older than date
- * - wit gc --no-prune            Don't prune loose objects
- * - wit gc --quiet               Suppress output
- * - wit gc --auto                Only run if thresholds exceeded
+ * - myvcs gc                       Run garbage collection
+ * - myvcs gc --aggressive          More aggressive optimization
+ * - myvcs gc --prune=now           Prune immediately (no grace period)
+ * - myvcs gc --prune=<date>        Prune objects older than date
+ * - myvcs gc --no-prune            Don't prune loose objects
+ * - myvcs gc --quiet               Suppress output
+ * - myvcs gc --auto                Only run if thresholds exceeded
  * 
  * Tasks performed:
  * 1. Remove unreachable objects

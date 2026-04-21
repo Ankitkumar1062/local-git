@@ -189,7 +189,7 @@ export async function rateLimiter(c: Context, next: Next): Promise<Response | vo
     return c.json(
       {
         message: 'API rate limit exceeded',
-        documentation_url: 'https://docs.wit.dev/api/rate-limiting',
+        documentation_url: 'https://docs.myvcs.dev/api/rate-limiting',
       },
       429,
       {
@@ -246,7 +246,7 @@ export async function requireAuth(c: Context, next: Next): Promise<Response | vo
     return c.json(
       {
         message: 'Requires authentication',
-        documentation_url: 'https://docs.wit.dev/api/authentication',
+        documentation_url: 'https://docs.myvcs.dev/api/authentication',
       },
       401
     );
@@ -275,7 +275,7 @@ export function requireScopes(...requiredScopes: OAuthAppScope[]) {
         {
           message: 'Insufficient scope',
           required_scopes: requiredScopes,
-          documentation_url: 'https://docs.wit.dev/api/scopes',
+          documentation_url: 'https://docs.myvcs.dev/api/scopes',
         },
         403
       );

@@ -975,7 +975,7 @@ async function createDockerPtySession(
   }
 
   // Start a container with an interactive shell
-  const containerName = `wit-sandbox-${options.repoId.slice(0, 8)}-${Date.now()}`;
+  const containerName = `myvcs-sandbox-${options.repoId.slice(0, 8)}-${Date.now()}`;
   
   const dockerArgs = [
     'run',

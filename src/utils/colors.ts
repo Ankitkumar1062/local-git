@@ -1,5 +1,5 @@
 /**
- * Terminal color utilities for wit CLI output
+ * Terminal color utilities for myvcs CLI output
  * Centralized to ensure consistent styling across all commands
  */
 

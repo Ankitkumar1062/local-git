@@ -48,7 +48,7 @@ export class Knowledge {
     };
 
     const resolvedDir = path.resolve(dir);
-    const gitDir = path.join(resolvedDir, '.wit');
+    const gitDir = path.join(resolvedDir, '.myvcs');
     this.manifestPath = path.join(resolvedDir, KNOWLEDGE_MANIFEST);
 
     if (!fs.existsSync(gitDir)) {

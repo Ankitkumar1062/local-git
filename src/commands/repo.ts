@@ -9,7 +9,7 @@ import { createApiClient, getAuthToken } from '../api/client';
 export const REPO_HELP = `
 Repository Management Commands
 
-Usage: wit repo <subcommand> [options]
+Usage: myvcs repo <subcommand> [options]
 
 Subcommands:
   transfer <owner/repo> <new-owner>    Transfer repository to another user or org
@@ -18,9 +18,9 @@ Transfer Options:
   --org                                Transfer to an organization (default: user)
 
 Examples:
-  wit repo transfer myuser/myrepo newuser
-  wit repo transfer myuser/myrepo myorg --org
-  wit repo transfer acme-org/project other-org --org
+  myvcs repo transfer myuser/myrepo newuser
+  myvcs repo transfer myuser/myrepo myorg --org
+  myvcs repo transfer acme-org/project other-org --org
 
 Notes:
   - You must be the owner of the repository to transfer it
@@ -52,7 +52,7 @@ export async function handleRepo(args: string[]): Promise<void> {
 
     default:
       console.error(`Unknown repo subcommand: ${subcommand}`);
-      console.error('Run "wit repo help" for usage information.');
+      console.error('Run "myvcs repo help" for usage information.');
       process.exit(1);
   }
 }
@@ -78,11 +78,11 @@ async function handleTransfer(args: string[]): Promise<void> {
   }
 
   if (positional.length < 2) {
-    console.error('Usage: wit repo transfer <owner/repo> <new-owner> [--org]');
+    console.error('Usage: myvcs repo transfer <owner/repo> <new-owner> [--org]');
     console.error('');
     console.error('Examples:');
-    console.error('  wit repo transfer alice/myrepo bob');
-    console.error('  wit repo transfer alice/myrepo acme-corp --org');
+    console.error('  myvcs repo transfer alice/myrepo bob');
+    console.error('  myvcs repo transfer alice/myrepo acme-corp --org');
     process.exit(1);
   }
 
@@ -105,7 +105,7 @@ async function handleTransfer(args: string[]): Promise<void> {
     console.error('Authentication required. Please log in first.');
     console.error('');
     console.error('To authenticate:');
-    console.error('  1. Start the server: wit up');
+    console.error('  1. Start the server: myvcs up');
     console.error('  2. Create a token via the web UI or API');
     console.error('  3. Set WIT_TOKEN environment variable');
     process.exit(1);

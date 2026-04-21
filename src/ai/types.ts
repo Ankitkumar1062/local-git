@@ -1,5 +1,5 @@
 /**
- * Type definitions for wit AI integration
+ * Type definitions for myvcs AI integration
  */
 
 /**

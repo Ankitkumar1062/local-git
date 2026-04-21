@@ -11,7 +11,7 @@
  * - Speculative merging with rollback
  * - Commit reassembly to create a clean history
  * 
- * Uses wit's TypeScript API for all git operations.
+ * Uses myvcs's TypeScript API for all git operations.
  */
 
 import * as path from 'path';
@@ -267,7 +267,7 @@ export class MergeQueueManager {
   }
 
   /**
-   * Get files changed between two commits using wit's TS API
+   * Get files changed between two commits using myvcs's TS API
    */
   private getChangedFiles(headSha: string, baseSha: string): FileChange[] {
     try {
@@ -325,7 +325,7 @@ export class MergeQueueManager {
   }
 
   /**
-   * Check if a file exists in a specific commit using wit's TS API
+   * Check if a file exists in a specific commit using myvcs's TS API
    */
   private fileExistsInCommit(sha: string, filePath: string): boolean {
     try {
@@ -338,7 +338,7 @@ export class MergeQueueManager {
   }
 
   /**
-   * Get commits between two refs using wit's TS API
+   * Get commits between two refs using myvcs's TS API
    */
   private getCommits(baseSha: string, headSha: string): CommitInfo[] {
     try {
@@ -662,7 +662,7 @@ export class MergeQueueManager {
 
     const author: Author = {
       name: 'Merge Queue',
-      email: 'merge-queue@wit.dev',
+      email: 'merge-queue@myvcs.dev',
       timestamp: Math.floor(Date.now() / 1000),
       timezone: getTimezone(),
     };

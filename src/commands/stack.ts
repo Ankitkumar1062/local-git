@@ -2,17 +2,17 @@
  * Stack Command - Stacked Diffs Support
  * 
  * Usage:
- *   wit stack create <name>     Start a new stack from current branch
- *   wit stack push [name]       Create a new branch on top of the stack
- *   wit stack list              Show all stacks
- *   wit stack show              Show current stack with visualization
- *   wit stack sync              Rebase entire stack when base changes
- *   wit stack submit            Push all branches for review
- *   wit stack pop               Remove top branch from stack
- *   wit stack delete <name>     Delete a stack (keeps branches)
- *   wit stack up                Move to child branch in stack
- *   wit stack down              Move to parent branch in stack
- *   wit stack goto <n|branch>   Jump to specific branch in stack
+ *   myvcs stack create <name>     Start a new stack from current branch
+ *   myvcs stack push [name]       Create a new branch on top of the stack
+ *   myvcs stack list              Show all stacks
+ *   myvcs stack show              Show current stack with visualization
+ *   myvcs stack sync              Rebase entire stack when base changes
+ *   myvcs stack submit            Push all branches for review
+ *   myvcs stack pop               Remove top branch from stack
+ *   myvcs stack delete <name>     Delete a stack (keeps branches)
+ *   myvcs stack up                Move to child branch in stack
+ *   myvcs stack down              Move to parent branch in stack
+ *   myvcs stack goto <n|branch>   Jump to specific branch in stack
  */
 
 import { Repository } from '../core/repository';
@@ -21,12 +21,12 @@ import { TsgitError } from '../core/errors';
 import { colors } from '../utils/colors';
 
 const HELP = `
-wit stack - Manage stacked diffs
+myvcs stack - Manage stacked diffs
 
 Stacked diffs allow you to break down large features into smaller,
 dependent branches that build on top of each other.
 
-Usage: wit stack <command> [options]
+Usage: myvcs stack <command> [options]
 
 Commands:
   create <name> [-d <desc>]   Start a new stack from current branch
@@ -44,24 +44,24 @@ Navigation:
   goto <n|branch>             Jump to specific branch in stack
 
 Examples:
-  wit stack create auth-feature
-  wit stack push              # Creates auth-feature/part-1
-  wit commit -m "Add login"
-  wit stack push              # Creates auth-feature/part-2
-  wit commit -m "Add logout"
-  wit stack show              # See the stack
-  wit stack sync              # Rebase after main updated
-  wit stack submit            # Push all for review
+  myvcs stack create auth-feature
+  myvcs stack push              # Creates auth-feature/part-1
+  myvcs commit -m "Add login"
+  myvcs stack push              # Creates auth-feature/part-2
+  myvcs commit -m "Add logout"
+  myvcs stack show              # See the stack
+  myvcs stack sync              # Rebase after main updated
+  myvcs stack submit            # Push all for review
 
 Stack Workflow:
   1. Start on main (or your base branch)
-  2. Create a stack: wit stack create feature-name
-  3. Push first change: wit stack push
+  2. Create a stack: myvcs stack create feature-name
+  3. Push first change: myvcs stack push
   4. Commit your changes
-  5. Push more changes: wit stack push
+  5. Push more changes: myvcs stack push
   6. Repeat steps 4-5
-  7. Sync when base updates: wit stack sync
-  8. Submit for review: wit stack submit
+  7. Sync when base updates: myvcs stack sync
+  8. Submit for review: myvcs stack submit
 `;
 
 /**
@@ -132,7 +132,7 @@ export function handleStack(args: string[]): void {
 
       default:
         console.error(`Unknown stack command: ${subcommand}`);
-        console.error('Run "wit stack --help" for usage information');
+        console.error('Run "myvcs stack --help" for usage information');
         process.exit(1);
     }
   } catch (error) {
@@ -151,7 +151,7 @@ export function handleStack(args: string[]): void {
 function handleCreate(manager: StackManager, args: string[]): void {
   if (args.length === 0) {
     console.error('error: Stack name is required');
-    console.error('Usage: wit stack create <name> [-d <description>]');
+    console.error('Usage: myvcs stack create <name> [-d <description>]');
     process.exit(1);
   }
 
@@ -173,9 +173,9 @@ function handleCreate(manager: StackManager, args: string[]): void {
   }
   console.log('');
   console.log('Next steps:');
-  console.log(`  ${colors.dim('wit stack push')}     # Create first branch in stack`);
-  console.log(`  ${colors.dim('wit commit -m "..."')} # Make your changes`);
-  console.log(`  ${colors.dim('wit stack push')}     # Create next branch`);
+  console.log(`  ${colors.dim('myvcs stack push')}     # Create first branch in stack`);
+  console.log(`  ${colors.dim('myvcs commit -m "..."')} # Make your changes`);
+  console.log(`  ${colors.dim('myvcs stack push')}     # Create next branch`);
 }
 
 /**
@@ -191,8 +191,8 @@ function handlePush(manager: StackManager, args: string[]): void {
   console.log('');
   console.log('Next steps:');
   console.log(`  ${colors.dim('# Make your changes')}`);
-  console.log(`  ${colors.dim('wit add . && wit commit -m "..."')}`);
-  console.log(`  ${colors.dim('wit stack push')}  # Continue the stack`);
+  console.log(`  ${colors.dim('myvcs add . && myvcs commit -m "..."')}`);
+  console.log(`  ${colors.dim('myvcs stack push')}  # Continue the stack`);
 }
 
 /**
@@ -218,7 +218,7 @@ function handleList(manager: StackManager): void {
     console.log('No stacks found');
     console.log('');
     console.log('Create a new stack:');
-    console.log(`  ${colors.dim('wit stack create <name>')}`);
+    console.log(`  ${colors.dim('myvcs stack create <name>')}`);
     return;
   }
 
@@ -256,7 +256,7 @@ function handleShow(manager: StackManager, args: string[]): void {
       console.error(`Stack '${stackName}' not found`);
     } else {
       console.error('Not currently on a stacked branch');
-      console.error('Run "wit stack list" to see available stacks');
+      console.error('Run "myvcs stack list" to see available stacks');
     }
     process.exit(1);
   }
@@ -334,8 +334,8 @@ function handleSync(manager: StackManager): void {
         }
       }
       console.error('\nResolve conflicts and run:');
-      console.error('  wit rebase --continue');
-      console.error('  wit stack sync');
+      console.error('  myvcs rebase --continue');
+      console.error('  myvcs stack sync');
     }
     process.exit(1);
   }
@@ -357,7 +357,7 @@ function handleSubmit(manager: StackManager, args: string[]): void {
       console.log(`  ${colors.green('')} ${branch}`);
     }
     console.log('');
-    console.log(colors.dim('Note: Use "wit push" to actually push branches to remote'));
+    console.log(colors.dim('Note: Use "myvcs push" to actually push branches to remote'));
   } else {
     console.error(colors.yellow('') + ' Some branches could not be submitted');
     for (const { branch, error } of result.failed) {
@@ -373,7 +373,7 @@ function handleSubmit(manager: StackManager, args: string[]): void {
 function handleDelete(manager: StackManager, args: string[]): void {
   if (args.length === 0) {
     console.error('error: Stack name is required');
-    console.error('Usage: wit stack delete <name>');
+    console.error('Usage: myvcs stack delete <name>');
     process.exit(1);
   }
 
@@ -394,7 +394,7 @@ function handleDelete(manager: StackManager, args: string[]): void {
     for (const branch of stack.branches) {
       console.log(`  ${branch}`);
     }
-    console.log(colors.dim('\nUse "wit branch -d <name>" to delete them'));
+    console.log(colors.dim('\nUse "myvcs branch -d <name>" to delete them'));
   }
 }
 
@@ -420,7 +420,7 @@ function handleDown(manager: StackManager): void {
 function handleGoto(manager: StackManager, args: string[]): void {
   if (args.length === 0) {
     console.error('error: Branch name or index is required');
-    console.error('Usage: wit stack goto <branch|index>');
+    console.error('Usage: myvcs stack goto <branch|index>');
     process.exit(1);
   }
 
@@ -440,9 +440,9 @@ function handleGoto(manager: StackManager, args: string[]): void {
 function handleReorder(manager: StackManager, args: string[]): void {
   if (args.length === 0) {
     console.error('error: New branch order is required');
-    console.error('Usage: wit stack reorder <branch1> <branch2> ...');
+    console.error('Usage: myvcs stack reorder <branch1> <branch2> ...');
     console.error('');
-    console.error('Example: wit stack reorder feature/part-2 feature/part-1 feature/part-3');
+    console.error('Example: myvcs stack reorder feature/part-2 feature/part-1 feature/part-3');
     process.exit(1);
   }
 
@@ -455,7 +455,7 @@ function handleReorder(manager: StackManager, args: string[]): void {
     console.log(`  ${i + 1}. ${stack.branches[i]}`);
   }
   console.log('');
-  console.log(colors.yellow('') + ' Run "wit stack sync" to rebase branches to new order');
+  console.log(colors.yellow('') + ' Run "myvcs stack sync" to rebase branches to new order');
 }
 
 // Export for CLI

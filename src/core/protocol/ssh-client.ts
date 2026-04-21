@@ -106,7 +106,7 @@ export interface SSHAuthOptions {
 export class SSHGitClient {
   private url: ParsedSSHUrl;
   private auth: SSHAuthOptions;
-  private userAgent: string = 'wit/2.0';
+  private userAgent: string = 'myvcs/2.0';
   private client: SSH2Client | null = null;
   private connectionTimeout: number = 30000;
 

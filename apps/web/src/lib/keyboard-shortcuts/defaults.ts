@@ -1,7 +1,7 @@
 /**
  * Default Keyboard Shortcuts
  *
- * This module defines all the default keyboard shortcuts for the wit platform.
+ * This module defines all the default keyboard shortcuts for the myvcs platform.
  * Shortcuts are organized by category and context.
  */
 

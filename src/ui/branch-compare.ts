@@ -1,5 +1,5 @@
 /**
- * Branch Comparison View for wit
+ * Branch Comparison View for myvcs
  * Compare branches visually with commit differences
  */
 

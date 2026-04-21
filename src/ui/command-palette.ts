@@ -1,5 +1,5 @@
 /**
- * Command Palette for wit
+ * Command Palette for myvcs
  * VS Code-style command palette with fuzzy search
  */
 
@@ -244,7 +244,7 @@ function escapeHtml(text: string): string {
 }
 
 /**
- * Get default wit commands
+ * Get default myvcs commands
  */
 export function getDefaultCommands(callbacks: {
   onCommit?: () => void;

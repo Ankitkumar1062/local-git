@@ -363,7 +363,7 @@ async function executeInDocker(
 
     // Add image and command
     dockerArgs.push(
-      'wit-sandbox:latest',
+      'myvcs-sandbox:latest',
       command,
       ...args
     );
@@ -566,7 +566,7 @@ async function executeInVercel(
 }
 
 export const runCommandTool = createTool({
-  id: 'wit-run-command',
+  id: 'myvcs-run-command',
   description: `Execute a shell command in the repository directory.
 This tool executes commands safely:
 - When sandbox is configured: Commands run in an isolated sandbox environment (E2B, Daytona, Docker, or Vercel)

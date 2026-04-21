@@ -13,7 +13,7 @@ import { createSemanticSearch } from '../../search/index.js';
  * Semantic search tool for AI agent
  */
 export const semanticSearchTool = createTool({
-  id: 'wit-semantic-search',
+  id: 'myvcs-semantic-search',
   description: `Search the codebase using natural language queries. This tool uses AI embeddings to find semantically relevant code based on meaning, not just keywords.
 
 Use this tool when you need to:
@@ -90,7 +90,7 @@ The search returns code snippets ranked by semantic similarity to your query.`,
  * Tool to index the repository for semantic search
  */
 export const indexRepositoryTool = createTool({
-  id: 'wit-index-repository',
+  id: 'myvcs-index-repository',
   description: `Index the repository for semantic search. This creates embeddings for all code files to enable natural language search.
 
 Use this tool when:
@@ -152,7 +152,7 @@ Note: This operation may take a while for large repositories and requires an Ope
  * Tool to get semantic search index status
  */
 export const getIndexStatusTool = createTool({
-  id: 'wit-index-status',
+  id: 'myvcs-index-status',
   description: 'Get the status of the semantic search index, including number of indexed files and vectors.',
   inputSchema: z.object({}),
   outputSchema: z.object({

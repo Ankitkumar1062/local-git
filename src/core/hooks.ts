@@ -1,7 +1,7 @@
 /**
  * Hooks System
  * 
- * Provides Git-like hooks for customizing wit behavior.
+ * Provides Git-like hooks for customizing myvcs behavior.
  * 
  * Hook Types:
  * - pre-commit: Before commit is created (can abort)
@@ -14,8 +14,8 @@
  * - pre-receive: Before receiving a push
  * 
  * Hooks can be:
- * 1. Shell scripts in .wit/hooks/
- * 2. TypeScript/JavaScript files in .wit/hooks/
+ * 1. Shell scripts in .myvcs/hooks/
+ * 2. TypeScript/JavaScript files in .myvcs/hooks/
  * 3. Programmatic hooks registered via the API
  */
 
@@ -282,7 +282,7 @@ export class HookManager {
     mkdirp(this.hooksDir);
     
     // Create a hooks README
-    const readme = `# wit Hooks
+    const readme = `# myvcs Hooks
 
 Place hook scripts in this directory. Hooks must be executable.
 
@@ -696,7 +696,7 @@ import {
 } from './hook-config';
 
 /**
- * Sync hooks from config to .wit/hooks directory
+ * Sync hooks from config to .myvcs/hooks directory
  */
 function syncHooksFromConfig(hookManager: HookManager, workDir: string): number {
   const config = loadHookConfig(workDir);
@@ -761,15 +761,15 @@ export function handleHooks(args: string[]): void {
       console.log(colors.bold('Hooks Status\n'));
       
       if (config) {
-        console.log(colors.cyan('Config:') + ` .wit/hooks.json`);
-        console.log(colors.dim('  Run "wit hooks sync" to apply config changes\n'));
+        console.log(colors.cyan('Config:') + ` .myvcs/hooks.json`);
+        console.log(colors.dim('  Run "myvcs hooks sync" to apply config changes\n'));
       }
       
       if (hooks.length === 0) {
         console.log(colors.dim('No hooks installed'));
         console.log(colors.dim('\nQuick start:'));
-        console.log(colors.dim('  wit hooks setup              # Create hooks.json config'));
-        console.log(colors.dim('  wit hooks install <type>     # Install a single hook'));
+        console.log(colors.dim('  myvcs hooks setup              # Create hooks.json config'));
+        console.log(colors.dim('  myvcs hooks install <type>     # Install a single hook'));
         return;
       }
 
@@ -805,19 +805,19 @@ export function handleHooks(args: string[]): void {
       }
       
       console.log(colors.dim('\nNext steps:'));
-      console.log(colors.dim('  1. Edit .wit/hooks.json to customize hooks'));
-      console.log(colors.dim('  2. Run "wit hooks sync" to apply changes'));
-      console.log(colors.dim('  3. Add "wit hooks sync" to your npm postinstall script'));
+      console.log(colors.dim('  1. Edit .myvcs/hooks.json to customize hooks'));
+      console.log(colors.dim('  2. Run "myvcs hooks sync" to apply changes'));
+      console.log(colors.dim('  3. Add "myvcs hooks sync" to your npm postinstall script'));
       break;
     }
 
     case 'sync': {
-      // Sync hooks from config file to .wit/hooks
+      // Sync hooks from config file to .myvcs/hooks
       const synced = syncHooksFromConfig(hookManager, repo.workDir);
       
       if (synced === 0) {
         console.log(colors.yellow('!') + ' No hooks defined in config');
-        console.log(colors.dim('  Run "wit hooks setup --sample" to create a sample config'));
+        console.log(colors.dim('  Run "myvcs hooks setup --sample" to create a sample config'));
       } else {
         console.log(colors.green('✓') + ` Synced ${synced} hook(s) from config`);
       }
@@ -830,10 +830,10 @@ export function handleHooks(args: string[]): void {
       const command = args.slice(2).join(' ');
       
       if (!hookType || !command) {
-        console.error(colors.red('error: ') + 'Usage: wit hooks add <hook-type> <command>');
+        console.error(colors.red('error: ') + 'Usage: myvcs hooks add <hook-type> <command>');
         console.error('\nExample:');
-        console.error('  wit hooks add pre-commit "npm run lint"');
-        console.error('  wit hooks add commit-msg "npx commitlint --edit $1"');
+        console.error('  myvcs hooks add pre-commit "npm run lint"');
+        console.error('  myvcs hooks add commit-msg "npx commitlint --edit $1"');
         process.exit(1);
       }
 
@@ -860,7 +860,7 @@ export function handleHooks(args: string[]): void {
       
       saveHookConfig(repo.workDir, config);
       console.log(colors.green('✓') + ` Added command to ${hookType} hook`);
-      console.log(colors.dim('  Run "wit hooks sync" to apply changes'));
+      console.log(colors.dim('  Run "myvcs hooks sync" to apply changes'));
       break;
     }
 
@@ -980,18 +980,18 @@ export function handleHooks(args: string[]): void {
     default:
       console.error(colors.red('error: ') + `Unknown subcommand: ${subcommand}`);
       console.error('\n' + colors.bold('Usage:'));
-      console.error('  wit hooks                       List installed hooks');
-      console.error('  wit hooks setup [--sample]      Set up hooks for project (like husky install)');
-      console.error('  wit hooks add <type> <cmd>      Add a hook command to config');
-      console.error('  wit hooks sync                  Sync hooks from config');
-      console.error('  wit hooks install <type>        Install a hook from template');
-      console.error('  wit hooks remove <type>         Remove a hook');
-      console.error('  wit hooks show <type>           Show hook content');
-      console.error('  wit hooks run <type> [args...]  Run a hook manually');
+      console.error('  myvcs hooks                       List installed hooks');
+      console.error('  myvcs hooks setup [--sample]      Set up hooks for project (like husky install)');
+      console.error('  myvcs hooks add <type> <cmd>      Add a hook command to config');
+      console.error('  myvcs hooks sync                  Sync hooks from config');
+      console.error('  myvcs hooks install <type>        Install a hook from template');
+      console.error('  myvcs hooks remove <type>         Remove a hook');
+      console.error('  myvcs hooks show <type>           Show hook content');
+      console.error('  myvcs hooks run <type> [args...]  Run a hook manually');
       console.error('\n' + colors.bold('Examples:'));
-      console.error('  wit hooks setup --sample        # Create sample hooks config');
-      console.error('  wit hooks add pre-commit "npm run lint"');
-      console.error('  wit hooks sync                  # Apply config to hooks');
+      console.error('  myvcs hooks setup --sample        # Create sample hooks config');
+      console.error('  myvcs hooks add pre-commit "npm run lint"');
+      console.error('  myvcs hooks sync                  # Apply config to hooks');
       process.exit(1);
   }
 }

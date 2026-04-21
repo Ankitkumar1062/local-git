@@ -206,7 +206,7 @@ function buildRefAdvertisement(repo: AnyRepository, service: string): Buffer {
     'side-band-64k': true,
     'no-progress': true,
     'shallow': true,
-    'agent': 'wit-server/2.0',
+    'agent': 'myvcs-server/2.0',
   };
 
   const capString = serializeCapabilities(capabilities);
@@ -604,7 +604,7 @@ async function logCloneActivity(
   }
 
   try {
-    const repoName = repo.replace(/\.(git|wit)$/, '');
+    const repoName = repo.replace(/\.(git|myvcs)$/, '');
     const dbRepoResult = await repoModel.findByPath(owner, repoName);
 
     if (!dbRepoResult) {
@@ -641,11 +641,11 @@ async function handleDatabaseIntegration(
   }
 
   try {
-    const repoName = repo.replace(/\.(git|wit)$/, '');
+    const repoName = repo.replace(/\.(git|myvcs)$/, '');
 
     // Normalize diskPath to the canonical /repos/owner/name.git format.
     // The raw gitDir passed in may be an absolute OS path like
-    // /home/user/.../repos/owner/repo5.wit.git — we must store the
+    // /home/user/.../repos/owner/repo5.myvcs.git — we must store the
     // /repos/ relative form so getRepoFromDisk can resolve it correctly.
     const canonicalDiskPath = `/repos/${owner}/${repoName}.git`;
 

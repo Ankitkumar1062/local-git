@@ -335,7 +335,7 @@ export class StorageAwareRepoManager {
    */
   private getRepoPath(owner: string, name: string): string {
     let repoName = name;
-    if (repoName.endsWith('.wit')) {
+    if (repoName.endsWith('.myvcs')) {
       repoName = repoName.slice(0, -4) + '.git';
     } else if (!repoName.endsWith('.git')) {
       repoName = `${repoName}.git`;
@@ -374,7 +374,7 @@ export class StorageAwareRepoManager {
           .from(repositories)
           .where(and(
             eq(repositories.ownerId, owner),
-            eq(repositories.name, name.replace(/\.(wit|git)$/, ''))
+            eq(repositories.name, name.replace(/\.(myvcs|git)$/, ''))
           ))
           .limit(1);
 
@@ -480,7 +480,7 @@ export class StorageAwareRepoManager {
     repositoryformatversion = 0
     filemode = true
     bare = true
-[wit]
+[myvcs]
     hashAlgorithm = sha1
 `;
     fs.writeFileSync(path.join(repoPath, 'config'), config);
@@ -516,7 +516,7 @@ export class StorageAwareRepoManager {
           .from(repositories)
           .where(and(
             eq(repositories.ownerId, owner),
-            eq(repositories.name, name.replace(/\.(wit|git)$/, ''))
+            eq(repositories.name, name.replace(/\.(myvcs|git)$/, ''))
           ))
           .limit(1);
 

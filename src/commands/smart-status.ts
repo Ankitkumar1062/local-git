@@ -1,7 +1,7 @@
 /**
- * Smart Status - The killer "wit" command
+ * Smart Status - The killer "myvcs" command
  * 
- * When you run `wit` with no arguments, this gives you:
+ * When you run `myvcs` with no arguments, this gives you:
  * 1. Intelligent understanding of what you're working on
  * 2. Smart status that groups changes by intent
  * 3. Background indexing for instant semantic search
@@ -215,7 +215,7 @@ function printHeader(repo: Repository, context: string): void {
   const repoName = path.basename(repo.workDir);
   
   console.log();
-  console.log(`  ${c('bold', c('cyan', 'wit'))} ${c('dim', '·')} ${c('white', repoName)}`);
+  console.log(`  ${c('bold', c('cyan', 'myvcs'))} ${c('dim', '·')} ${c('white', repoName)}`);
   console.log(`  ${c('dim', 'You\'re working on:')} ${c('yellow', context)}`);
   console.log();
 }
@@ -285,14 +285,14 @@ function printQuickActions(hasChanges: boolean, hasStagedChanges: boolean): void
   console.log();
   
   if (hasStagedChanges) {
-    console.log(`  ${c('cyan', 'wit commit')}     ${c('dim', '·')} commit staged changes`);
-    console.log(`  ${c('cyan', 'wit ai commit')} ${c('dim', '·')} commit with AI-generated message`);
+    console.log(`  ${c('cyan', 'myvcs commit')}     ${c('dim', '·')} commit staged changes`);
+    console.log(`  ${c('cyan', 'myvcs ai commit')} ${c('dim', '·')} commit with AI-generated message`);
   } else if (hasChanges) {
-    console.log(`  ${c('cyan', 'wit add .')}     ${c('dim', '·')} stage all changes`);
-    console.log(`  ${c('cyan', 'wit wip')}       ${c('dim', '·')} quick save work-in-progress`);
+    console.log(`  ${c('cyan', 'myvcs add .')}     ${c('dim', '·')} stage all changes`);
+    console.log(`  ${c('cyan', 'myvcs wip')}       ${c('dim', '·')} quick save work-in-progress`);
   }
   
-  console.log(`  ${c('cyan', 'wit ai "..."')}  ${c('dim', '·')} ask anything about this codebase`);
+  console.log(`  ${c('cyan', 'myvcs ai "..."')}  ${c('dim', '·')} ask anything about this codebase`);
   console.log();
 }
 
@@ -366,12 +366,12 @@ export async function handleSmartStatus(args: string[]): Promise<void> {
   } catch {
     // Not in a repo - show welcome message
     console.log();
-    console.log(`  ${c('bold', c('cyan', 'wit'))} ${c('dim', '· Git that understands your code')}`);
+    console.log(`  ${c('bold', c('cyan', 'myvcs'))} ${c('dim', '· Git that understands your code')}`);
     console.log();
     console.log(`  ${c('dim', 'Not in a repository.')}`);
     console.log();
-    console.log(`  ${c('cyan', 'wit init')}        ${c('dim', '·')} create a new repository here`);
-    console.log(`  ${c('cyan', 'wit clone <url>')} ${c('dim', '·')} clone an existing repository`);
+    console.log(`  ${c('cyan', 'myvcs init')}        ${c('dim', '·')} create a new repository here`);
+    console.log(`  ${c('cyan', 'myvcs clone <url>')} ${c('dim', '·')} clone an existing repository`);
     console.log();
     return;
   }

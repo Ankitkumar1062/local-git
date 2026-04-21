@@ -1,5 +1,5 @@
 /**
- * Mode-based Agents for wit
+ * Mode-based Agents for myvcs
  * 
  * Each mode has a specialized agent with different tools and instructions:
  * - PM: Creates issues, PRs, manages projects

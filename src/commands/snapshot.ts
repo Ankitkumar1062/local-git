@@ -83,7 +83,7 @@ export class SnapshotManager {
         const relativePath = path.relative(this.workDir, fullPath);
         
         if (entry.isDirectory()) {
-          if (['node_modules', '.wit', '.git'].includes(entry.name)) continue;
+          if (['node_modules', '.myvcs', '.git'].includes(entry.name)) continue;
           walkDir(fullPath);
         } else if (entry.isFile()) {
           try {
@@ -141,7 +141,7 @@ export class SnapshotManager {
       throw new TsgitError(
         `Snapshot not found: ${id}`,
         ErrorCode.OBJECT_NOT_FOUND,
-        ['wit snapshot list    # Show available snapshots']
+        ['myvcs snapshot list    # Show available snapshots']
       );
     }
     
@@ -196,7 +196,7 @@ export class SnapshotManager {
       throw new TsgitError(
         `Snapshot not found: ${id}`,
         ErrorCode.OBJECT_NOT_FOUND,
-        ['wit snapshot list    # Show available snapshots']
+        ['myvcs snapshot list    # Show available snapshots']
       );
     }
     
@@ -244,7 +244,7 @@ export function handleSnapshot(args: string[]): void {
         console.log(colors.green('✓') + ` Created snapshot: ${colors.cyan(snapshot.name || snapshot.id)}`);
         console.log(colors.dim(`  ID: ${snapshot.id}`));
         console.log(colors.dim(`  Files: ${snapshot.files.size}`));
-        console.log(colors.dim(`  Restore with: wit snapshot restore ${snapshot.id}`));
+        console.log(colors.dim(`  Restore with: myvcs snapshot restore ${snapshot.id}`));
         break;
       }
       
@@ -253,7 +253,7 @@ export function handleSnapshot(args: string[]): void {
         const id = args[1];
         if (!id) {
           console.error(colors.red('error: ') + 'Snapshot ID required');
-          console.error(colors.dim('Usage: wit snapshot restore <id>'));
+          console.error(colors.dim('Usage: myvcs snapshot restore <id>'));
           process.exit(1);
         }
         
@@ -275,7 +275,7 @@ export function handleSnapshot(args: string[]): void {
         
         if (snapshots.length === 0) {
           console.log(colors.dim('No snapshots yet'));
-          console.log(colors.dim('  wit snapshot create [name]    # Create one'));
+          console.log(colors.dim('  myvcs snapshot create [name]    # Create one'));
           return;
         }
         
@@ -325,10 +325,10 @@ export function handleSnapshot(args: string[]): void {
         console.error(colors.red('error: ') + `Unknown subcommand: ${subcommand}`);
         console.log();
         console.log('Usage:');
-        console.log('  wit snapshot create [name]   Create a snapshot');
-        console.log('  wit snapshot list            List all snapshots');
-        console.log('  wit snapshot restore <id>    Restore a snapshot');
-        console.log('  wit snapshot delete <id>     Delete a snapshot');
+        console.log('  myvcs snapshot create [name]   Create a snapshot');
+        console.log('  myvcs snapshot list            List all snapshots');
+        console.log('  myvcs snapshot restore <id>    Restore a snapshot');
+        console.log('  myvcs snapshot delete <id>     Delete a snapshot');
         process.exit(1);
     }
   } catch (error) {

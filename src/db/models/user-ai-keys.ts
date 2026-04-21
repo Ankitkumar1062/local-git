@@ -32,10 +32,10 @@ function getEncryptionKey(): Buffer {
     }
     // Only allow default in development
     console.warn('WARNING: Using default encryption key. Set ENCRYPTION_KEY in production.');
-    return scryptSync('dev-only-insecure-key', 'wit-ai-keys-salt', KEY_LENGTH);
+    return scryptSync('dev-only-insecure-key', 'myvcs-ai-keys-salt', KEY_LENGTH);
   }
   
-  return scryptSync(secret, 'wit-ai-keys-salt', KEY_LENGTH);
+  return scryptSync(secret, 'myvcs-ai-keys-salt', KEY_LENGTH);
 }
 
 /**

@@ -95,7 +95,7 @@ Be concise but informative. Use emoji sparingly.
 `;
 
 export const generateReleaseNotesTool = createTool({
-  id: 'wit-generate-release-notes',
+  id: 'myvcs-generate-release-notes',
   description: 'Generate release notes from commits between two versions. Analyzes commit history to create categorized, human-readable release notes with features, fixes, breaking changes, and contributor information.',
   inputSchema: z.object({
     version: z.string().describe('The version/tag being released (e.g., v1.2.0)'),

@@ -30,15 +30,15 @@ export function status(options: StatusOptions = {}): void {
     if (mergeState) {
       console.log();
       console.log(colors.yellow('You have unmerged paths.'));
-      console.log(`  (fix conflicts and run "wit commit")`);
-      console.log(`  (use "wit merge --abort" to abort the merge)`);
+      console.log(`  (fix conflicts and run "myvcs commit")`);
+      console.log(`  (use "myvcs merge --abort" to abort the merge)`);
       console.log();
       console.log(`Merging: ${colors.cyan(mergeState.sourceBranch)} into ${colors.cyan(mergeState.targetBranch)}`);
       
       if (mergeState.conflicts.length > 0) {
         console.log();
         console.log('Unmerged paths:');
-        console.log('  (use "wit add <file>..." to mark resolution)');
+        console.log('  (use "myvcs add <file>..." to mark resolution)');
         console.log();
         for (const conflict of mergeState.conflicts) {
           const isResolved = mergeState.resolved.includes(conflict.path);
@@ -98,7 +98,7 @@ export function status(options: StatusOptions = {}): void {
     
     if (hasStaged) {
       console.log('Changes to be committed:');
-      console.log('  (use "wit restore --staged <file>..." to unstage)');
+      console.log('  (use "myvcs restore --staged <file>..." to unstage)');
       console.log();
       
       // Show renames first
@@ -133,7 +133,7 @@ export function status(options: StatusOptions = {}): void {
     // Show modified files (unstaged)
     if (stat.modified.length > 0) {
       console.log('Changes not staged for commit:');
-      console.log('  (use "wit add <file>..." to update what will be committed)');
+      console.log('  (use "myvcs add <file>..." to update what will be committed)');
       console.log();
       for (const file of stat.modified) {
         console.log(`        ${colors.red('modified:   ' + file)}`);
@@ -153,7 +153,7 @@ export function status(options: StatusOptions = {}): void {
     // Show untracked files
     if (stat.untracked.length > 0) {
       console.log('Untracked files:');
-      console.log('  (use "wit add <file>..." to include in what will be committed)');
+      console.log('  (use "myvcs add <file>..." to include in what will be committed)');
       console.log();
       for (const file of stat.untracked) {
         console.log(`        ${colors.red(file)}`);
@@ -166,7 +166,7 @@ export function status(options: StatusOptions = {}): void {
         stat.untracked.length === 0 && stat.deleted.length === 0) {
       console.log('nothing to commit, working tree clean');
     } else if (!hasStaged) {
-      console.log('no changes added to commit (use "wit add" to stage)');
+      console.log('no changes added to commit (use "myvcs add" to stage)');
     }
   } catch (error) {
     if (error instanceof Error) {

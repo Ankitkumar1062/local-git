@@ -1,8 +1,8 @@
 /**
  * OAuth Apps Model
  *
- * Database operations for Wit OAuth Apps (third-party integrations).
- * Allows developers to register apps that can access the Wit API on behalf of users.
+ * Database operations for myvcs OAuth Apps (third-party integrations).
+ * Allows developers to register apps that can access the myvcs API on behalf of users.
  */
 
 import * as crypto from 'crypto';

@@ -3,12 +3,12 @@
  * Manage Personal Access Tokens for API/CLI authentication
  *
  * Usage:
- *   wit token create <name>           Create a new token
- *   wit token create <name> --expires 30   Token expires in 30 days
- *   wit token create <name> --scopes repo:read,repo:write
- *   wit token list                    List all tokens
- *   wit token revoke <id>             Revoke/delete a token
- *   wit token scopes                  List available scopes
+ *   myvcs token create <name>           Create a new token
+ *   myvcs token create <name> --expires 30   Token expires in 30 days
+ *   myvcs token create <name> --scopes repo:read,repo:write
+ *   myvcs token list                    List all tokens
+ *   myvcs token revoke <id>             Revoke/delete a token
+ *   myvcs token scopes                  List available scopes
  */
 
 import * as crypto from 'crypto';
@@ -77,8 +77,8 @@ export async function handleToken(args: string[]): Promise<void> {
   const dbUrl = process.env.DATABASE_URL;
   if (!dbUrl) {
     console.error(colors.red('error: ') + 'DATABASE_URL environment variable not set');
-    console.error('\nThe token command requires a connection to the wit platform database.');
-    console.error('Make sure you have the wit platform running (wit up) or set DATABASE_URL.');
+    console.error('\nThe token command requires a connection to the myvcs platform database.');
+    console.error('Make sure you have the myvcs platform running (myvcs up) or set DATABASE_URL.');
     process.exit(1);
   }
 
@@ -181,7 +181,7 @@ async function handleCreate(args: string[]): Promise<void> {
 
   if (!name) {
     console.error(colors.red('error: ') + 'Token name is required');
-    console.error('\nUsage: wit token create <name> [--expires <days>] [--scopes <scope1,scope2>]');
+    console.error('\nUsage: myvcs token create <name> [--expires <days>] [--scopes <scope1,scope2>]');
     process.exit(1);
   }
 
@@ -263,7 +263,7 @@ async function handleList(): Promise<void> {
   if (tokens.length === 0) {
     console.log(colors.dim('No personal access tokens'));
     console.log();
-    console.log('Create one with: wit token create <name>');
+    console.log('Create one with: myvcs token create <name>');
     return;
   }
 
@@ -314,8 +314,8 @@ async function handleRevoke(args: string[]): Promise<void> {
 
   if (!tokenIdOrPrefix) {
     console.error(colors.red('error: ') + 'Token ID or prefix is required');
-    console.error('\nUsage: wit token revoke <id>');
-    console.error('\nUse "wit token list" to see your tokens.');
+    console.error('\nUsage: myvcs token revoke <id>');
+    console.error('\nUse "myvcs token list" to see your tokens.');
     process.exit(1);
   }
 
@@ -360,7 +360,7 @@ async function handleRevoke(args: string[]): Promise<void> {
 
   if (!token) {
     console.error(colors.red('error: ') + 'Token not found');
-    console.error('\nUse "wit token list" to see your tokens.');
+    console.error('\nUse "myvcs token list" to see your tokens.');
     process.exit(1);
   }
 
@@ -391,10 +391,10 @@ function handleScopes(): void {
  */
 function printHelp(): void {
   console.log(`
-${colors.bold('wit token')} - Manage Personal Access Tokens
+${colors.bold('myvcs token')} - Manage Personal Access Tokens
 
 ${colors.bold('USAGE')}
-  wit token <command> [options]
+  myvcs token <command> [options]
 
 ${colors.bold('COMMANDS')}
   create <name>     Create a new token
@@ -407,14 +407,14 @@ ${colors.bold('OPTIONS')}
   --scopes, -s <scopes>   Comma-separated scopes (default: repo:read,repo:write)
 
 ${colors.bold('EXAMPLES')}
-  wit token create "CI Token"
-  wit token create "Deploy Key" --expires 30 --scopes repo:read
-  wit token create "Full Access" --scopes repo:read,repo:write,repo:admin
-  wit token list
-  wit token revoke abc12345
+  myvcs token create "CI Token"
+  myvcs token create "Deploy Key" --expires 30 --scopes repo:read
+  myvcs token create "Full Access" --scopes repo:read,repo:write,repo:admin
+  myvcs token list
+  myvcs token revoke abc12345
 
 ${colors.bold('ENVIRONMENT')}
-  DATABASE_URL      Connection string for wit platform database
+  DATABASE_URL      Connection string for myvcs platform database
   WIT_USER_ID       Your user ID (required for CLI usage)
 `);
 }

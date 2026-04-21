@@ -42,7 +42,7 @@ export function Layout() {
         <div className="flex items-center gap-3 px-6 py-5 border-b">
           <Shield className="h-8 w-8 text-primary" />
           <div>
-            <h1 className="font-bold text-lg">Wit Admin</h1>
+            <h1 className="font-bold text-lg">myvcs Admin</h1>
             <p className="text-xs text-muted-foreground">
               {access?.isSuperAdmin ? 'Super Admin' : 'Admin'}
             </p>

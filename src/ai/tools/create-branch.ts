@@ -9,7 +9,7 @@ import { Repository } from '../../core/repository.js';
 import { Journal, StateSnapshot } from '../../core/journal.js';
 
 export const createBranchTool = createTool({
-  id: 'wit-create-branch',
+  id: 'myvcs-create-branch',
   description: `Create a new branch in the repository.
 Use this when starting work on a new feature or fix.
 The branch will be created from the current HEAD by default.

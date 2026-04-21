@@ -10,14 +10,12 @@ import {
   Settings,
   History,
   Loader2,
-  Layers,
   MoreHorizontal,
   Sparkles,
   Maximize2,
   BookOpen,
   FolderKanban,
   RefreshCw,
-  Package,
   Play,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -79,11 +77,6 @@ export function RepoLayout({ owner, repo, children }: RepoLayoutProps) {
     { enabled: !!repoData?.repo.id && authenticated }
   );
 
-  // Check if package registry is enabled for this repo
-  const { data: packageData } = trpc.packages.getByRepoId.useQuery(
-    { repoId: repoData?.repo.id || '' },
-    { enabled: !!repoData?.repo.id }
-  );
 
   // Fetch accurate counts for issues and PRs
   const { data: issueCounts } = trpc.issues.count.useQuery(
@@ -514,20 +507,11 @@ export function RepoLayout({ owner, repo, children }: RepoLayoutProps) {
               <Play className="h-4 w-4" />
               <span className="sr-only sm:not-sr-only sm:inline">Actions</span>
             </Link>
-            <Link to={`/${owner}/${repo}/stacks`} className={tabClass('stacks')}>
-              <Layers className="h-4 w-4" />
-              <span className="sr-only sm:not-sr-only sm:inline">Stacks</span>
-            </Link>
+
             <Link to={`/${owner}/${repo}/journal`} className={tabClass('journal')}>
               <BookOpen className="h-4 w-4" />
               <span className="sr-only sm:not-sr-only sm:inline">Journal</span>
             </Link>
-            {packageData && (
-              <Link to={`/${owner}/${repo}/package`} className={tabClass('package')}>
-                <Package className="h-4 w-4" />
-                <span className="sr-only sm:not-sr-only sm:inline">Package</span>
-              </Link>
-            )}
             {authenticated && (
               <Link to={`/${owner}/${repo}/settings`} className={tabClass('settings')}>
                 <Settings className="h-4 w-4" />
@@ -564,20 +548,11 @@ export function RepoLayout({ owner, repo, children }: RepoLayoutProps) {
             <Play className="h-4 w-4" />
             <span>Actions</span>
           </Link>
-          <Link to={`/${owner}/${repo}/stacks`} className={tabClass('stacks')}>
-            <Layers className="h-4 w-4" />
-            <span>Stacks</span>
-          </Link>
+
           <Link to={`/${owner}/${repo}/journal`} className={tabClass('journal')}>
             <BookOpen className="h-4 w-4" />
             <span>Journal</span>
           </Link>
-          {packageData && (
-            <Link to={`/${owner}/${repo}/package`} className={tabClass('package')}>
-              <Package className="h-4 w-4" />
-              <span>Package</span>
-            </Link>
-          )}
           {authenticated && (
             <Link to={`/${owner}/${repo}/settings`} className={tabClass('settings')}>
               <Settings className="h-4 w-4" />

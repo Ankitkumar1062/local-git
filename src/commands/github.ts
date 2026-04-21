@@ -3,11 +3,11 @@
  * Manage GitHub authentication and import for push/pull operations
  * 
  * Usage:
- *   wit github login           # Authenticate with GitHub
- *   wit github logout          # Remove stored credentials
- *   wit github status          # Show authentication status
- *   wit github token           # Print the current token (for scripting)
- *   wit github import <repo>   # Import a repository from GitHub
+ *   myvcs github login           # Authenticate with GitHub
+ *   myvcs github logout          # Remove stored credentials
+ *   myvcs github status          # Show authentication status
+ *   myvcs github token           # Print the current token (for scripting)
+ *   myvcs github import <repo>   # Import a repository from GitHub
  */
 
 import { TsgitError, ErrorCode } from '../core/errors';
@@ -29,7 +29,7 @@ async function handleLogin(): Promise<void> {
   const status = await manager.status();
   if (status.loggedIn) {
     console.log(colors.yellow('!') + ` Already logged in as ${colors.bold(status.username || 'unknown')}`);
-    console.log(colors.dim('  Use "wit github logout" to log out first'));
+    console.log(colors.dim('  Use "myvcs github logout" to log out first'));
     return;
   }
 
@@ -52,7 +52,7 @@ async function handleLogin(): Promise<void> {
         ErrorCode.OPERATION_FAILED,
         [
           'Make sure you have internet connectivity',
-          'Try running "wit github login" again',
+          'Try running "myvcs github login" again',
           'You can also set GITHUB_TOKEN environment variable',
         ]
       );
@@ -109,7 +109,7 @@ async function handleStatus(): Promise<void> {
   } else {
     console.log(`  Status:   ${colors.red('✗ Not authenticated')}`);
     console.log();
-    console.log(colors.dim('  Run "wit github login" to authenticate'));
+    console.log(colors.dim('  Run "myvcs github login" to authenticate'));
     console.log(colors.dim('  Or set GITHUB_TOKEN environment variable'));
   }
 
@@ -139,10 +139,10 @@ function printHelp(): void {
   console.log(`
 ${colors.bold('GitHub Integration')}
 
-Authenticate with GitHub and import repositories to migrate to wit.
+Authenticate with GitHub and import repositories to migrate to myvcs.
 
 ${colors.bold('Usage:')}
-  wit github <subcommand>
+  myvcs github <subcommand>
 
 ${colors.bold('Subcommands:')}
   login                   Authenticate with GitHub using device flow
@@ -152,14 +152,14 @@ ${colors.bold('Subcommands:')}
   import <owner/repo>     Import a repository from GitHub
 
 ${colors.bold('Examples:')}
-  wit github login                    # Start interactive login
-  wit github status                   # Check if you're logged in
-  wit github logout                   # Log out from GitHub
-  wit github import facebook/react    # Import a GitHub repository
-  wit github import owner/repo --name my-repo
+  myvcs github login                    # Start interactive login
+  myvcs github status                   # Check if you're logged in
+  myvcs github logout                   # Log out from GitHub
+  myvcs github import facebook/react    # Import a GitHub repository
+  myvcs github import owner/repo --name my-repo
 
 ${colors.bold('Import Options:')}
-  Run "wit github import --help" for full import options.
+  Run "myvcs github import --help" for full import options.
 
 ${colors.bold('Environment Variables:')}
   GITHUB_TOKEN          GitHub personal access token
@@ -167,7 +167,7 @@ ${colors.bold('Environment Variables:')}
 
 ${colors.bold('Notes:')}
   - The device flow opens a browser for secure authentication
-  - Credentials are stored securely in ~/.wit/github-credentials.json
+  - Credentials are stored securely in ~/.myvcs/github-credentials.json
   - You can also use environment variables instead of logging in
   - For CI/CD, prefer using GITHUB_TOKEN environment variable
 `);
@@ -216,7 +216,7 @@ export async function handleGitHub(args: string[]): Promise<void> {
       console.error(colors.red('error: ') + `Unknown github subcommand: '${subcommand}'`);
       console.error();
       console.error('Available subcommands: login, logout, status, token, import');
-      console.error('Run "wit github --help" for more information');
+      console.error('Run "myvcs github --help" for more information');
       process.exit(1);
   }
 }

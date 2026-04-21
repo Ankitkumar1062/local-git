@@ -1,5 +1,5 @@
 /**
- * Interactive Blame View for wit
+ * Interactive Blame View for myvcs
  * Shows line-by-line commit information with rich visualizations
  */
 

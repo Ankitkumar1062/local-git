@@ -1,7 +1,7 @@
 /**
  * Achievement Definitions
  *
- * All achievements that can be unlocked in wit.
+ * All achievements that can be unlocked in myvcs.
  * These are inserted into the database on first run.
  */
 
@@ -533,7 +533,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     key: 'ai_native',
     name: 'AI Native',
-    description: 'Use wit ai commit for 10 commits',
+    description: 'Use myvcs ai commit for 10 commits',
     category: 'special',
     rarity: 'uncommon',
     xpReward: 150,

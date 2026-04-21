@@ -1,5 +1,5 @@
 /**
- * Stack View UI for wit
+ * Stack View UI for myvcs
  * Visual stacked diffs management with interactive controls
  */
 

@@ -1,7 +1,7 @@
 /**
  * Keyboard Shortcuts System
  *
- * A comprehensive keyboard shortcuts system for the wit platform.
+ * A comprehensive keyboard shortcuts system for the myvcs platform.
  *
  * @example
  * // In App.tsx - wrap your app with the provider

@@ -112,7 +112,7 @@ export class SSHServer extends EventEmitter {
       allowAnonymousRead: false,
       connectionTimeout: 120000, // 2 minutes
       maxConnections: 100,
-      banner: 'Welcome to wit Git SSH server\n',
+      banner: 'Welcome to myvcs Git SSH server\n',
       ...options,
     };
 
@@ -412,8 +412,8 @@ export class SSHServer extends EventEmitter {
     // Git commands look like:
     // git-upload-pack '/path/to/repo.git'
     // git-receive-pack '/path/to/repo.git'
-    // Also support .wit extension:
-    // git-upload-pack '/path/to/repo.wit'
+    // Also support .myvcs extension:
+    // git-upload-pack '/path/to/repo.myvcs'
     
     const match = command.match(/^(git-(?:upload|receive)-pack)\s+['"]?([^'"]+)['"]?$/);
     
@@ -428,8 +428,8 @@ export class SSHServer extends EventEmitter {
     if (repoPath.startsWith('/')) {
       repoPath = repoPath.slice(1);
     }
-    // Strip .wit extension and normalize to .git for internal storage
-    if (repoPath.endsWith('.wit')) {
+    // Strip .myvcs extension and normalize to .git for internal storage
+    if (repoPath.endsWith('.myvcs')) {
       repoPath = repoPath.slice(0, -4) + '.git';
     } else if (!repoPath.endsWith('.git')) {
       repoPath += '.git';

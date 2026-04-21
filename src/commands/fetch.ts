@@ -3,11 +3,11 @@
  * Download objects and refs from remote repositories
  * 
  * Usage:
- *   wit fetch                     # Fetch from origin
- *   wit fetch <remote>            # Fetch from specific remote
- *   wit fetch --all               # Fetch from all remotes
- *   wit fetch --prune             # Delete stale remote refs
- *   wit fetch <remote> <refspec>  # Fetch specific ref
+ *   myvcs fetch                     # Fetch from origin
+ *   myvcs fetch <remote>            # Fetch from specific remote
+ *   myvcs fetch --all               # Fetch from all remotes
+ *   myvcs fetch --prune             # Delete stale remote refs
+ *   myvcs fetch <remote> <refspec>  # Fetch specific ref
  */
 
 import * as path from 'path';
@@ -84,7 +84,7 @@ function fetchFromLocal(
 
   // Get source repository
   const sourcePath = remote.url;
-  const sourceGitDir = path.join(sourcePath, '.wit');
+  const sourceGitDir = path.join(sourcePath, '.myvcs');
   
   if (!exists(sourceGitDir)) {
     throw new TsgitError(
@@ -492,7 +492,7 @@ export async function fetchAsync(
       throw new TsgitError(
         'No remotes configured',
         ErrorCode.REF_NOT_FOUND,
-        ['wit remote add <name> <url>    # Add a remote first']
+        ['myvcs remote add <name> <url>    # Add a remote first']
       );
     }
   } else {
@@ -506,7 +506,7 @@ export async function fetchAsync(
         ErrorCode.REF_NOT_FOUND,
         available.length > 0 
           ? [`Available remotes: ${available.join(', ')}`]
-          : ['wit remote add origin <url>    # Add origin remote']
+          : ['myvcs remote add origin <url>    # Add origin remote']
       );
     }
     
@@ -551,7 +551,7 @@ export function fetch(
       throw new TsgitError(
         'No remotes configured',
         ErrorCode.REF_NOT_FOUND,
-        ['wit remote add <name> <url>    # Add a remote first']
+        ['myvcs remote add <name> <url>    # Add a remote first']
       );
     }
   } else {
@@ -565,7 +565,7 @@ export function fetch(
         ErrorCode.REF_NOT_FOUND,
         available.length > 0 
           ? [`Available remotes: ${available.join(', ')}`]
-          : ['wit remote add origin <url>    # Add origin remote']
+          : ['myvcs remote add origin <url>    # Add origin remote']
       );
     }
     

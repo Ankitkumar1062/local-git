@@ -477,7 +477,7 @@ function formatFindingAsIssueBody(finding: {
   lines.push('---');
   lines.push(`<sub>🔍 Finding ID: \`${finding.fingerprint}\`</sub>`);
   lines.push('');
-  lines.push('*This issue was automatically created by [Sentinel](https://wit.dev/docs/sentinel) code scanning.*');
+  lines.push('*This issue was automatically created by [Sentinel](https://myvcs.dev/docs/sentinel) code scanning.*');
   
   return lines.join('\n');
 }

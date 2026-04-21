@@ -97,7 +97,7 @@ function isSearchableFile(path: string): boolean {
   ];
   
   const skipPaths = [
-    'node_modules/', '.git/', '.wit/', 'dist/', 'build/', 
+    'node_modules/', '.git/', '.myvcs/', 'dist/', 'build/', 
     'vendor/', '__pycache__/', '.next/', '.nuxt/',
     'coverage/', '.cache/',
   ];

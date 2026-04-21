@@ -1,13 +1,13 @@
 /**
- * API Client for wit platform features
+ * API Client for myvcs platform features
  *
- * This client provides access to the wit server API for platform features
+ * This client provides access to the myvcs server API for platform features
  * like pull requests, issues, and repository management.
  *
  * The client can work with:
- * - Remote wit server via HTTP
+ * - Remote myvcs server via HTTP
  * - Environment variables for auth
- * - Stored credentials from `wit github login`
+ * - Stored credentials from `myvcs github login`
  */
 
 import * as fs from 'fs';
@@ -37,7 +37,7 @@ export function getAuthToken(): string | undefined {
     return process.env.WIT_TOKEN;
   }
 
-  // Check for GitHub token (can be used for wit auth too)
+  // Check for GitHub token (can be used for myvcs auth too)
   if (process.env.GITHUB_TOKEN) {
     return process.env.GITHUB_TOKEN;
   }
@@ -46,8 +46,8 @@ export function getAuthToken(): string | undefined {
     return process.env.GH_TOKEN;
   }
 
-  // Check wit stored credentials
-  const witConfigPath = path.join(os.homedir(), '.config', 'wit', 'credentials.json');
+  // Check myvcs stored credentials
+  const witConfigPath = path.join(os.homedir(), '.config', 'myvcs', 'credentials.json');
   if (fs.existsSync(witConfigPath)) {
     try {
       const creds = JSON.parse(fs.readFileSync(witConfigPath, 'utf-8'));
@@ -57,7 +57,7 @@ export function getAuthToken(): string | undefined {
     }
   }
 
-  // Check GitHub stored credentials from `wit github login`
+  // Check GitHub stored credentials from `myvcs github login`
   const githubCreds = loadGitHubCredentials();
   if (githubCreds) {
     return githubCreds.access_token;
@@ -99,7 +99,7 @@ async function httpRequest<T = unknown>(
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'User-Agent': 'wit-cli/2.0.0',
+        'User-Agent': 'myvcs-cli/2.0.0',
         ...options.headers,
       },
     };
@@ -299,7 +299,7 @@ export class ApiClient {
       }
       if ((error as NodeJS.ErrnoException).code === 'ECONNREFUSED') {
         throw new ApiError(
-          `Cannot connect to wit server at ${this.baseUrl}. Is the server running?`,
+          `Cannot connect to myvcs server at ${this.baseUrl}. Is the server running?`,
           0
         );
       }

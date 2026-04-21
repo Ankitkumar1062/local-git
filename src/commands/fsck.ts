@@ -3,11 +3,11 @@
  * Verify the connectivity and validity of objects in the database
  * 
  * Usage:
- * - wit fsck                        # Verify object database
- * - wit fsck --full                 # Full verification (slower)
- * - wit fsck --unreachable          # Show unreachable objects
- * - wit fsck --dangling             # Show dangling objects (default)
- * - wit fsck --connectivity-only    # Only check reachability
+ * - myvcs fsck                        # Verify object database
+ * - myvcs fsck --full                 # Full verification (slower)
+ * - myvcs fsck --unreachable          # Show unreachable objects
+ * - myvcs fsck --dangling             # Show dangling objects (default)
+ * - myvcs fsck --connectivity-only    # Only check reachability
  * 
  * This is a plumbing command for verifying repository integrity.
  */

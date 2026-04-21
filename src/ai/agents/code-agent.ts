@@ -7,7 +7,7 @@
  * - Run commands (sandboxed)
  * 
  * All operations are scoped to the server-side repository using
- * wit's VirtualRepository for in-memory file operations on bare repos.
+ * myvcs's VirtualRepository for in-memory file operations on bare repos.
  */
 
 import { Agent } from '@mastra/core/agent';
@@ -18,10 +18,10 @@ import type { AgentContext } from '../types.js';
 import { VirtualRepository } from '../../primitives/virtual-repository.js';
 import type { Author } from '../../core/types.js';
 
-export const CODE_AGENT_INSTRUCTIONS = `You are wit AI in Code mode - a powerful coding agent that can write code, edit files, and manage the development workflow.
+export const CODE_AGENT_INSTRUCTIONS = `You are myvcs AI in Code mode - a powerful coding agent that can write code, edit files, and manage the development workflow.
 
 ## Your Role
-You help developers write code, make changes, and manage their git workflow. All changes happen in the wit platform's repository on the main branch.
+You help developers write code, make changes, and manage their git workflow. All changes happen in the myvcs platform's repository on the main branch.
 
 ## Your Capabilities
 
@@ -49,7 +49,7 @@ You help developers write code, make changes, and manage their git workflow. All
 - createBranch just creates a branch pointer for future PRs, it doesn't switch to it
 
 ## Safety Rules
-- Never modify .git or .wit directories
+- Never modify .git or .myvcs directories
 - Ask for clarification if requirements are unclear`;
 
 // Allowed commands for sandboxed execution
@@ -96,8 +96,8 @@ function getVirtualRepo(context: AgentContext): VirtualRepository {
  */
 function getDefaultAuthor(): Author {
   return {
-    name: 'wit AI',
-    email: 'ai@wit.dev',
+    name: 'myvcs AI',
+    email: 'ai@myvcs.dev',
     timestamp: Math.floor(Date.now() / 1000),
     timezone: '+0000',
   };
@@ -160,8 +160,8 @@ function createWriteFileTool(context: AgentContext) {
         if (filePath.startsWith('.git/') || filePath === '.git') {
           return { success: false, errorMessage: 'Cannot modify .git directory' };
         }
-        if (filePath.startsWith('.wit/') || filePath === '.wit') {
-          return { success: false, errorMessage: 'Cannot modify .wit directory' };
+        if (filePath.startsWith('.myvcs/') || filePath === '.myvcs') {
+          return { success: false, errorMessage: 'Cannot modify .myvcs directory' };
         }
         if (filePath.startsWith('/') || filePath.includes('..')) {
           return { success: false, errorMessage: 'Invalid path: must be relative without ..' };
@@ -520,8 +520,8 @@ function createDeleteFileTool(context: AgentContext) {
  */
 export function createCodeAgent(context: AgentContext, model: string = 'openai/google/gemma-3-27b-it'): Agent {
   return new Agent({
-    id: `wit-code-${context.repoId}`,
-    name: 'wit Code Agent',
+    id: `myvcs-code-${context.repoId}`,
+    name: 'myvcs Code Agent',
     description: 'A full-featured coding agent that can write and edit code',
     instructions: CODE_AGENT_INSTRUCTIONS,
     model,
@@ -571,8 +571,8 @@ export function createCodeAgentWithMcpTools(
   const instructions = CODE_AGENT_INSTRUCTIONS + mcpInstructions;
 
   return new Agent({
-    id: `wit-code-mcp-${context.repoId}`,
-    name: 'wit Code Agent with MCP',
+    id: `myvcs-code-mcp-${context.repoId}`,
+    name: 'myvcs Code Agent with MCP',
     description: 'A full-featured coding agent with MCP integrations',
     instructions,
     model,

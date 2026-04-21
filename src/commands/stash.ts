@@ -2,15 +2,15 @@
  * Stash Command
  * Save and restore working directory changes
  * 
- * Unlike Git's cryptic stash, wit provides clear stash management:
- * - wit stash              # Save changes with auto-message
- * - wit stash save "msg"   # Save with custom message
- * - wit stash list         # List all stashes
- * - wit stash pop          # Apply and remove latest stash
- * - wit stash apply [n]    # Apply stash without removing
- * - wit stash drop [n]     # Remove a stash
- * - wit stash clear        # Remove all stashes
- * - wit stash show [n]     # Show stash contents
+ * Unlike Git's cryptic stash, myvcs provides clear stash management:
+ * - myvcs stash              # Save changes with auto-message
+ * - myvcs stash save "msg"   # Save with custom message
+ * - myvcs stash list         # List all stashes
+ * - myvcs stash pop          # Apply and remove latest stash
+ * - myvcs stash apply [n]    # Apply stash without removing
+ * - myvcs stash drop [n]     # Remove a stash
+ * - myvcs stash clear        # Remove all stashes
+ * - myvcs stash show [n]     # Show stash contents
  */
 
 import * as path from 'path';
@@ -122,7 +122,7 @@ export class StashManager {
 
     // Collect files
     const files: StashFile[] = [];
-    const excludeDirs = ['.wit/', 'node_modules/', '.git/'];
+    const excludeDirs = ['.myvcs/', 'node_modules/', '.git/'];
     const allFiles = walkDir(this.repo.workDir, excludeDirs);
 
     for (const filePath of allFiles) {
@@ -217,7 +217,7 @@ export class StashManager {
     this.flattenTree(commit.treeHash, '', treeFiles);
 
     // Get current working files
-    const excludeDirs = ['.wit/', 'node_modules/', '.git/'];
+    const excludeDirs = ['.myvcs/', 'node_modules/', '.git/'];
     const workFiles = walkDir(this.repo.workDir, excludeDirs);
 
     // Delete files not in tree
@@ -291,7 +291,7 @@ export class StashManager {
       throw new TsgitError(
         `stash@{${index}} does not exist`,
         ErrorCode.OPERATION_FAILED,
-        ['wit stash list    # List available stashes']
+        ['myvcs stash list    # List available stashes']
       );
     }
 
@@ -347,7 +347,7 @@ export class StashManager {
       throw new TsgitError(
         `stash@{${index}} does not exist`,
         ErrorCode.OPERATION_FAILED,
-        ['wit stash list    # List available stashes']
+        ['myvcs stash list    # List available stashes']
       );
     }
 
@@ -382,7 +382,7 @@ export class StashManager {
       throw new TsgitError(
         `stash@{${index}} does not exist`,
         ErrorCode.OPERATION_FAILED,
-        ['wit stash list    # List available stashes']
+        ['myvcs stash list    # List available stashes']
       );
     }
 
@@ -430,7 +430,7 @@ export function handleStash(args: string[]): void {
     switch (subcommand) {
       case 'save':
       case 'push': {
-        // wit stash [save] [-m "message"] or wit stash "message"
+        // myvcs stash [save] [-m "message"] or myvcs stash "message"
         let message: string | undefined;
         
         for (let i = 1; i < args.length; i++) {
@@ -486,7 +486,7 @@ export function handleStash(args: string[]): void {
         
         console.log(colors.green('✓') + ` Applied stash@{${index}}`);
         console.log(colors.dim(`  ${entry.message}`));
-        console.log(colors.cyan('\nStash kept. Use "wit stash drop" to remove it.'));
+        console.log(colors.cyan('\nStash kept. Use "myvcs stash drop" to remove it.'));
         break;
       }
 
@@ -523,13 +523,13 @@ export function handleStash(args: string[]): void {
         } else {
           console.error(colors.red('error: ') + `Unknown stash subcommand: ${subcommand}`);
           console.error('\nUsage:');
-          console.error('  wit stash [save] [-m "msg"]  Save changes to stash');
-          console.error('  wit stash list               List all stashes');
-          console.error('  wit stash show [n]           Show stash contents');
-          console.error('  wit stash apply [n]          Apply stash');
-          console.error('  wit stash pop [n]            Apply and remove stash');
-          console.error('  wit stash drop [n]           Remove stash');
-          console.error('  wit stash clear              Remove all stashes');
+          console.error('  myvcs stash [save] [-m "msg"]  Save changes to stash');
+          console.error('  myvcs stash list               List all stashes');
+          console.error('  myvcs stash show [n]           Show stash contents');
+          console.error('  myvcs stash apply [n]          Apply stash');
+          console.error('  myvcs stash pop [n]            Apply and remove stash');
+          console.error('  myvcs stash drop [n]           Remove stash');
+          console.error('  myvcs stash clear              Remove all stashes');
           process.exit(1);
         }
       }

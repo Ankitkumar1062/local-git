@@ -8,7 +8,7 @@ import { z } from 'zod';
 import { Repository } from '../../core/repository.js';
 
 export const getBranchesTool = createTool({
-  id: 'wit-get-branches',
+  id: 'myvcs-get-branches',
   description: 'List all branches in the repository and identify the current branch. Use this to understand the branching structure and find available branches to switch to.',
   inputSchema: z.object({}),
   outputSchema: z.object({

@@ -37,16 +37,16 @@ export interface RestoreResult {
  * 
  * @example
  * // Restore file from index (discard working tree changes)
- * wit restore file.txt
+ * myvcs restore file.txt
  * 
  * // Restore file from a specific commit
- * wit restore --source HEAD~1 file.txt
+ * myvcs restore --source HEAD~1 file.txt
  * 
  * // Unstage a file (restore staged to index)
- * wit restore --staged file.txt
+ * myvcs restore --staged file.txt
  * 
  * // Restore all files
- * wit restore .
+ * myvcs restore .
  */
 export function restore(
   repo: Repository,
@@ -180,7 +180,7 @@ function restoreSingleFile(
         throw new TsgitError(
           `Path '${filePath}' does not exist in '${source}'`,
           ErrorCode.FILE_NOT_FOUND,
-          [`wit log    # View available commits`]
+          [`myvcs log    # View available commits`]
         );
       }
     } else {
@@ -191,8 +191,8 @@ function restoreSingleFile(
           `Path '${filePath}' is not in the index`,
           ErrorCode.FILE_NOT_STAGED,
           [
-            `wit restore --source HEAD ${filePath}    # Restore from HEAD`,
-            `wit status    # Check file status`,
+            `myvcs restore --source HEAD ${filePath}    # Restore from HEAD`,
+            `myvcs status    # Check file status`,
           ]
         );
       }
@@ -274,7 +274,7 @@ export function handleRestore(args: string[]): void {
 
   if (paths.length === 0) {
     console.error('Error: File path(s) required');
-    console.error('\nUsage: wit restore [options] <pathspec>...');
+    console.error('\nUsage: myvcs restore [options] <pathspec>...');
     console.error('\nOptions:');
     console.error('  -s, --source <ref>  Restore from specific commit/ref');
     console.error('  -S, --staged        Restore staged content (unstage)');
@@ -282,9 +282,9 @@ export function handleRestore(args: string[]): void {
     console.error('  --theirs            Use theirs version during merge');
     console.error('  --ours              Use ours version during merge');
     console.error('\nExamples:');
-    console.error('  wit restore file.txt           # Restore from index');
-    console.error('  wit restore --staged file.txt  # Unstage file');
-    console.error('  wit restore --source HEAD~1 .  # Restore all from previous commit');
+    console.error('  myvcs restore file.txt           # Restore from index');
+    console.error('  myvcs restore --staged file.txt  # Unstage file');
+    console.error('  myvcs restore --source HEAD~1 .  # Restore all from previous commit');
     process.exit(1);
   }
 

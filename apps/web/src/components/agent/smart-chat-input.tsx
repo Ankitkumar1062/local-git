@@ -113,7 +113,7 @@ export function SmartChatInput({
   onSend,
   isLoading,
   disabled,
-  placeholder = 'Ask wit anything... Use / for commands, @ for mentions',
+  placeholder = 'Ask myvcs anything... Use / for commands, @ for mentions',
   currentFile,
   currentSelection,
   availableFiles = [],

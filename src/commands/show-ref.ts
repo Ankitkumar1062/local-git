@@ -3,13 +3,13 @@
  * List references in a local repository
  * 
  * Usage:
- * - wit show-ref                    # List all refs with hashes
- * - wit show-ref --heads            # Only branches
- * - wit show-ref --tags             # Only tags
- * - wit show-ref <ref>              # Check if ref exists (exit 0/1)
- * - wit show-ref --verify <ref>     # Verify ref exists
- * - wit show-ref --hash             # Show only hashes
- * - wit show-ref -q                 # Quiet, useful for scripting
+ * - myvcs show-ref                    # List all refs with hashes
+ * - myvcs show-ref --heads            # Only branches
+ * - myvcs show-ref --tags             # Only tags
+ * - myvcs show-ref <ref>              # Check if ref exists (exit 0/1)
+ * - myvcs show-ref --verify <ref>     # Verify ref exists
+ * - myvcs show-ref --hash             # Show only hashes
+ * - myvcs show-ref -q                 # Quiet, useful for scripting
  * 
  * This is a plumbing command for scripting and advanced usage.
  */

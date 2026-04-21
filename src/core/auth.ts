@@ -186,11 +186,11 @@ export class CredentialManager {
    * Get credentials from environment variables
    */
   private getFromEnvironment(parsed: ParsedUrl): Credentials | null {
-    // Check for wit-specific token first
+    // Check for myvcs-specific token first
     const witToken = process.env.WIT_TOKEN;
     if (witToken) {
       return {
-        username: 'wit',
+        username: 'myvcs',
         password: witToken,
         type: 'bearer',
       };

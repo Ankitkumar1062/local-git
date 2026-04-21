@@ -42,7 +42,7 @@ export interface TriageResult {
   tokensUsed?: number;
 }
 
-export const TRIAGE_AGENT_INSTRUCTIONS = `You are wit AI Triage Agent - an intelligent assistant that helps categorize and prioritize new issues.
+export const TRIAGE_AGENT_INSTRUCTIONS = `You are myvcs AI Triage Agent - an intelligent assistant that helps categorize and prioritize new issues.
 
 ## Your Role
 When a new issue is created, you analyze its content and help organize it by:
@@ -286,8 +286,8 @@ export function createTriageAgent(context: TriageContext, model: string = 'opena
     : TRIAGE_AGENT_INSTRUCTIONS;
 
   return new Agent({
-    id: `wit-triage-${context.repoId}-${context.issueId}`,
-    name: 'wit Triage Agent',
+    id: `myvcs-triage-${context.repoId}-${context.issueId}`,
+    name: 'myvcs Triage Agent',
     description: 'An agent that automatically triages new issues',
     instructions: customInstructions,
     model,

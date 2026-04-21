@@ -3,12 +3,12 @@
  * Binary search to find the commit that introduced a bug
  * 
  * Usage:
- * - wit bisect start              # Start bisect session
- * - wit bisect good [<rev>]       # Mark commit as good
- * - wit bisect bad [<rev>]        # Mark commit as bad
- * - wit bisect reset              # End bisect session
- * - wit bisect skip               # Skip current commit
- * - wit bisect log                # Show bisect log
+ * - myvcs bisect start              # Start bisect session
+ * - myvcs bisect good [<rev>]       # Mark commit as good
+ * - myvcs bisect bad [<rev>]        # Mark commit as bad
+ * - myvcs bisect reset              # End bisect session
+ * - myvcs bisect skip               # Skip current commit
+ * - myvcs bisect log                # Show bisect log
  */
 
 import * as path from 'path';
@@ -20,7 +20,7 @@ import { parseRevision } from './reset';
 import { colors } from '../utils/colors';
 
 /**
- * Bisect state stored in .wit/BISECT_STATE.json
+ * Bisect state stored in .myvcs/BISECT_STATE.json
  */
 export interface BisectState {
   active: boolean;
@@ -108,8 +108,8 @@ export class BisectManager {
         'Bisect session already in progress',
         ErrorCode.OPERATION_FAILED,
         [
-          'wit bisect reset    # End current session first',
-          'wit bisect log      # View current session'
+          'myvcs bisect reset    # End current session first',
+          'myvcs bisect log      # View current session'
         ]
       );
     }
@@ -155,7 +155,7 @@ export class BisectManager {
       throw new TsgitError(
         'No bisect session in progress',
         ErrorCode.OPERATION_FAILED,
-        ['wit bisect start    # Start a new session']
+        ['myvcs bisect start    # Start a new session']
       );
     }
 
@@ -191,7 +191,7 @@ export class BisectManager {
       throw new TsgitError(
         'No bisect session in progress',
         ErrorCode.OPERATION_FAILED,
-        ['wit bisect start    # Start a new session']
+        ['myvcs bisect start    # Start a new session']
       );
     }
 
@@ -227,7 +227,7 @@ export class BisectManager {
       throw new TsgitError(
         'No bisect session in progress',
         ErrorCode.OPERATION_FAILED,
-        ['wit bisect start    # Start a new session']
+        ['myvcs bisect start    # Start a new session']
       );
     }
 
@@ -422,8 +422,8 @@ export function handleBisect(args: string[]): void {
         console.log(colors.green('✓') + ' Bisect session started');
         console.log();
         console.log('Now mark commits as good or bad:');
-        console.log(colors.dim('  wit bisect good <commit>  # Known working commit'));
-        console.log(colors.dim('  wit bisect bad <commit>   # Known broken commit'));
+        console.log(colors.dim('  myvcs bisect good <commit>  # Known working commit'));
+        console.log(colors.dim('  myvcs bisect bad <commit>   # Known broken commit'));
         console.log();
         console.log(colors.dim('Current commit: ' + state.currentCommit.slice(0, 8)));
         break;
@@ -438,7 +438,7 @@ export function handleBisect(args: string[]): void {
           console.log(colors.bold(colors.red(nextCommit!.slice(0, 8))) + ' is the first bad commit');
           showCommitInfo(repo, nextCommit!);
           console.log();
-          console.log(colors.dim('Run "wit bisect reset" to end the session'));
+          console.log(colors.dim('Run "myvcs bisect reset" to end the session'));
         } else if (nextCommit) {
           const remaining = bisect.estimateSteps();
           console.log(colors.green('✓') + ' Marked as good');
@@ -451,7 +451,7 @@ export function handleBisect(args: string[]): void {
           console.log(colors.green('✓') + ' Marked as good');
           if (state.bad.length === 0) {
             console.log(colors.cyan('Now mark a bad commit:'));
-            console.log(colors.dim('  wit bisect bad <commit>'));
+            console.log(colors.dim('  myvcs bisect bad <commit>'));
           }
         }
         break;
@@ -466,7 +466,7 @@ export function handleBisect(args: string[]): void {
           console.log(colors.bold(colors.red(nextCommit!.slice(0, 8))) + ' is the first bad commit');
           showCommitInfo(repo, nextCommit!);
           console.log();
-          console.log(colors.dim('Run "wit bisect reset" to end the session'));
+          console.log(colors.dim('Run "myvcs bisect reset" to end the session'));
         } else if (nextCommit) {
           const remaining = bisect.estimateSteps();
           console.log(colors.red('✗') + ' Marked as bad');
@@ -479,7 +479,7 @@ export function handleBisect(args: string[]): void {
           console.log(colors.red('✗') + ' Marked as bad');
           if (state.good.length === 0) {
             console.log(colors.cyan('Now mark a good commit:'));
-            console.log(colors.dim('  wit bisect good <commit>'));
+            console.log(colors.dim('  myvcs bisect good <commit>'));
           }
         }
         break;
@@ -569,7 +569,7 @@ export function handleBisect(args: string[]): void {
           console.log(colors.dim('No bisect session in progress'));
           console.log();
           console.log('To start bisecting:');
-          console.log(colors.dim('  wit bisect start'));
+          console.log(colors.dim('  myvcs bisect start'));
           break;
         }
 
@@ -596,13 +596,13 @@ export function handleBisect(args: string[]): void {
         console.error(colors.red('error: ') + `Unknown bisect subcommand: ${subcommand}`);
         console.error();
         console.error('Usage:');
-        console.error('  wit bisect start           Start bisect session');
-        console.error('  wit bisect good [<rev>]    Mark commit as good');
-        console.error('  wit bisect bad [<rev>]     Mark commit as bad');
-        console.error('  wit bisect skip            Skip current commit');
-        console.error('  wit bisect reset           End bisect session');
-        console.error('  wit bisect log             Show bisect log');
-        console.error('  wit bisect status          Show current status');
+        console.error('  myvcs bisect start           Start bisect session');
+        console.error('  myvcs bisect good [<rev>]    Mark commit as good');
+        console.error('  myvcs bisect bad [<rev>]     Mark commit as bad');
+        console.error('  myvcs bisect skip            Skip current commit');
+        console.error('  myvcs bisect reset           End bisect session');
+        console.error('  myvcs bisect log             Show bisect log');
+        console.error('  myvcs bisect status          Show current status');
         process.exit(1);
     }
   } catch (error) {

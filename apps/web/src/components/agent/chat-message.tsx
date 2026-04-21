@@ -133,7 +133,7 @@ export function ChatMessage({ role, content, isStreaming, timestamp, compact = f
       <div className="flex-1 min-w-0 space-y-1">
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">
-            {isUser ? 'You' : 'wit Agent'}
+            {isUser ? 'You' : 'myvcs Agent'}
           </span>
           {timestamp && (
             <span className="text-xs text-muted-foreground">

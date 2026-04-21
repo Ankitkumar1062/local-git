@@ -1,5 +1,5 @@
 {
-  "name": "@wit/admin",
+  "name": "@myvcs/admin",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -40,7 +40,7 @@
     "recharts": "^2.15.0",
     "superjson": "^2.2.6",
     "tailwind-merge": "^2.6.0",
-    "wit": "*",
+    "myvcs": "*",
     "zod": "^3.24.1",
     "serve": "^14.2.4"
   },

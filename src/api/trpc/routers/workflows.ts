@@ -487,7 +487,7 @@ export const workflowsRouter = router({
       }
 
       const absoluteDiskPath = resolveDiskPath(repoResult.repo.diskPath);
-      const workflowsDir = path.join(absoluteDiskPath, '.wit', 'workflows');
+      const workflowsDir = path.join(absoluteDiskPath, '.myvcs', 'workflows');
       
       // Ensure workflows directory exists
       if (!fs.existsSync(workflowsDir)) {
@@ -568,7 +568,7 @@ export const workflowsRouter = router({
       }
 
       const absoluteDiskPath = resolveDiskPath(repoResult.repo.diskPath);
-      const workflowsDir = path.join(absoluteDiskPath, '.wit', 'workflows');
+      const workflowsDir = path.join(absoluteDiskPath, '.myvcs', 'workflows');
 
       if (!fs.existsSync(workflowsDir)) {
         return [];
@@ -585,7 +585,7 @@ export const workflowsRouter = router({
             workflows.push({
               name: workflow.name,
               description: workflow.description,
-              filePath: path.join('.wit', 'workflows', file),
+              filePath: path.join('.myvcs', 'workflows', file),
               nodeCount: workflow.nodes?.length || 0,
               updatedAt: fs.statSync(path.join(workflowsDir, file)).mtime,
             });

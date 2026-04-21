@@ -2,7 +2,7 @@
  * Storage Types
  * 
  * Defines the interface for storage backends.
- * This abstraction allows wit to store repositories on:
+ * This abstraction allows myvcs to store repositories on:
  * - Local disk (default for local development)
  * - Database (future: for hosted/cloud deployments)
  * - Object storage like S3 (future: for scalable deployments)

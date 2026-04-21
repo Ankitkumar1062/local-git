@@ -219,7 +219,7 @@ export function SSHKeysPage() {
         </CardHeader>
         <CardContent className="text-sm text-muted-foreground space-y-2">
           <p>
-            SSH keys allow you to authenticate to wit without using a password.
+            SSH keys allow you to authenticate to myvcs without using a password.
             When you push or pull via SSH, Git uses your private key to sign the request.
           </p>
           <p>

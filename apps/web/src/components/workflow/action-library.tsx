@@ -266,7 +266,7 @@ const ACTION_TEMPLATES: ActionTemplate[] = [
     description: 'Run AI-powered code review using Mastra',
     category: 'custom',
     icon: <Zap className="h-4 w-4" />,
-    tags: ['ai', 'review', 'mastra', 'wit'],
+    tags: ['ai', 'review', 'mastra', 'myvcs'],
     config: {
       id: 'ai-code-review',
       name: 'AI Code Review',
@@ -287,7 +287,7 @@ const ACTION_TEMPLATES: ActionTemplate[] = [
         ] 
       },
       executeCode: `async ({ inputData, mastra }) => {
-  const agent = mastra?.getAgent('wit');
+  const agent = mastra?.getAgent('myvcs');
   if (!agent) {
     return { success: false, approved: false, score: 0, issues: [] };
   }
@@ -333,7 +333,7 @@ const ACTION_TEMPLATES: ActionTemplate[] = [
         ] 
       },
       executeCode: `async ({ inputData, mastra }) => {
-  const agent = mastra?.getAgent('wit');
+  const agent = mastra?.getAgent('myvcs');
   if (!agent) {
     return { success: false, labels: [], priority: 'none' };
   }

@@ -50,7 +50,7 @@ export class Filesystem {
     this.workDir = path.resolve(dir);
 
     // Initialize or open repository
-    const gitDir = path.join(this.workDir, '.wit');
+    const gitDir = path.join(this.workDir, '.myvcs');
     if (!fs.existsSync(gitDir)) {
       fs.mkdirSync(this.workDir, { recursive: true });
       this.repo = Repository.init(this.workDir);
@@ -493,7 +493,7 @@ export class Filesystem {
   async glob(pattern: string): Promise<string[]> {
     // Simple glob implementation using walkDir and pattern matching
     const ignorePatterns = loadIgnorePatterns(this.workDir);
-    ignorePatterns.push('**/node_modules/**', '**/.wit/**');
+    ignorePatterns.push('**/node_modules/**', '**/.myvcs/**');
     
     const allFiles = walkDir(this.workDir, ignorePatterns);
     const matches: string[] = [];

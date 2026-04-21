@@ -1,7 +1,7 @@
 /**
  * GitHub Import Router
  * 
- * Provides API endpoints for importing repositories from GitHub to wit.
+ * Provides API endpoints for importing repositories from GitHub to myvcs.
  * Supports importing:
  * - Repository (git data)
  * - Issues with comments
@@ -344,7 +344,7 @@ export const githubImportRouter = router({
                 body: issue.body ?? undefined,
                 state: mapIssueState(issue.state),
                 status: mapIssueStatus(issue.state),
-                authorId: ctx.user.id, // We don't have GitHub users in wit
+                authorId: ctx.user.id, // We don't have GitHub users in myvcs
                 milestoneId,
                 closedAt: issue.closed_at ? new Date(issue.closed_at) : undefined,
               });
@@ -373,7 +373,7 @@ export const githubImportRouter = router({
                 try {
                   await issueCommentModel.create({
                     issueId: newIssue.id,
-                    userId: ctx.user.id, // We don't have GitHub users in wit
+                    userId: ctx.user.id, // We don't have GitHub users in myvcs
                     body: `*Originally posted by @${comment.user.login} on ${new Date(comment.created_at).toLocaleDateString()}*\n\n${comment.body}`,
                   });
                 } catch {

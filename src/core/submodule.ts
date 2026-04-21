@@ -4,17 +4,17 @@
  * Provides Git-like submodule support for nested repositories.
  * 
  * Commands:
- * - wit submodule add <url> <path>   Add a submodule
- * - wit submodule init               Initialize submodules
- * - wit submodule update             Update submodules to recorded commits
- * - wit submodule status             Show submodule status
- * - wit submodule foreach <cmd>      Run command in each submodule
- * - wit submodule sync               Sync submodule URLs
- * - wit submodule deinit <path>      Deinitialize a submodule
+ * - myvcs submodule add <url> <path>   Add a submodule
+ * - myvcs submodule init               Initialize submodules
+ * - myvcs submodule update             Update submodules to recorded commits
+ * - myvcs submodule status             Show submodule status
+ * - myvcs submodule foreach <cmd>      Run command in each submodule
+ * - myvcs submodule sync               Sync submodule URLs
+ * - myvcs submodule deinit <path>      Deinitialize a submodule
  * 
  * Submodule configuration is stored in:
  * - .witmodules (or .gitmodules)
- * - .wit/config
+ * - .myvcs/config
  */
 
 import * as path from 'path';
@@ -205,15 +205,15 @@ export class SubmoduleManager {
    */
   private getSubmoduleCommit(submodulePath: string): string | null {
     const fullPath = path.join(this.workDir, submodulePath);
-    const headPath = path.join(fullPath, '.wit', 'HEAD');
+    const headPath = path.join(fullPath, '.myvcs', 'HEAD');
     const gitHeadPath = path.join(fullPath, '.git', 'HEAD');
     
-    // Check for wit repo
+    // Check for myvcs repo
     if (exists(headPath)) {
       const head = readFileText(headPath).trim();
       if (head.startsWith('ref: ')) {
         // Symbolic ref
-        const refPath = path.join(fullPath, '.wit', head.slice(5));
+        const refPath = path.join(fullPath, '.myvcs', head.slice(5));
         if (exists(refPath)) {
           return readFileText(refPath).trim();
         }
@@ -241,7 +241,7 @@ export class SubmoduleManager {
    */
   private isInitialized(config: SubmoduleConfig): boolean {
     const moduleDir = path.join(this.modulesDir, config.name);
-    const submoduleGitDir = path.join(this.workDir, config.path, '.wit');
+    const submoduleGitDir = path.join(this.workDir, config.path, '.myvcs');
     const submoduleGitDir2 = path.join(this.workDir, config.path, '.git');
     
     return exists(moduleDir) || exists(submoduleGitDir) || exists(submoduleGitDir2);
@@ -276,7 +276,7 @@ export class SubmoduleManager {
         const fullPath = path.join(this.workDir, config.path);
         
         // Check if on a branch
-        const headPath = path.join(fullPath, '.wit', 'HEAD');
+        const headPath = path.join(fullPath, '.myvcs', 'HEAD');
         const gitHeadPath = path.join(fullPath, '.git', 'HEAD');
         
         const actualHeadPath = exists(headPath) ? headPath : (exists(gitHeadPath) ? gitHeadPath : null);
@@ -460,7 +460,7 @@ export class SubmoduleManager {
         // Recursive update
         if (options.recursive) {
           const subManager = new SubmoduleManager(
-            path.join(fullPath, '.wit'),
+            path.join(fullPath, '.myvcs'),
             fullPath
           );
           await subManager.update({ ...options, submodulePaths: undefined });
@@ -497,7 +497,7 @@ export class SubmoduleManager {
       throw new TsgitError(
         `No submodule at path '${targetPath}'`,
         ErrorCode.OPERATION_FAILED,
-        ['wit submodule status    # List submodules']
+        ['myvcs submodule status    # List submodules']
       );
     }
 
@@ -524,7 +524,7 @@ export class SubmoduleManager {
     if (exists(fullPath)) {
       const entries = readDir(fullPath);
       for (const entry of entries) {
-        if (entry !== '.git' && entry !== '.wit') {
+        if (entry !== '.git' && entry !== '.myvcs') {
           const entryPath = path.join(fullPath, entry);
           fs.rmSync(entryPath, { recursive: true, force: true });
         }
@@ -605,7 +605,7 @@ export class SubmoduleManager {
         // Recursive
         if (options.recursive) {
           const subManager = new SubmoduleManager(
-            path.join(fullPath, '.wit'),
+            path.join(fullPath, '.myvcs'),
             fullPath
           );
           const subResults = await subManager.foreach(command, options);
@@ -625,7 +625,7 @@ export class SubmoduleManager {
   }
 
   /**
-   * Sync submodule URLs from .witmodules to .wit/config
+   * Sync submodule URLs from .witmodules to .myvcs/config
    */
   sync(submodulePaths?: string[]): SubmoduleConfig[] {
     const modules = this.parseModulesFile();
@@ -753,7 +753,7 @@ export async function handleSubmodule(args: string[]): Promise<void> {
         
         if (statuses.length === 0) {
           console.log(colors.dim('No submodules configured'));
-          console.log(colors.dim('Use "wit submodule add <url> <path>" to add a submodule'));
+          console.log(colors.dim('Use "myvcs submodule add <url> <path>" to add a submodule'));
           return;
         }
 
@@ -786,7 +786,7 @@ export async function handleSubmodule(args: string[]): Promise<void> {
         
         if (!url || !targetPath) {
           console.error(colors.red('error: ') + 'Missing required arguments');
-          console.error('\nUsage: wit submodule add <url> <path> [--branch <branch>]');
+          console.error('\nUsage: myvcs submodule add <url> <path> [--branch <branch>]');
           process.exit(1);
         }
 
@@ -873,7 +873,7 @@ export async function handleSubmodule(args: string[]): Promise<void> {
         
         if (!command || command === '--recursive') {
           console.error(colors.red('error: ') + 'Please specify a command');
-          console.error('\nUsage: wit submodule foreach [--recursive] <command>');
+          console.error('\nUsage: myvcs submodule foreach [--recursive] <command>');
           process.exit(1);
         }
 
@@ -906,13 +906,13 @@ export async function handleSubmodule(args: string[]): Promise<void> {
       default:
         console.error(colors.red('error: ') + `Unknown subcommand: ${subcommand}`);
         console.error('\nUsage:');
-        console.error('  wit submodule                     Show status');
-        console.error('  wit submodule add <url> <path>    Add a submodule');
-        console.error('  wit submodule init [<path>...]    Initialize submodules');
-        console.error('  wit submodule update [--init]     Update submodules');
-        console.error('  wit submodule deinit <path>       Deinitialize a submodule');
-        console.error('  wit submodule foreach <cmd>       Run command in each');
-        console.error('  wit submodule sync                Sync URLs');
+        console.error('  myvcs submodule                     Show status');
+        console.error('  myvcs submodule add <url> <path>    Add a submodule');
+        console.error('  myvcs submodule init [<path>...]    Initialize submodules');
+        console.error('  myvcs submodule update [--init]     Update submodules');
+        console.error('  myvcs submodule deinit <path>       Deinitialize a submodule');
+        console.error('  myvcs submodule foreach <cmd>       Run command in each');
+        console.error('  myvcs submodule sync                Sync URLs');
         process.exit(1);
     }
   } catch (error) {

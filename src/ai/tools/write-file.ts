@@ -10,7 +10,7 @@ import { Repository } from '../../core/repository.js';
 import { exists, writeFile, mkdirp, readFileText } from '../../utils/fs.js';
 
 export const writeFileTool = createTool({
-  id: 'wit-write-file',
+  id: 'myvcs-write-file',
   description: `Create a new file or overwrite an existing file in the repository.
 Use this when you need to create a completely new file or completely replace file contents.
 For small targeted changes to existing files, prefer the editFile tool instead.
@@ -42,12 +42,12 @@ The file will be created in the repository working directory and can be staged/c
         };
       }
 
-      // Security: Prevent writing to .wit or .git directories
+      // Security: Prevent writing to .myvcs or .git directories
       const relativePath = path.relative(repo.workDir, resolvedPath);
-      if (relativePath.startsWith('.wit') || relativePath.startsWith('.git')) {
+      if (relativePath.startsWith('.myvcs') || relativePath.startsWith('.git')) {
         return {
           success: false,
-          message: 'Access denied: Cannot write to .wit or .git directories',
+          message: 'Access denied: Cannot write to .myvcs or .git directories',
         };
       }
 

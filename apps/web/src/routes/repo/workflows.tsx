@@ -215,7 +215,7 @@ export function WorkflowsPage() {
                 <div className="text-sm text-muted-foreground p-3 bg-muted/50 rounded-lg">
                   No workflows found.
                   <p className="mt-1 text-xs">
-                    Create a workflow in <code className="bg-muted px-1 rounded">.wit/workflows/</code>
+                    Create a workflow in <code className="bg-muted px-1 rounded">.myvcs/workflows/</code>
                   </p>
                 </div>
               ) : (

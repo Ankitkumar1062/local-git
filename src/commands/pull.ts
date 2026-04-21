@@ -3,10 +3,10 @@
  * Fetch from remote and integrate changes
  * 
  * Usage:
- *   wit pull                      # Fetch + merge from upstream
- *   wit pull --rebase             # Fetch + rebase
- *   wit pull <remote> <branch>    # Pull specific branch
- *   wit pull --ff-only            # Only fast-forward
+ *   myvcs pull                      # Fetch + merge from upstream
+ *   myvcs pull --rebase             # Fetch + rebase
+ *   myvcs pull <remote> <branch>    # Pull specific branch
+ *   myvcs pull --ff-only            # Only fast-forward
  */
 
 import { Repository } from '../core/repository';
@@ -107,8 +107,8 @@ export async function pullAsync(
       'You are not currently on a branch',
       ErrorCode.DETACHED_HEAD,
       [
-        'wit checkout <branch>    # Switch to a branch first',
-        'wit switch <branch>      # Or use switch command',
+        'myvcs checkout <branch>    # Switch to a branch first',
+        'myvcs switch <branch>      # Or use switch command',
       ]
     );
   }
@@ -137,8 +137,8 @@ export async function pullAsync(
       `No such remote: '${remote}'`,
       ErrorCode.REF_NOT_FOUND,
       [
-        'wit remote add origin <url>    # Add origin remote',
-        'wit remote -v                  # List configured remotes',
+        'myvcs remote add origin <url>    # Add origin remote',
+        'myvcs remote -v                  # List configured remotes',
       ]
     );
   }
@@ -154,9 +154,9 @@ export async function pullAsync(
       'Cannot pull with uncommitted changes',
       ErrorCode.UNCOMMITTED_CHANGES,
       [
-        'wit stash             # Stash your changes first',
-        'wit commit -m "WIP"   # Or commit them',
-        'wit pull --autostash  # Or auto-stash during pull',
+        'myvcs stash             # Stash your changes first',
+        'myvcs commit -m "WIP"   # Or commit them',
+        'myvcs pull --autostash  # Or auto-stash during pull',
       ]
     );
   }
@@ -177,8 +177,8 @@ export async function pullAsync(
       `Couldn't find remote ref ${remoteRef}`,
       ErrorCode.REF_NOT_FOUND,
       [
-        `wit fetch ${remote}    # Fetch from remote first`,
-        'wit branch -r          # List remote branches',
+        `myvcs fetch ${remote}    # Fetch from remote first`,
+        'myvcs branch -r          # List remote branches',
       ]
     );
   }
@@ -216,8 +216,8 @@ export async function pullAsync(
       'Not possible to fast-forward, aborting',
       ErrorCode.OPERATION_FAILED,
       [
-        'wit pull               # Allow merge commits',
-        'wit pull --rebase      # Or rebase instead',
+        'myvcs pull               # Allow merge commits',
+        'myvcs pull --rebase      # Or rebase instead',
       ]
     );
   }
@@ -240,7 +240,7 @@ export async function pullAsync(
     throw new TsgitError(
       'Not possible to fast-forward',
       ErrorCode.OPERATION_FAILED,
-      ['wit pull --no-ff is not valid when fast-forward is not possible']
+      ['myvcs pull --no-ff is not valid when fast-forward is not possible']
     );
   }
 
@@ -365,7 +365,7 @@ function performRebase(
   console.log(colors.dim('  3. Reset to remote branch'));
   console.log(colors.dim('  4. Replay each commit'));
   console.log();
-  console.log(colors.cyan('ℹ') + ' Use regular merge for now: wit pull');
+  console.log(colors.cyan('ℹ') + ' Use regular merge for now: myvcs pull');
 
   return {
     fetchResult: null,
@@ -435,8 +435,8 @@ async function handlePullAsync(args: string[]): Promise<void> {
     case 'conflict':
       console.log(colors.yellow('!') + ' Merge conflicts detected');
       console.log(colors.dim('  Fix conflicts and run:'));
-      console.log(colors.dim('    wit add <resolved files>'));
-      console.log(colors.dim('    wit commit'));
+      console.log(colors.dim('    myvcs add <resolved files>'));
+      console.log(colors.dim('    myvcs commit'));
       break;
 
     case 'rebase':

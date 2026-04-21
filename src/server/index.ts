@@ -1,7 +1,7 @@
 /**
  * Server Entrypoint
  * 
- * Main entry point for running wit as a Git server supporting
+ * Main entry point for running myvcs as a Git server supporting
  * HTTP (via Hono) and SSH protocols.
  */
 
@@ -169,7 +169,7 @@ export function createApp(repoManager: AnyRepoManager, options: { verbose?: bool
       repositories: repos.map(r => ({
         owner: r.owner,
         name: r.name,
-        url: `/${r.owner}/${r.name}.wit`,
+        url: `/${r.owner}/${r.name}.myvcs`,
       })),
     });
   });
@@ -355,14 +355,14 @@ export function startServer(options: ServerOptions): WitServer {
   console.log(`
 ╔══════════════════════════════════════════════════════════════╗
 ║                                                              ║
-║   🚀 wit server is running!                                  ║
+║   🚀 myvcs server is running!                                  ║
 ║                                                              ║
 ║   HTTP URL: http://${host === '0.0.0.0' ? 'localhost' : host}:${port}                              ${port.toString().length === 4 ? ' ' : ''}║
 ║   tRPC API: http://${host === '0.0.0.0' ? 'localhost' : host}:${port}/trpc                         ${port.toString().length === 4 ? ' ' : ''}║${sshInfo}
 ║   Repositories: ${absoluteReposDir.slice(0, 40).padEnd(41)}║
 ║                                                              ║
-║   Clone: wit clone http://localhost:${port}/owner/repo.wit     ${port.toString().length === 4 ? ' ' : ''}║
-║   Push:  wit push origin main                                ║
+║   Clone: myvcs clone http://localhost:${port}/owner/repo.myvcs     ${port.toString().length === 4 ? ' ' : ''}║
+║   Push:  myvcs push origin main                                ║
 ║                                                              ║
 ║   Press Ctrl+C to stop                                       ║
 ║                                                              ║
@@ -426,7 +426,7 @@ async function startSSHServer(
   const hostKeys = await loadHostKeys(options);
 
   // Initialize key manager with file-based storage
-  const dataDir = options.dataDir || path.join(reposDir, '.wit-server');
+  const dataDir = options.dataDir || path.join(reposDir, '.myvcs-server');
   const keysDir = path.join(dataDir, 'keys');
   const accessConfigDir = path.join(dataDir, 'access');
 
@@ -491,7 +491,7 @@ async function loadHostKeys(options: ServerOptions): Promise<Buffer[]> {
 
   // If no keys loaded, check default locations or generate
   if (hostKeys.length === 0) {
-    const dataDir = options.dataDir || path.join(options.reposDir, '.wit-server');
+    const dataDir = options.dataDir || path.join(options.reposDir, '.myvcs-server');
     const keyDir = path.join(dataDir, 'ssh');
     
     fs.mkdirSync(keyDir, { recursive: true });
@@ -527,9 +527,9 @@ async function loadHostKeys(options: ServerOptions): Promise<Buffer[]> {
  * Create a new repository
  */
 export function createRepository(reposDir: string, owner: string, name: string): Repository {
-  // Normalize name - strip .wit/.git suffix and add .git for internal storage
+  // Normalize name - strip .myvcs/.git suffix and add .git for internal storage
   let repoName = name;
-  if (repoName.endsWith('.wit')) {
+  if (repoName.endsWith('.myvcs')) {
     repoName = repoName.slice(0, -4) + '.git';
   } else if (!repoName.endsWith('.git')) {
     repoName = `${repoName}.git`;

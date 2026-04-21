@@ -12,7 +12,7 @@ import { Repository } from '../core/repository.js';
 import type { MultiAgentPlanningInput } from '../ai/workflows/multi-agent-planning.workflow.js';
 
 /**
- * Handle the `wit plan` command
+ * Handle the `myvcs plan` command
  */
 export async function handlePlan(args: string[]): Promise<void> {
   if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
@@ -128,7 +128,7 @@ function parseArgs(args: string[]): PlanOptions {
 async function runPlanWorkflow(options: PlanOptions): Promise<void> {
   if (!options.task) {
     console.error('Please provide a task description.');
-    console.error('Example: wit plan "Add a new user authentication feature"');
+    console.error('Example: myvcs plan "Add a new user authentication feature"');
     process.exit(1);
   }
 
@@ -137,7 +137,7 @@ async function runPlanWorkflow(options: PlanOptions): Promise<void> {
   try {
     repo = Repository.find();
   } catch {
-    console.error('Not in a wit repository.');
+    console.error('Not in a myvcs repository.');
     process.exit(1);
   }
 
@@ -344,13 +344,13 @@ function printPlanStatus(): void {
  */
 function printPlanHelp(): void {
   console.log(`
-wit plan - Multi-agent task planning and execution
+myvcs plan - Multi-agent task planning and execution
 
-Usage: wit plan <task> [options]
+Usage: myvcs plan <task> [options]
 
 Commands:
-  wit plan <task>             Plan and execute a complex coding task
-  wit plan status             Show planning system status
+  myvcs plan <task>             Plan and execute a complex coding task
+  myvcs plan status             Show planning system status
 
 Options:
   -n, --dry-run               Preview plan without executing
@@ -365,11 +365,11 @@ Options:
   -c, --context <text>        Additional context for planning
 
 Examples:
-  wit plan "Add user authentication with JWT"
-  wit plan "Refactor the database layer to use connection pooling"
-  wit plan "Add unit tests for the API endpoints" --dry-run
-  wit plan "Implement dark mode" -c "Use CSS custom properties"
-  wit plan "Fix all TypeScript errors" --json
+  myvcs plan "Add user authentication with JWT"
+  myvcs plan "Refactor the database layer to use connection pooling"
+  myvcs plan "Add unit tests for the API endpoints" --dry-run
+  myvcs plan "Implement dark mode" -c "Use CSS custom properties"
+  myvcs plan "Fix all TypeScript errors" --json
 
 Workflow:
   1. Planner Agent analyzes the task and creates an execution plan
@@ -386,13 +386,13 @@ Environment:
 }
 
 export const PLAN_HELP = `
-wit plan - Multi-agent task planning and execution
+myvcs plan - Multi-agent task planning and execution
 
-Usage: wit plan <task> [options]
+Usage: myvcs plan <task> [options]
 
 Commands:
-  wit plan <task>             Plan and execute a complex coding task
-  wit plan status             Show planning system status
+  myvcs plan <task>             Plan and execute a complex coding task
+  myvcs plan status             Show planning system status
 
 Options:
   -n, --dry-run               Preview plan without executing
@@ -407,11 +407,11 @@ Options:
   -c, --context <text>        Additional context for planning
 
 Examples:
-  wit plan "Add user authentication with JWT"
-  wit plan "Refactor the database layer to use connection pooling"
-  wit plan "Add unit tests for the API endpoints" --dry-run
-  wit plan "Implement dark mode" -c "Use CSS custom properties"
-  wit plan "Fix all TypeScript errors" --json
+  myvcs plan "Add user authentication with JWT"
+  myvcs plan "Refactor the database layer to use connection pooling"
+  myvcs plan "Add unit tests for the API endpoints" --dry-run
+  myvcs plan "Implement dark mode" -c "Use CSS custom properties"
+  myvcs plan "Fix all TypeScript errors" --json
 
 Workflow:
   1. Planner Agent analyzes the task and creates an execution plan

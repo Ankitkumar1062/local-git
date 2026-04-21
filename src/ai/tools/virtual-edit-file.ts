@@ -46,12 +46,12 @@ Tips:
         };
       }
 
-      // Security: Prevent editing .wit or .git directories
-      if (filePath.startsWith('.wit') || filePath.startsWith('.git') ||
-          filePath.includes('/.wit/') || filePath.includes('/.git/')) {
+      // Security: Prevent editing .myvcs or .git directories
+      if (filePath.startsWith('.myvcs') || filePath.startsWith('.git') ||
+          filePath.includes('/.myvcs/') || filePath.includes('/.git/')) {
         return {
           success: false,
-          message: 'Access denied: Cannot edit files in .wit or .git directories',
+          message: 'Access denied: Cannot edit files in .myvcs or .git directories',
         };
       }
 

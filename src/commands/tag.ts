@@ -3,12 +3,12 @@
  * Create, list, and delete tags
  * 
  * Usage:
- * - wit tag                    # List all tags
- * - wit tag v1.0.0             # Create lightweight tag
- * - wit tag -a v1.0.0 -m "msg" # Create annotated tag
- * - wit tag -d v1.0.0          # Delete tag
- * - wit tag -l "v1.*"          # List tags matching pattern
- * - wit tag -v v1.0.0          # Show tag details
+ * - myvcs tag                    # List all tags
+ * - myvcs tag v1.0.0             # Create lightweight tag
+ * - myvcs tag -a v1.0.0 -m "msg" # Create annotated tag
+ * - myvcs tag -d v1.0.0          # Delete tag
+ * - myvcs tag -l "v1.*"          # List tags matching pattern
+ * - myvcs tag -v v1.0.0          # Show tag details
  */
 
 import { Repository } from '../core/repository';
@@ -50,8 +50,8 @@ export function createLightweightTag(repo: Repository, name: string, ref?: strin
         `Tag '${name}' already exists`,
         ErrorCode.OPERATION_FAILED,
         [
-          `wit tag -d ${name}    # Delete existing tag first`,
-          `wit tag -f ${name}    # Force overwrite`
+          `myvcs tag -d ${name}    # Delete existing tag first`,
+          `myvcs tag -f ${name}    # Force overwrite`
         ]
       );
     }
@@ -93,8 +93,8 @@ export function createAnnotatedTag(
       `Tag '${name}' already exists`,
       ErrorCode.OPERATION_FAILED,
       [
-        `wit tag -d ${name}    # Delete existing tag first`,
-        `wit tag -f ${name}    # Force overwrite`
+        `myvcs tag -d ${name}    # Delete existing tag first`,
+        `myvcs tag -f ${name}    # Force overwrite`
       ]
     );
   }
@@ -137,7 +137,7 @@ export function deleteTag(repo: Repository, name: string): void {
     throw new TsgitError(
       `Tag '${name}' not found`,
       ErrorCode.REF_NOT_FOUND,
-      ['wit tag    # List available tags']
+      ['myvcs tag    # List available tags']
     );
   }
 
@@ -178,7 +178,7 @@ export function getTagInfo(repo: Repository, name: string): {
     throw new TsgitError(
       `Tag '${name}' not found`,
       ErrorCode.REF_NOT_FOUND,
-      ['wit tag    # List available tags']
+      ['myvcs tag    # List available tags']
     );
   }
 
@@ -265,7 +265,7 @@ export function handleTag(args: string[]): void {
         throw new TsgitError(
           'No tag name specified',
           ErrorCode.OPERATION_FAILED,
-          ['wit tag -d <tagname>']
+          ['myvcs tag -d <tagname>']
         );
       }
 
@@ -282,7 +282,7 @@ export function handleTag(args: string[]): void {
         throw new TsgitError(
           'No tag name specified',
           ErrorCode.OPERATION_FAILED,
-          ['wit tag -v <tagname>']
+          ['myvcs tag -v <tagname>']
         );
       }
 
@@ -329,7 +329,7 @@ export function handleTag(args: string[]): void {
         throw new TsgitError(
           'Annotated tag requires a message',
           ErrorCode.OPERATION_FAILED,
-          ['wit tag -a <tagname> -m "message"']
+          ['myvcs tag -a <tagname> -m "message"']
         );
       }
 

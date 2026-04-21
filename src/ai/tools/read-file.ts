@@ -10,7 +10,7 @@ import { Repository } from '../../core/repository.js';
 import { exists, isDirectory, readFile } from '../../utils/fs.js';
 
 export const readFileTool = createTool({
-  id: 'wit-read-file',
+  id: 'myvcs-read-file',
   description: `Read the contents of a file from the repository. Returns the file content as text.
 Use this to understand existing code before making changes.
 Supports reading specific line ranges for large files.

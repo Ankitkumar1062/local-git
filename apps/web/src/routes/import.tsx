@@ -42,7 +42,7 @@ function TerminalOutput({ lines, isRunning }: { lines: TerminalLine[]; isRunning
           <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
         </div>
         <div className="flex-1 text-center text-xs text-muted-foreground font-mono">
-          wit import
+          myvcs import
         </div>
         <Terminal className="h-4 w-4 text-muted-foreground" />
       </div>
@@ -130,7 +130,7 @@ export function ImportPage() {
     const repoFullName = repoMatch ? repoMatch[1] : repoUrl;
 
     // Simulate terminal output
-    addLine({ type: 'command', text: `wit import github ${repoFullName}` });
+    addLine({ type: 'command', text: `myvcs import github ${repoFullName}` });
     await delay(300);
     
     addLine({ type: 'output', text: '' });
@@ -195,7 +195,7 @@ export function ImportPage() {
       await delay(200);
 
       addLine({ type: 'output', text: '' });
-      addLine({ type: 'command', text: `wit import --issues --prs --labels` });
+      addLine({ type: 'command', text: `myvcs import --issues --prs --labels` });
       await delay(300);
 
       if (result.summary.labelsImported > 0) {
@@ -299,7 +299,7 @@ export function ImportPage() {
           <h1 className="text-3xl font-bold">Import from GitHub</h1>
         </div>
         <p className="text-muted-foreground">
-          Migrate your repository from GitHub to wit, including issues, pull requests, and more.
+          Migrate your repository from GitHub to myvcs, including issues, pull requests, and more.
         </p>
       </div>
 

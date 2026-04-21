@@ -224,8 +224,8 @@ export class Refs {
         `Branch name '${name}' is invalid: ${validation.reason}`,
         ErrorCode.INVALID_ARGUMENT,
         [
-          `Try: wit branch ${this.suggestValidBranchName(name)}`,
-          'wit branch --help    # See naming rules',
+          `Try: myvcs branch ${this.suggestValidBranchName(name)}`,
+          'myvcs branch --help    # See naming rules',
         ],
         { branch: name }
       );
@@ -237,8 +237,8 @@ export class Refs {
         `Branch '${name}' already exists`,
         ErrorCode.BRANCH_EXISTS,
         [
-          `wit checkout ${name}    # Switch to existing branch`,
-          `wit branch -d ${name}   # Delete it first if you want to recreate`,
+          `myvcs checkout ${name}    # Switch to existing branch`,
+          `myvcs branch -d ${name}   # Delete it first if you want to recreate`,
         ],
         { branch: name }
       );
@@ -313,7 +313,7 @@ export class Refs {
       if (similar.length > 0) {
         suggestions.push(`Did you mean: ${similar.join(', ')}?`);
       }
-      suggestions.push('wit branch    # List all branches');
+      suggestions.push('myvcs branch    # List all branches');
 
       throw new TsgitError(
         `Branch '${name}' not found`,
@@ -329,8 +329,8 @@ export class Refs {
         `Cannot delete branch '${name}' - you are currently on it`,
         ErrorCode.CANNOT_DELETE_CURRENT_BRANCH,
         [
-          'wit checkout main       # Switch to main branch first',
-          'wit checkout <branch>   # Switch to another branch first',
+          'myvcs checkout main       # Switch to main branch first',
+          'myvcs checkout <branch>   # Switch to another branch first',
         ],
         { branch: name, currentBranch: current }
       );
@@ -404,8 +404,8 @@ export class Refs {
         `Tag '${name}' already exists`,
         ErrorCode.TAG_EXISTS,
         [
-          `wit show ${name}       # View existing tag`,
-          `wit tag -d ${name}     # Delete it first to recreate`,
+          `myvcs show ${name}       # View existing tag`,
+          `myvcs tag -d ${name}     # Delete it first to recreate`,
         ],
         { tag: name }
       );
@@ -429,7 +429,7 @@ export class Refs {
       if (similar.length > 0) {
         suggestions.push(`Did you mean: ${similar.join(', ')}?`);
       }
-      suggestions.push('wit tag    # List all tags');
+      suggestions.push('myvcs tag    # List all tags');
 
       throw new TsgitError(
         `Tag '${name}' not found`,

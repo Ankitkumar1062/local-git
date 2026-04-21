@@ -3,7 +3,7 @@
  * Provides OAuth Device Flow authentication for GitHub
  * 
  * The device flow is ideal for CLI applications:
- * 1. User runs `wit github login`
+ * 1. User runs `myvcs github login`
  * 2. We display a URL and code
  * 3. User visits the URL in browser and enters the code
  * 4. We poll for the access token
@@ -16,9 +16,9 @@ import * as https from 'https';
 import { exists, readFileText, writeFile, mkdirp } from '../utils/fs';
 
 /**
- * GitHub OAuth configuration for wit
+ * GitHub OAuth configuration for myvcs
  * 
- * This is the official wit OAuth App client ID, registered at:
+ * This is the official myvcs OAuth App client ID, registered at:
  * https://github.com/settings/developers
  * 
  * Users can override with WIT_GITHUB_CLIENT_ID environment variable
@@ -76,7 +76,7 @@ export interface StoredGitHubCredentials {
  * Get the path to the GitHub credentials file
  */
 export function getGitHubCredentialsPath(): string {
-  const witConfigDir = path.join(os.homedir(), '.wit');
+  const witConfigDir = path.join(os.homedir(), '.myvcs');
   return path.join(witConfigDir, 'github-credentials.json');
 }
 
@@ -276,7 +276,7 @@ export async function getGitHubUser(accessToken: string): Promise<GitHubUser> {
       headers: {
         'Accept': 'application/vnd.github.v3+json',
         'Authorization': `Bearer ${accessToken}`,
-        'User-Agent': 'wit-vcs/2.0.0',
+        'User-Agent': 'myvcs-vcs/2.0.0',
       },
     }
   );

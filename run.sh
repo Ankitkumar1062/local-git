@@ -14,6 +14,10 @@ if ! command -v npm &> /dev/null; then
 fi
 set -e
 
+echo "Ensuring ports 3000 and 5173 are free..."
+npx kill-port 3000 || true
+npx kill-port 5173 || true
+
 # Defaults
 PORT=${1:-3000}
 REPOS_DIR=${2:-./repos}

@@ -136,8 +136,8 @@ export class MergeManager {
         'A merge is already in progress',
         ErrorCode.MERGE_CONFLICT,
         [
-          'wit merge --continue    # Continue after resolving conflicts',
-          'wit merge --abort       # Abort the merge',
+          'myvcs merge --continue    # Continue after resolving conflicts',
+          'myvcs merge --abort       # Abort the merge',
         ]
       );
     }
@@ -147,7 +147,7 @@ export class MergeManager {
       throw new TsgitError(
         'Cannot merge in detached HEAD state',
         ErrorCode.DETACHED_HEAD,
-        ['wit checkout <branch>    # Switch to a branch first']
+        ['myvcs checkout <branch>    # Switch to a branch first']
       );
     }
 
@@ -158,7 +158,7 @@ export class MergeManager {
       throw new TsgitError(
         `Branch '${sourceBranch}' not found`,
         ErrorCode.BRANCH_NOT_FOUND,
-        ['wit branch list    # List available branches']
+        ['myvcs branch list    # List available branches']
       );
     }
 
@@ -713,9 +713,9 @@ export function formatMergeResult(result: MergeResult): string {
   }
 
   output += '\nResolve conflicts and run:\n';
-  output += '  wit merge --continue\n\n';
+  output += '  myvcs merge --continue\n\n';
   output += 'Or abort with:\n';
-  output += '  wit merge --abort\n';
+  output += '  myvcs merge --abort\n';
 
   return output;
 }

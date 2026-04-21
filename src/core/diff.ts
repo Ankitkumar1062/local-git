@@ -202,24 +202,24 @@ export function formatUnifiedDiff(fileDiff: FileDiff): string {
   const lines: string[] = [];
 
   if (fileDiff.isRename) {
-    lines.push(`diff --wit a/${fileDiff.oldPath} b/${fileDiff.newPath}`);
+    lines.push(`diff --myvcs a/${fileDiff.oldPath} b/${fileDiff.newPath}`);
     lines.push(`similarity index ${fileDiff.similarity}%`);
     lines.push(`rename from ${fileDiff.oldPath}`);
     lines.push(`rename to ${fileDiff.newPath}`);
     lines.push(`--- a/${fileDiff.oldPath}`);
     lines.push(`+++ b/${fileDiff.newPath}`);
   } else if (fileDiff.isNew) {
-    lines.push(`diff --wit a/${fileDiff.newPath} b/${fileDiff.newPath}`);
+    lines.push(`diff --myvcs a/${fileDiff.newPath} b/${fileDiff.newPath}`);
     lines.push('new file mode 100644');
     lines.push(`--- /dev/null`);
     lines.push(`+++ b/${fileDiff.newPath}`);
   } else if (fileDiff.isDeleted) {
-    lines.push(`diff --wit a/${fileDiff.oldPath} b/${fileDiff.oldPath}`);
+    lines.push(`diff --myvcs a/${fileDiff.oldPath} b/${fileDiff.oldPath}`);
     lines.push('deleted file mode 100644');
     lines.push(`--- a/${fileDiff.oldPath}`);
     lines.push(`+++ /dev/null`);
   } else {
-    lines.push(`diff --wit a/${fileDiff.oldPath} b/${fileDiff.newPath}`);
+    lines.push(`diff --myvcs a/${fileDiff.oldPath} b/${fileDiff.newPath}`);
     lines.push(`--- a/${fileDiff.oldPath}`);
     lines.push(`+++ b/${fileDiff.newPath}`);
   }
@@ -600,10 +600,10 @@ export function formatColoredDiff(fileDiff: FileDiff): string {
   const lines: string[] = [];
 
   if (fileDiff.isRename) {
-    lines.push(colors.bold(`diff --wit a/${fileDiff.oldPath} b/${fileDiff.newPath}`));
+    lines.push(colors.bold(`diff --myvcs a/${fileDiff.oldPath} b/${fileDiff.newPath}`));
     lines.push(colors.yellow(`renamed: ${fileDiff.oldPath} → ${fileDiff.newPath} (${fileDiff.similarity}% similar)`));
   } else {
-    lines.push(colors.bold(`diff --wit a/${fileDiff.oldPath} b/${fileDiff.newPath}`));
+    lines.push(colors.bold(`diff --myvcs a/${fileDiff.oldPath} b/${fileDiff.newPath}`));
   }
   
   if (fileDiff.isNew) {

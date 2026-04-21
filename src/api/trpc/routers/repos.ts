@@ -2325,13 +2325,13 @@ export const reposRouter = router({
       }
 
       try {
-        // Import wit core classes
+        // Import myvcs core classes
         const { Tree, Commit } = await import('../../../core/object');
 
         // Get user info for commit author
         const user = await userModel.findById(ctx.user.id);
-        const authorName = user?.name || user?.username || 'wit user';
-        const authorEmail = user?.email || `${ctx.user.id}@wit.local`;
+        const authorName = user?.name || user?.username || 'myvcs user';
+        const authorEmail = user?.email || `${ctx.user.id}@myvcs.local`;
 
         // Resolve the branch ref to get the current commit
         const branchRef = `refs/heads/${input.ref}`;

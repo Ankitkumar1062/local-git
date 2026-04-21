@@ -1,7 +1,7 @@
 /**
  * GitHub Import Command
  * 
- * Import repositories from GitHub to wit, including:
+ * Import repositories from GitHub to myvcs, including:
  * - Repository (git data)
  * - Issues with comments
  * - Pull Requests with comments
@@ -10,10 +10,10 @@
  * - Releases
  * 
  * Usage:
- *   wit github import <owner/repo>              # Import with defaults
- *   wit github import <owner/repo> --name foo   # Import with custom name
- *   wit github import <owner/repo> --issues     # Import only issues
- *   wit github import <url>                     # Import from URL
+ *   myvcs github import <owner/repo>              # Import with defaults
+ *   myvcs github import <owner/repo> --name foo   # Import with custom name
+ *   myvcs github import <owner/repo> --issues     # Import only issues
+ *   myvcs github import <url>                     # Import from URL
  */
 
 import { execSync } from 'child_process';
@@ -194,11 +194,11 @@ function printHelp(): void {
   console.log(`
 ${colors.bold('GitHub Import')}
 
-Import repositories from GitHub to wit, including issues, PRs, and more.
+Import repositories from GitHub to myvcs, including issues, PRs, and more.
 
 ${colors.bold('Usage:')}
-  wit github import <owner/repo> [options]
-  wit github import <github-url> [options]
+  myvcs github import <owner/repo> [options]
+  myvcs github import <github-url> [options]
 
 ${colors.bold('Arguments:')}
   owner/repo           GitHub repository in owner/repo format
@@ -225,23 +225,23 @@ ${colors.bold('Import Filters:')}
   --metadata-only      Import metadata without git data
 
 ${colors.bold('Examples:')}
-  wit github import facebook/react
-  wit github import https://github.com/vercel/next.js
-  wit github import owner/repo --name my-fork
-  wit github import owner/repo --org my-company
-  wit github import owner/repo --issues-only
-  wit github import owner/repo --preview
-  wit github import owner/private-repo --token ghp_xxxx
+  myvcs github import facebook/react
+  myvcs github import https://github.com/vercel/next.js
+  myvcs github import owner/repo --name my-fork
+  myvcs github import owner/repo --org my-company
+  myvcs github import owner/repo --issues-only
+  myvcs github import owner/repo --preview
+  myvcs github import owner/private-repo --token ghp_xxxx
 
 ${colors.bold('Authentication:')}
   For private repositories, you need to authenticate first:
-    wit github login
+    myvcs github login
 
   Or provide a token with the --token flag.
 
 ${colors.bold('Notes:')}
   - GitHub usernames are preserved in comments as "@username"
-  - Issue/PR numbers may differ in wit but are preserved in content
+  - Issue/PR numbers may differ in myvcs but are preserved in content
   - Original creation dates are noted in comments
 `);
 }
@@ -335,8 +335,8 @@ export async function handleGitHubImport(args: string[]): Promise<void> {
 
   if (!parsed.repo) {
     console.error(colors.red('error: ') + 'Repository is required');
-    console.error('\nUsage: wit github import <owner/repo>');
-    console.error('Run "wit github import --help" for more information');
+    console.error('\nUsage: myvcs github import <owner/repo>');
+    console.error('Run "myvcs github import --help" for more information');
     process.exit(1);
   }
 
@@ -365,7 +365,7 @@ export async function handleGitHubImport(args: string[]): Promise<void> {
       const manager = getGitHubManager();
       const status = await manager.status();
       if (!status.loggedIn) {
-        console.log(colors.dim('  Run "wit github login" to authenticate for private repos'));
+        console.log(colors.dim('  Run "myvcs github login" to authenticate for private repos'));
       }
     } else {
       spinner.succeed('GitHub authentication found');
@@ -469,7 +469,7 @@ export async function handleGitHubImport(args: string[]): Promise<void> {
       console.log(`  ${colors.green('✓')} Releases: ${data.releases.length} imported`);
     }
     console.log();
-    console.log(colors.dim('Note: Full import with database storage requires "wit serve" mode.'));
+    console.log(colors.dim('Note: Full import with database storage requires "myvcs serve" mode.'));
     console.log(colors.dim('This CLI import clones the git data for local use.'));
 
   } catch (error) {
@@ -482,7 +482,7 @@ export async function handleGitHubImport(args: string[]): Promise<void> {
       ErrorCode.OPERATION_FAILED,
       [
         'Check if the repository exists and is accessible',
-        'For private repos, run "wit github login" first',
+        'For private repos, run "myvcs github login" first',
         'Try with --token flag to provide a GitHub access token',
       ]
     );

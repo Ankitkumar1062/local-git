@@ -188,7 +188,7 @@ export const IGNORED_PATHS = new Set([
   'dist',
   'build',
   '.git',
-  '.wit',
+  '.myvcs',
   '.svn',
   '.hg',
   '__pycache__',

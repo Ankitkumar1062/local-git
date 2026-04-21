@@ -1,7 +1,7 @@
 /**
- * wit down - Stop the wit platform
+ * myvcs down - Stop the myvcs platform
  *
- * Gracefully stops all wit services:
+ * Gracefully stops all myvcs services:
  * - API server
  * - Web UI
  * - Database (optional)
@@ -14,9 +14,9 @@ import * as os from 'os';
 import { colors } from '../utils/colors';
 
 export const DOWN_HELP = `
-wit down - Stop the wit platform
+myvcs down - Stop the myvcs platform
 
-Usage: wit down [options]
+Usage: myvcs down [options]
 
 Options:
   --keep-db       Don't stop the database
@@ -24,13 +24,13 @@ Options:
   -h, --help      Show this help message
 
 Examples:
-  wit down                  Stop all services
-  wit down --keep-db        Stop but keep database running
-  wit down --remove-data    Stop and delete all data
+  myvcs down                  Stop all services
+  myvcs down --keep-db        Stop but keep database running
+  myvcs down --remove-data    Stop and delete all data
 `;
 
-const WIT_DIR = path.join(os.homedir(), '.wit');
-const PID_FILE = path.join(WIT_DIR, 'wit.pid');
+const WIT_DIR = path.join(os.homedir(), '.myvcs');
+const PID_FILE = path.join(WIT_DIR, 'myvcs.pid');
 
 export async function handleDown(args: string[]): Promise<void> {
   if (args.includes('-h') || args.includes('--help')) {
@@ -41,7 +41,7 @@ export async function handleDown(args: string[]): Promise<void> {
   const keepDb = args.includes('--keep-db');
   const removeData = args.includes('--remove-data');
 
-  console.log(colors.bold('\n🛑 Stopping wit platform...\n'));
+  console.log(colors.bold('\n🛑 Stopping myvcs platform...\n'));
 
   // Load PID file
   let pids: Record<string, any> = {};
@@ -80,8 +80,8 @@ export async function handleDown(args: string[]): Promise<void> {
   // Stop database
   if (!keepDb) {
     try {
-      execSync('docker stop wit-postgres 2>/dev/null', { stdio: 'ignore' });
-      execSync('docker rm wit-postgres 2>/dev/null', { stdio: 'ignore' });
+      execSync('docker stop myvcs-postgres 2>/dev/null', { stdio: 'ignore' });
+      execSync('docker rm myvcs-postgres 2>/dev/null', { stdio: 'ignore' });
       console.log(colors.green('  ✓ Database stopped'));
       stoppedSomething = true;
     } catch {
@@ -108,9 +108,9 @@ export async function handleDown(args: string[]): Promise<void> {
   }
 
   if (stoppedSomething) {
-    console.log(colors.green('\n✓ wit stopped\n'));
+    console.log(colors.green('\n✓ myvcs stopped\n'));
   } else {
-    console.log(colors.dim('\n  wit was not running\n'));
+    console.log(colors.dim('\n  myvcs was not running\n'));
   }
 }
 

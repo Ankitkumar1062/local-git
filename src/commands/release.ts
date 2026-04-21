@@ -3,15 +3,15 @@
  * Create, list, view, edit, and manage releases with AI-powered release notes
  * 
  * Usage:
- * - wit release                     # List all releases
- * - wit release create <tag>        # Create a new release
- * - wit release create <tag> --generate  # Create with AI-generated notes
- * - wit release view <tag>          # View release details
- * - wit release edit <tag>          # Edit a release
- * - wit release delete <tag>        # Delete a release
- * - wit release publish <tag>       # Publish a draft release
- * - wit release notes <tag>         # Generate release notes (AI)
- * - wit release latest              # Show latest release
+ * - myvcs release                     # List all releases
+ * - myvcs release create <tag>        # Create a new release
+ * - myvcs release create <tag> --generate  # Create with AI-generated notes
+ * - myvcs release view <tag>          # View release details
+ * - myvcs release edit <tag>          # Edit a release
+ * - myvcs release delete <tag>        # Delete a release
+ * - myvcs release publish <tag>       # Publish a draft release
+ * - myvcs release notes <tag>         # Generate release notes (AI)
+ * - myvcs release latest              # Show latest release
  */
 
 import { Repository } from '../core/repository';
@@ -47,17 +47,17 @@ export interface ReleaseOptions {
 }
 
 export const RELEASE_HELP = `
-${colors.bold('wit release')} - Create and manage releases
+${colors.bold('myvcs release')} - Create and manage releases
 
 ${colors.bold('USAGE')}
-  wit release                         List all releases
-  wit release create <tag> [options]  Create a new release
-  wit release view <tag>              View release details  
-  wit release edit <tag> [options]    Edit a release
-  wit release delete <tag>            Delete a release
-  wit release publish <tag>           Publish a draft release
-  wit release notes <tag> [options]   Generate AI release notes
-  wit release latest                  Show the latest release
+  myvcs release                         List all releases
+  myvcs release create <tag> [options]  Create a new release
+  myvcs release view <tag>              View release details  
+  myvcs release edit <tag> [options]    Edit a release
+  myvcs release delete <tag>            Delete a release
+  myvcs release publish <tag>           Publish a draft release
+  myvcs release notes <tag> [options]   Generate AI release notes
+  myvcs release latest                  Show the latest release
 
 ${colors.bold('CREATE OPTIONS')}
   -t, --title <title>     Release title (defaults to tag name)
@@ -78,19 +78,19 @@ ${colors.bold('NOTES OPTIONS')}
 
 ${colors.bold('EXAMPLES')}
   ${colors.dim('# Create a release with AI-generated notes')}
-  wit release create v1.2.0 --generate
+  myvcs release create v1.2.0 --generate
 
   ${colors.dim('# Create a draft prerelease')}
-  wit release create v2.0.0-beta.1 --draft --prerelease
+  myvcs release create v2.0.0-beta.1 --draft --prerelease
 
   ${colors.dim('# Generate detailed release notes')}
-  wit release notes v1.2.0 --style detailed
+  myvcs release notes v1.2.0 --style detailed
 
   ${colors.dim('# View the latest release')}
-  wit release latest
+  myvcs release latest
 
   ${colors.dim('# Create release with custom notes')}
-  wit release create v1.1.0 -t "Bug fixes" -m "Fixed critical issues"
+  myvcs release create v1.1.0 -t "Bug fixes" -m "Fixed critical issues"
 `;
 
 /**
@@ -328,7 +328,7 @@ function listReleases(repo: Repository): void {
 
   if (tags.length === 0) {
     console.log(colors.dim('No releases found'));
-    console.log(colors.dim('Create a release with: wit release create <tag>'));
+    console.log(colors.dim('Create a release with: myvcs release create <tag>'));
     return;
   }
 
@@ -404,8 +404,8 @@ function viewRelease(repo: Repository, tag: string): void {
       `Release '${tag}' not found`,
       ErrorCode.REF_NOT_FOUND,
       [
-        'wit release                # List all releases',
-        `wit release create ${tag}  # Create this release`,
+        'myvcs release                # List all releases',
+        `myvcs release create ${tag}  # Create this release`,
       ]
     );
   }
@@ -447,9 +447,9 @@ async function createRelease(
       `Release '${tag}' already exists`,
       ErrorCode.OPERATION_FAILED,
       [
-        `wit release view ${tag}     # View existing release`,
-        `wit release delete ${tag}   # Delete existing release`,
-        `wit release create ${tag} -f  # Force overwrite`,
+        `myvcs release view ${tag}     # View existing release`,
+        `myvcs release delete ${tag}   # Delete existing release`,
+        `myvcs release create ${tag} -f  # Force overwrite`,
       ]
     );
   }
@@ -524,7 +524,7 @@ async function deleteRelease(repo: Repository, tag: string): Promise<void> {
     throw new TsgitError(
       `Release '${tag}' not found`,
       ErrorCode.REF_NOT_FOUND,
-      ['wit release  # List all releases']
+      ['myvcs release  # List all releases']
     );
   }
 
@@ -732,7 +732,7 @@ export async function handleRelease(args: string[]): Promise<void> {
           throw new TsgitError(
             'No tag name specified',
             ErrorCode.OPERATION_FAILED,
-            ['wit release create <tag>']
+            ['myvcs release create <tag>']
           );
         }
         await createRelease(repo, tag, options);
@@ -743,7 +743,7 @@ export async function handleRelease(args: string[]): Promise<void> {
           throw new TsgitError(
             'No tag name specified',
             ErrorCode.OPERATION_FAILED,
-            ['wit release view <tag>']
+            ['myvcs release view <tag>']
           );
         }
         viewRelease(repo, tag);
@@ -754,7 +754,7 @@ export async function handleRelease(args: string[]): Promise<void> {
           throw new TsgitError(
             'No tag name specified',
             ErrorCode.OPERATION_FAILED,
-            ['wit release delete <tag>']
+            ['myvcs release delete <tag>']
           );
         }
         await deleteRelease(repo, tag);
@@ -765,7 +765,7 @@ export async function handleRelease(args: string[]): Promise<void> {
           throw new TsgitError(
             'No tag name specified',
             ErrorCode.OPERATION_FAILED,
-            ['wit release notes <tag>']
+            ['myvcs release notes <tag>']
           );
         }
         await showReleaseNotes(repo, tag, options);
@@ -779,7 +779,7 @@ export async function handleRelease(args: string[]): Promise<void> {
         // Edit would typically open an editor or update via API
         // For now, suggest recreating with --force
         console.log(colors.yellow('Edit is not yet implemented locally.'));
-        console.log(colors.dim('Use: wit release create <tag> --force'));
+        console.log(colors.dim('Use: myvcs release create <tag> --force'));
         break;
 
       case 'publish':

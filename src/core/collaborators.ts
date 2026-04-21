@@ -8,7 +8,7 @@
  * - Team management
  * - Activity logging
  * 
- * Storage: .wit/collaborators.json
+ * Storage: .myvcs/collaborators.json
  */
 
 import * as path from 'path';
@@ -394,8 +394,8 @@ export class CollaboratorManager {
         `'${email}' is already a collaborator`,
         ErrorCode.OPERATION_FAILED,
         [
-          `wit collaborator update ${email} --role ${role}    # Update role`,
-          `wit collaborator remove ${email}                    # Remove first`,
+          `myvcs collaborator update ${email} --role ${role}    # Update role`,
+          `myvcs collaborator remove ${email}                    # Remove first`,
         ]
       );
     }

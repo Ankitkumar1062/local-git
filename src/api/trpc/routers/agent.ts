@@ -1,7 +1,7 @@
 /**
  * Agent Router
  * 
- * Handles the wit coding agent API endpoints including:
+ * Handles the myvcs coding agent API endpoints including:
  * - Chat sessions management
  * - Message streaming
  * - File change approval

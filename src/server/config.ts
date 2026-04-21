@@ -62,7 +62,7 @@ const envSchema = z.object({
   // Email
   RESEND_API_KEY: z.string().optional(),
   EMAIL_FROM_ADDRESS: z.string().email().optional(),
-  EMAIL_FROM_NAME: z.string().default('wit'),
+  EMAIL_FROM_NAME: z.string().default('myvcs'),
   
   // GitHub OAuth
   GITHUB_CLIENT_ID: z.string().optional(),

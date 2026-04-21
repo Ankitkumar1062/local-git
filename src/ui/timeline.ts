@@ -1,5 +1,5 @@
 /**
- * Timeline & Activity Visualization for wit
+ * Timeline & Activity Visualization for myvcs
  * Beautiful activity timeline with contribution graphs
  */
 

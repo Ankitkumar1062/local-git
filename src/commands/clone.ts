@@ -3,10 +3,10 @@
  * Clone a repository
  * 
  * Usage:
- *   wit clone <url> [<dir>]       # Clone repository
- *   wit clone --depth <n> <url>   # Shallow clone
- *   wit clone --branch <b> <url>  # Clone specific branch
- *   wit clone --bare <url>        # Bare clone
+ *   myvcs clone <url> [<dir>]       # Clone repository
+ *   myvcs clone --depth <n> <url>   # Shallow clone
+ *   myvcs clone --branch <b> <url>  # Clone specific branch
+ *   myvcs clone --bare <url>        # Bare clone
  */
 
 import * as path from 'path';
@@ -81,11 +81,11 @@ export function parseRepoUrl(url: string): { protocol: string; host: string; pat
 
 /**
  * Clone a local repository (file:// protocol)
- * Supports both regular repos (with .wit directory) and bare repos
+ * Supports both regular repos (with .myvcs directory) and bare repos
  */
 function cloneLocal(sourcePath: string, destPath: string, options: CloneOptions): Repository {
-  // Check for source repository - support both .wit and bare repos
-  let sourceGitDir = path.join(sourcePath, '.wit');
+  // Check for source repository - support both .myvcs and bare repos
+  let sourceGitDir = path.join(sourcePath, '.myvcs');
   // isBareSource detection handled inline
   
   if (!exists(sourceGitDir)) {
@@ -406,7 +406,7 @@ export async function cloneAsync(url: string, directory?: string, options: Clone
         ErrorCode.OPERATION_FAILED,
         [
           `rm -rf ${destPath}    # Remove existing directory`,
-          `wit clone ${url} ${destPath}-new    # Use a different name`,
+          `myvcs clone ${url} ${destPath}-new    # Use a different name`,
         ]
       );
     }
@@ -460,7 +460,7 @@ export function clone(url: string, directory?: string, options: CloneOptions = {
         ErrorCode.OPERATION_FAILED,
         [
           `rm -rf ${destPath}    # Remove existing directory`,
-          `wit clone ${url} ${destPath}-new    # Use a different name`,
+          `myvcs clone ${url} ${destPath}-new    # Use a different name`,
         ]
       );
     }
@@ -524,7 +524,7 @@ export async function handleCloneAsync(args: string[]): Promise<void> {
   if (positional.length === 0) {
     console.error(colors.red('error: ') + 'You must specify a repository to clone.');
     console.error('\nUsage:');
-    console.error('  wit clone <repository> [<directory>]');
+    console.error('  myvcs clone <repository> [<directory>]');
     console.error('\nOptions:');
     console.error('  --bare           Create a bare repository');
     console.error('  --depth <n>      Create a shallow clone with n commits');

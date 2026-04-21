@@ -325,7 +325,7 @@ export interface DockerProviderConfig extends SandboxProviderConfig {
     network?: string;
     /**
      * Default image for sandboxes
-     * Default: 'wit-sandbox:latest'
+     * Default: 'myvcs-sandbox:latest'
      */
     image?: string;
     /**

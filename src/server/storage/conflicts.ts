@@ -2,7 +2,7 @@
  * Conflict detection and resolution helpers
  * 
  * Provides utilities for detecting and extracting merge conflict information
- * from bare repositories using wit's TypeScript API.
+ * from bare repositories using myvcs's TypeScript API.
  */
 
 import { BareRepository } from './repos';
@@ -127,7 +127,7 @@ function isAncestor(repo: BareRepository, sha1: string, sha2: string): boolean {
 
 /**
  * Get detailed conflict information for a merge between two branches
- * using wit's TypeScript API
+ * using myvcs's TypeScript API
  */
 export async function getConflictDetails(
   repoPath: string,

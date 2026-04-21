@@ -1,5 +1,5 @@
 /**
- * Terminal User Interface (TUI) for wit
+ * Terminal User Interface (TUI) for myvcs
  * A beautiful, interactive terminal interface using OpenTUI
  */
 
@@ -589,7 +589,7 @@ export class TsgitTUI {
   private getHeaderContent(): string {
     const branch = this.repo.refs.getCurrentBranch() || 'detached HEAD';
     const repoName = path.basename(this.repo.workDir);
-    return `wit | ${repoName} | Branch: ${branch}`;
+    return `myvcs | ${repoName} | Branch: ${branch}`;
   }
 
   /**
@@ -1181,7 +1181,7 @@ export class TsgitTUI {
    * Show reset menu
    */
   private showResetMenu(): void {
-    this.showMessage('Reset: use wit reset --soft/--mixed/--hard <commit>');
+    this.showMessage('Reset: use myvcs reset --soft/--mixed/--hard <commit>');
   }
 
   /**
@@ -1202,7 +1202,7 @@ export class TsgitTUI {
    * Show stack selector
    */
   private showStackSelector(): void {
-    this.showMessage('Stacks: use wit stack commands');
+    this.showMessage('Stacks: use myvcs stack commands');
   }
 
   /**
@@ -1210,7 +1210,7 @@ export class TsgitTUI {
    */
   private showHelp(): void {
     const helpContent = `
-wit TUI - Keyboard Shortcuts
+myvcs TUI - Keyboard Shortcuts
 
 Navigation:
   Tab        - Switch panels
@@ -1340,7 +1340,7 @@ export async function launchTUI(): Promise<void> {
       console.error('OpenTUI strictly requires the Bun runtime to execute its native bindings.');
       console.error('Please install Bun:');
       console.error('  curl -fsSL https://bun.sh/install | bash');
-      console.error("\nAfter installing Bun, run 'wit ui' again.");
+      console.error("\nAfter installing Bun, run 'myvcs ui' again.");
       process.exit(1);
     }
     
@@ -1372,7 +1372,7 @@ export async function launchTUI(): Promise<void> {
       console.error('\nMake sure Zig is installed and try reinstalling dependencies.');
     } else {
       console.error('Error:', message);
-      console.error('Make sure you are in a wit repository');
+      console.error('Make sure you are in a myvcs repository');
     }
     process.exit(1);
   }

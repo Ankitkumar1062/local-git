@@ -44,7 +44,7 @@ Respond in JSON format:
 `;
 
 export const generatePRDescriptionTool = createTool({
-  id: 'wit-generate-pr-description',
+  id: 'myvcs-generate-pr-description',
   description: 'Generate a PR description from diff and commit messages. Analyzes code changes to create a comprehensive pull request description with title, summary, changes, and suggested labels.',
   inputSchema: z.object({
     diff: z.string().describe('The diff content showing code changes in the PR'),

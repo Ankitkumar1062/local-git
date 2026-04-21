@@ -6,13 +6,13 @@
  * a comprehensive overview of user activity.
  *
  * Usage:
- *   wit dashboard              Show full dashboard
- *   wit dashboard prs          Show PRs (awaiting review, mine, participated)
- *   wit dashboard issues       Show issues (assigned, created)
- *   wit dashboard repos        Show your repositories
- *   wit dashboard activity     Show recent activity
- *   wit dashboard stats        Show contribution statistics
- *   wit dashboard summary      Show quick summary
+ *   myvcs dashboard              Show full dashboard
+ *   myvcs dashboard prs          Show PRs (awaiting review, mine, participated)
+ *   myvcs dashboard issues       Show issues (assigned, created)
+ *   myvcs dashboard repos        Show your repositories
+ *   myvcs dashboard activity     Show recent activity
+ *   myvcs dashboard stats        Show contribution statistics
+ *   myvcs dashboard summary      Show quick summary
  */
 
 import {
@@ -26,11 +26,11 @@ import {
 import { colors } from '../utils/colors';
 
 export const DASHBOARD_HELP = `
-wit dashboard - Your Personal Dashboard
+myvcs dashboard - Your Personal Dashboard
 
 A unified view of your PRs, issues, repositories, and contribution activity.
 
-Usage: wit dashboard [command] [options]
+Usage: myvcs dashboard [command] [options]
 
 Commands:
   (none)        Show full dashboard overview
@@ -55,12 +55,12 @@ Sections:
   ${colors.green('Activity')}           Recent contribution activity
 
 Examples:
-  wit dashboard                  Show full dashboard
-  wit dashboard prs              Show all PR sections
-  wit dashboard issues           Show issue sections
-  wit dashboard repos            Show your repositories
-  wit dashboard stats            Show contribution stats
-  wit dashboard --json           Get dashboard as JSON
+  myvcs dashboard                  Show full dashboard
+  myvcs dashboard prs              Show all PR sections
+  myvcs dashboard issues           Show issue sections
+  myvcs dashboard repos            Show your repositories
+  myvcs dashboard stats            Show contribution stats
+  myvcs dashboard --json           Get dashboard as JSON
 `;
 
 /**
@@ -368,8 +368,8 @@ export async function handleDashboard(args: string[]): Promise<void> {
     if (error instanceof ApiError) {
       console.error(colors.red('error: ') + error.message);
       if (error.status === 0) {
-        console.error(colors.dim('hint: Start the server with: wit serve'));
-        console.error(colors.dim('      Or authenticate with: wit github login'));
+        console.error(colors.dim('hint: Start the server with: myvcs serve'));
+        console.error(colors.dim('      Or authenticate with: myvcs github login'));
       }
       process.exit(1);
     }
@@ -450,7 +450,7 @@ async function showFullDashboard(
     }
     if (inbox.prsAwaitingReview > 3) {
       console.log(
-        colors.dim(`  ... and ${inbox.prsAwaitingReview - 3} more (wit dashboard prs)`)
+        colors.dim(`  ... and ${inbox.prsAwaitingReview - 3} more (myvcs dashboard prs)`)
       );
     }
     console.log();
@@ -466,7 +466,7 @@ async function showFullDashboard(
     }
     if (inbox.myOpenPrs > 3) {
       console.log(
-        colors.dim(`  ... and ${inbox.myOpenPrs - 3} more (wit dashboard prs)`)
+        colors.dim(`  ... and ${inbox.myOpenPrs - 3} more (myvcs dashboard prs)`)
       );
     }
     console.log();
@@ -481,7 +481,7 @@ async function showFullDashboard(
     }
     if (data.repos.length > 3) {
       console.log(
-        colors.dim(`  ... and more (wit dashboard repos)`)
+        colors.dim(`  ... and more (myvcs dashboard repos)`)
       );
     }
     console.log();
@@ -496,7 +496,7 @@ async function showFullDashboard(
     }
     if (data.activity.length > 3) {
       console.log(
-        colors.dim(`  ... and more (wit dashboard activity)`)
+        colors.dim(`  ... and more (myvcs dashboard activity)`)
       );
     }
     console.log();
@@ -506,7 +506,7 @@ async function showFullDashboard(
   console.log(colors.dim('  ─'.repeat(30)));
   console.log(
     colors.dim('  Tip: Use ') +
-      'wit dashboard prs' +
+      'myvcs dashboard prs' +
       colors.dim(' to see all PR sections')
   );
   console.log();
@@ -570,7 +570,7 @@ async function showPrs(
 
   if (awaitingReview.length === 0 && myPrs.length === 0 && participated.length === 0) {
     console.log(colors.dim('  No pull requests to show.'));
-    console.log(colors.dim('  Create a PR with: wit pr create'));
+    console.log(colors.dim('  Create a PR with: myvcs pr create'));
     console.log();
   }
 }
@@ -666,7 +666,7 @@ async function showRepos(
 
   if (repos.length === 0) {
     console.log(colors.dim('  No repositories found.'));
-    console.log(colors.dim('  Create one with: wit init'));
+    console.log(colors.dim('  Create one with: myvcs init'));
     console.log();
     return;
   }

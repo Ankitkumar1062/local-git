@@ -16,7 +16,7 @@ import { useMobile } from '@/hooks/use-mobile';
 export type DiffViewMode = 'unified' | 'split';
 
 // Local storage key for diff view preference
-const DIFF_VIEW_PREFERENCE_KEY = 'wit-diff-view-mode';
+const DIFF_VIEW_PREFERENCE_KEY = 'myvcs-diff-view-mode';
 
 export interface DiffLine {
   type: 'add' | 'remove' | 'context';
@@ -89,13 +89,13 @@ function parseDiff(diffText: string): DiffFile[] {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
-    // New file diff header: diff --git a/path b/path or diff --wit a/path b/path
-    if (line.startsWith('diff --git') || line.startsWith('diff --wit')) {
+    // New file diff header: diff --git a/path b/path or diff --myvcs a/path b/path
+    if (line.startsWith('diff --git') || line.startsWith('diff --myvcs')) {
       if (currentFile) {
         if (currentHunk) currentFile.hunks.push(currentHunk);
         files.push(currentFile);
       }
-      const match = line.match(/diff --(?:git|wit) a\/(.*) b\/(.*)/);
+      const match = line.match(/diff --(?:git|myvcs) a\/(.*) b\/(.*)/);
       currentFile = {
         path: match ? match[2] : 'unknown',
         oldPath: match ? match[1] : undefined,

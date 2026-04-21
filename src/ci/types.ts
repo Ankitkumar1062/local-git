@@ -1,7 +1,7 @@
 /**
  * CI/CD Workflow Types
  * 
- * Type definitions for workflow YAML files in .wit/workflows/*.yml
+ * Type definitions for workflow YAML files in .myvcs/workflows/*.yml
  * Compatible with GitHub Actions syntax.
  */
 

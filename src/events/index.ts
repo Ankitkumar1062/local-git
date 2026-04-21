@@ -1,7 +1,7 @@
 /**
  * Events Module
  * 
- * Event-driven architecture for the wit platform.
+ * Event-driven architecture for the myvcs platform.
  * Events trigger notifications, webhooks, activity logs, AI workflows, etc.
  */
 

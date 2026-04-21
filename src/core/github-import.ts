@@ -1,8 +1,8 @@
 /**
  * GitHub Import
  * 
- * Imports repositories from GitHub to wit, including:
- * - Repository (git clone + convert to wit format)
+ * Imports repositories from GitHub to myvcs, including:
+ * - Repository (git clone + convert to myvcs format)
  * - Issues
  * - Pull Requests  
  * - Labels
@@ -215,7 +215,7 @@ export interface GitHubImportResult {
     items: Array<{ tagName: string; name: string }>;
   };
   errors: string[];
-  /** Mapping from GitHub issue/PR number to wit ID */
+  /** Mapping from GitHub issue/PR number to myvcs ID */
   idMap: {
     issues: Map<number, string>;
     pullRequests: Map<number, string>;
@@ -281,7 +281,7 @@ export class GitHubAPIClient {
         timeout: 30000, // 30 second timeout
         headers: {
           'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'wit-vcs/2.0.0',
+          'User-Agent': 'myvcs-vcs/2.0.0',
           ...(this.token ? { 'Authorization': `Bearer ${this.token}` } : {}),
           ...(body ? { 'Content-Type': 'application/json' } : {}),
         },
@@ -622,21 +622,21 @@ export function getAuthenticatedCloneUrl(cloneUrl: string, token: string | null)
 }
 
 /**
- * Map GitHub issue state to wit issue state
+ * Map GitHub issue state to myvcs issue state
  */
 export function mapIssueState(state: 'open' | 'closed'): 'open' | 'closed' {
   return state;
 }
 
 /**
- * Map GitHub issue to wit issue status
+ * Map GitHub issue to myvcs issue status
  */
 export function mapIssueStatus(state: 'open' | 'closed'): 'backlog' | 'done' {
   return state === 'open' ? 'backlog' : 'done';
 }
 
 /**
- * Map GitHub PR state to wit PR state
+ * Map GitHub PR state to myvcs PR state
  */
 export function mapPRState(pr: GitHubPullRequest): 'open' | 'closed' | 'merged' {
   if (pr.merged) return 'merged';

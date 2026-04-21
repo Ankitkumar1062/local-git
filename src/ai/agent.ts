@@ -1,5 +1,5 @@
 /**
- * wit AI Agent
+ * myvcs AI Agent
  * 
  * An intelligent coding agent that can write code, make changes to files,
  * run commands, and manage the full development workflow from coding to PR.
@@ -11,9 +11,9 @@ import { witTools } from './tools/index.js';
 const DEFAULT_AI_MODEL = 'openai/google/gemma-3-27b-it';
 
 /**
- * System instructions for the wit AI coding agent
+ * System instructions for the myvcs AI coding agent
  */
-const WIT_AGENT_INSTRUCTIONS = `You are wit AI, an intelligent coding agent that helps developers write code and manage their development workflow. You can read, write, and edit files, run commands, and handle the full cycle from coding to creating pull requests.
+const WIT_AGENT_INSTRUCTIONS = `You are myvcs AI, an intelligent coding agent that helps developers write code and manage their development workflow. You can read, write, and edit files, run commands, and handle the full cycle from coding to creating pull requests.
 
 ## Your Capabilities
 
@@ -90,7 +90,7 @@ const WIT_AGENT_INSTRUCTIONS = `You are wit AI, an intelligent coding agent that
 
 ## Safety Guidelines
 
-- **Never delete or modify .wit or .git directories**
+- **Never delete or modify .myvcs or .git directories**
 - **Run tests after making changes** to catch issues early
 - **Check git status frequently** to understand the repo state
 - **Create branches for work** to avoid modifying main directly
@@ -126,11 +126,11 @@ const WIT_AGENT_INSTRUCTIONS = `You are wit AI, an intelligent coding agent that
 Always use these tools to interact with the repository. Never make assumptions about file contents or repository state without checking first.`;
 
 /**
- * Create the wit AI coding agent
+ * Create the myvcs AI coding agent
  */
 export const witAgent = new Agent({
-  id: 'wit-coding-agent',
-  name: 'wit Coding Agent',
+  id: 'myvcs-coding-agent',
+  name: 'myvcs Coding Agent',
   description: 'An intelligent coding agent that can write code, edit files, run commands, and manage the full development workflow from coding to PR',
   instructions: WIT_AGENT_INSTRUCTIONS,
   model: DEFAULT_AI_MODEL,
@@ -142,8 +142,8 @@ export const witAgent = new Agent({
  */
 export function createTsgitAgent(model: string = DEFAULT_AI_MODEL): Agent {
   return new Agent({
-    id: 'wit-coding-agent',
-    name: 'wit Coding Agent',
+    id: 'myvcs-coding-agent',
+    name: 'myvcs Coding Agent',
     description: 'An intelligent coding agent that can write code, edit files, run commands, and manage the full development workflow from coding to PR',
     instructions: WIT_AGENT_INSTRUCTIONS,
     model,
@@ -156,8 +156,8 @@ export function createTsgitAgent(model: string = DEFAULT_AI_MODEL): Agent {
  */
 export function createTextAgent(model: string = DEFAULT_AI_MODEL): Agent {
   return new Agent({
-    id: 'wit-text-agent',
-    name: 'wit Text Agent',
+    id: 'myvcs-text-agent',
+    name: 'myvcs Text Agent',
     description: 'A text analysis agent for code reviews and commits.',
     instructions: 'You are an expert software engineer. Provide clear, concise, and helpful responses to questions about code, diffs, and repositories.',
     model,

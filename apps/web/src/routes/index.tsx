@@ -124,17 +124,6 @@ function LandingView() {
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              asChild 
-              className="h-11 px-6 text-sm border-zinc-700 hover:border-zinc-600 bg-zinc-900/50 text-zinc-300 hover:text-white transition-all duration-300"
-            >
-              <a href="https://docs.wit.sh" target="_blank" rel="noopener noreferrer" className="group">
-                Read the docs
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </a>
-            </Button>
           </div>
           
           {/* Trust indicators */}
@@ -145,7 +134,7 @@ function LandingView() {
             </div>
             <div className="flex items-center gap-1.5">
               <Check className="h-3.5 w-3.5 text-emerald-500" />
-              Self-host with Docker
+              Self-host with Version Control
             </div>
             <div className="flex items-center gap-1.5">
               <Check className="h-3.5 w-3.5 text-emerald-500" />
@@ -169,7 +158,7 @@ function LandingView() {
               <div className="flex-1 flex justify-center">
                 <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-zinc-800/50 text-[10px] text-zinc-500">
                   <Lock className="h-2.5 w-2.5" />
-                  wit.sh/acme/frontend
+                  myvcs.sh/acme/frontend
                 </div>
               </div>
             </div>
@@ -186,7 +175,7 @@ function LandingView() {
                   <div>
                     <span className="text-emerald-400">$</span>
                     <span className="text-zinc-300 ml-2">
-                      {terminalStep >= 0 && <TypeWriter text="wit clone acme/frontend" delay={40} />}
+                      {terminalStep >= 0 && <TypeWriter text="myvcs clone acme/frontend" delay={40} />}
                     </span>
                   </div>
                   {terminalStep >= 1 && (
@@ -203,7 +192,7 @@ function LandingView() {
                   {terminalStep >= 2 && (
                     <div className="animate-fade-up">
                       <span className="text-emerald-400">$</span>
-                      <span className="text-zinc-300 ml-2">wit ai review</span>
+                      <span className="text-zinc-300 ml-2">myvcs ai review</span>
                     </div>
                   )}
                   {terminalStep >= 3 && (
@@ -303,7 +292,7 @@ function LandingView() {
                   </div>
                   <div className="p-3 rounded-lg bg-zinc-800/30 border border-zinc-800">
                     <Zap className="h-4 w-4 text-yellow-400 mb-1" />
-                    <div className="text-xs font-medium text-zinc-200">Stacked diffs</div>
+                    <div className="text-xs font-medium text-zinc-200">AI Features</div>
                   </div>
                 </div>
               </div>
@@ -340,7 +329,7 @@ function LandingView() {
                       Search your codebase with natural language. Ask "where do we handle auth" and get answers.
                     </p>
                     <div className="flex flex-wrap gap-1.5">
-                      <span className="px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-300 text-xs">wit search</span>
+                      <span className="px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-300 text-xs">myvcs search</span>
                       <span className="px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-300 text-xs">Vector embeddings</span>
                       <span className="px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-300 text-xs">Interactive mode</span>
                     </div>
@@ -372,9 +361,9 @@ function LandingView() {
                     </div>
                   </div>
                   <div className="flex items-center gap-3 text-xs font-mono">
-                    <span className="px-2 py-1 rounded bg-zinc-800 text-zinc-400">wit ai commit</span>
-                    <span className="px-2 py-1 rounded bg-zinc-800 text-zinc-400">wit ai review</span>
-                    <span className="px-2 py-1 rounded bg-zinc-800 text-zinc-400">wit ai resolve</span>
+                    <span className="px-2 py-1 rounded bg-zinc-800 text-zinc-400">myvcs ai commit</span>
+                    <span className="px-2 py-1 rounded bg-zinc-800 text-zinc-400">myvcs ai review</span>
+                    <span className="px-2 py-1 rounded bg-zinc-800 text-zinc-400">myvcs ai resolve</span>
                   </div>
                 </div>
               </div>
@@ -399,19 +388,19 @@ function LandingView() {
               </p>
               <div className="space-y-3">
                 <CLIFeature 
-                  command="wit pr create"
+                  command="myvcs pr create"
                   description="Create pull requests from the command line"
                 />
                 <CLIFeature 
-                  command="wit issue new"
+                  command="myvcs issue new"
                   description="File issues with labels and assignments"
                 />
                 <CLIFeature 
-                  command="wit ai review"
+                  command="myvcs ai review"
                   description="Get AI feedback on your changes"
                 />
                 <CLIFeature 
-                  command="wit up"
+                  command="myvcs up"
                   description="Start local dev server with hot reload"
                 />
               </div>
@@ -432,7 +421,7 @@ function LandingView() {
                 <div className="p-4 font-mono text-xs space-y-2">
                   <div>
                     <span className="text-emerald-400">❯</span>
-                    <span className="text-zinc-300 ml-2">wit pr create --title "Add auth"</span>
+                    <span className="text-zinc-300 ml-2">myvcs pr create --title "Add auth"</span>
                   </div>
                   <div className="text-zinc-500">Creating pull request...</div>
                   <div className="flex items-center gap-2 text-emerald-400">
@@ -450,7 +439,7 @@ function LandingView() {
         </div>
       </section>
 
-      {/* Why wit Section */}
+      {/* Why myvcs Section */}
       <section className="w-full py-12 border-t border-zinc-800/50 bg-zinc-950/40">
         <div className="container max-w-5xl mx-auto px-6">
           <div className="text-center mb-8">
@@ -481,7 +470,7 @@ function LandingView() {
             <ReasonCard
               icon={<Code2 className="h-4 w-4" />}
               title="Developer experience"
-              description="Thoughtful CLI, powerful API, and webhooks."
+              description="Thoughtful CLI and powerful API."
             />
             <ReasonCard
               icon={<Users className="h-4 w-4" />}
@@ -491,7 +480,7 @@ function LandingView() {
             <ReasonCard
               icon={<Cpu className="h-4 w-4" />}
               title="Self-host ready"
-              description="Run on your infrastructure with Docker."
+              description="Run on your infrastructure."
             />
           </div>
         </div>

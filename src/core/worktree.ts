@@ -9,15 +9,15 @@
  * - Running long processes without blocking other work
  * 
  * Commands:
- * - wit worktree add <path> <branch>  Create new worktree
- * - wit worktree list                 List all worktrees
- * - wit worktree remove <path>        Remove a worktree
- * - wit worktree prune                Prune stale worktree entries
- * - wit worktree lock <path>          Lock a worktree from being pruned
- * - wit worktree unlock <path>        Unlock a worktree
- * - wit worktree move <path> <new>    Move a worktree
+ * - myvcs worktree add <path> <branch>  Create new worktree
+ * - myvcs worktree list                 List all worktrees
+ * - myvcs worktree remove <path>        Remove a worktree
+ * - myvcs worktree prune                Prune stale worktree entries
+ * - myvcs worktree lock <path>          Lock a worktree from being pruned
+ * - myvcs worktree unlock <path>        Unlock a worktree
+ * - myvcs worktree move <path> <new>    Move a worktree
  * 
- * Worktree data is stored in .wit/worktrees/
+ * Worktree data is stored in .myvcs/worktrees/
  */
 
 import * as path from 'path';
@@ -261,7 +261,7 @@ export class WorktreeManager {
     mkdirp(entryDir);
 
     // Create .git file in worktree pointing to entry
-    const worktreeGitFile = path.join(fullPath, '.wit');
+    const worktreeGitFile = path.join(fullPath, '.myvcs');
     writeFile(worktreeGitFile, `gitdir: ${entryDir}\n`);
 
     // Create gitdir file pointing back
@@ -433,7 +433,7 @@ export class WorktreeManager {
       throw new TsgitError(
         `'${worktreePath}' is not a worktree`,
         ErrorCode.OPERATION_FAILED,
-        ['wit worktree list    # List worktrees']
+        ['myvcs worktree list    # List worktrees']
       );
     }
 
@@ -449,7 +449,7 @@ export class WorktreeManager {
         `Worktree '${worktreePath}' is locked: ${worktree.lockReason || 'no reason given'}`,
         ErrorCode.OPERATION_FAILED,
         [
-          'wit worktree unlock <path>    # Unlock the worktree',
+          'myvcs worktree unlock <path>    # Unlock the worktree',
           'Use --force to remove anyway'
         ]
       );
@@ -458,7 +458,7 @@ export class WorktreeManager {
     // Check for changes (unless force)
     if (!options.force && exists(fullPath)) {
       // Simple check: look for modified files
-      const gitFile = path.join(fullPath, '.wit');
+      const gitFile = path.join(fullPath, '.myvcs');
       if (exists(gitFile)) {
         const content = readFileText(gitFile).trim();
         if (content.startsWith('gitdir:')) {
@@ -469,7 +469,7 @@ export class WorktreeManager {
           // We could check for modifications here, but for simplicity
           // we'll just warn if there are any files
           const entries = readDir(fullPath);
-          const hasFiles = entries.some(e => e !== '.wit');
+          const hasFiles = entries.some(e => e !== '.myvcs');
           
           if (hasFiles) {
             // Just a warning for now
@@ -637,7 +637,7 @@ export class WorktreeManager {
       throw new TsgitError(
         `Worktree '${oldPath}' is locked`,
         ErrorCode.OPERATION_FAILED,
-        ['wit worktree unlock <path>    # Unlock first']
+        ['myvcs worktree unlock <path>    # Unlock first']
       );
     }
 
@@ -663,7 +663,7 @@ export class WorktreeManager {
     }
 
     // Update gitdir path
-    const worktreeGitFile = path.join(newFullPath, '.wit');
+    const worktreeGitFile = path.join(newFullPath, '.myvcs');
     writeFile(worktreeGitFile, `gitdir: ${newEntryDir}\n`);
 
     // Update gitdir reference
@@ -728,7 +728,7 @@ export function handleWorktree(args: string[]): void {
         
         if (!targetPath) {
           console.error(colors.red('error: ') + 'Please specify a path');
-          console.error('\nUsage: wit worktree add <path> <branch|commit>');
+          console.error('\nUsage: myvcs worktree add <path> <branch|commit>');
           process.exit(1);
         }
 
@@ -840,7 +840,7 @@ export function handleWorktree(args: string[]): void {
         
         if (!oldPath || !newPath) {
           console.error(colors.red('error: ') + 'Please specify both old and new paths');
-          console.error('\nUsage: wit worktree move <old-path> <new-path>');
+          console.error('\nUsage: myvcs worktree move <old-path> <new-path>');
           process.exit(1);
         }
 
@@ -852,14 +852,14 @@ export function handleWorktree(args: string[]): void {
       default:
         console.error(colors.red('error: ') + `Unknown subcommand: ${subcommand}`);
         console.error('\nUsage:');
-        console.error('  wit worktree                     List worktrees');
-        console.error('  wit worktree add <path> <branch> Create new worktree');
-        console.error('  wit worktree add <path> -b <new> Create with new branch');
-        console.error('  wit worktree remove <path>       Remove worktree');
-        console.error('  wit worktree prune               Prune stale entries');
-        console.error('  wit worktree lock <path>         Lock worktree');
-        console.error('  wit worktree unlock <path>       Unlock worktree');
-        console.error('  wit worktree move <old> <new>    Move worktree');
+        console.error('  myvcs worktree                     List worktrees');
+        console.error('  myvcs worktree add <path> <branch> Create new worktree');
+        console.error('  myvcs worktree add <path> -b <new> Create with new branch');
+        console.error('  myvcs worktree remove <path>       Remove worktree');
+        console.error('  myvcs worktree prune               Prune stale entries');
+        console.error('  myvcs worktree lock <path>         Lock worktree');
+        console.error('  myvcs worktree unlock <path>       Unlock worktree');
+        console.error('  myvcs worktree move <old> <new>    Move worktree');
         process.exit(1);
     }
   } catch (error) {

@@ -1,6 +1,6 @@
 <div align="center">
 
-# wit
+# myvcs
 
 **Git that understands your code.**
 
@@ -10,18 +10,18 @@ A Git implementation with AI woven into the workflow — not bolted on.
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[Website](https://wit.sh) | [Documentation](https://docs.wit.sh) | [Quickstart](https://docs.wit.sh/quickstart) | [Roadmap](./ROADMAP.md)
+[Website](https://myvcs.sh) | [Documentation](https://docs.myvcs.sh) | [Quickstart](https://docs.myvcs.sh/quickstart) | [Roadmap](./ROADMAP.md)
 
 </div>
 
 ---
 
-## What is wit?
+## What is myvcs?
 
-wit is a complete Git reimplementation in TypeScript with AI capabilities built into its core. It's not a wrapper around Git — it's a fresh take on version control that understands your code, not just your files.
+myvcs is a complete Git reimplementation in TypeScript with AI capabilities built into its core. It's not a wrapper around Git — it's a fresh take on version control that understands your code, not just your files.
 
 ```bash
-$ wit search "where do we handle authentication?"
+$ myvcs search "where do we handle authentication?"
 
   src/core/auth.ts:45-89 (94% match)
   SessionManager.createSession()
@@ -29,32 +29,32 @@ $ wit search "where do we handle authentication?"
   │ 46 │   const token = crypto.randomBytes(32)...
 ```
 
-## Why wit?
+## Why myvcs?
 
-| Problem | Git | wit |
+| Problem | Git | myvcs |
 |---------|-----|-----|
-| Undo a mistake | `git reflog` + prayer | `wit undo` |
-| Write commit message | You do it | `wit ai commit` does it |
-| Find code by intent | `grep` everything | `wit search "how does X work?"` |
+| Undo a mistake | `git reflog` + prayer | `myvcs undo` |
+| Write commit message | You do it | `myvcs ai commit` does it |
+| Find code by intent | `grep` everything | `myvcs search "how does X work?"` |
 | Helpful errors | `fatal: bad revision` | Explains what went wrong + suggests fix |
-| Branch with uncommitted changes | Stash, switch, pop, cry | Just switch. wit handles it. |
+| Branch with uncommitted changes | Stash, switch, pop, cry | Just switch. myvcs handles it. |
 
 ## Quick Start
 
 ```bash
 # Install
-git clone https://github.com/abhiaiyer91/wit.git && cd wit
+git clone https://github.com/abhiaiyer91/myvcs.git && cd myvcs
 nvm use || nvm install
 npm install && npm run build && npm link
 
 # Start using it
-wit init my-project && cd my-project
-wit add . && wit commit -m "initial commit"
+myvcs init my-project && cd my-project
+myvcs add . && myvcs commit -m "initial commit"
 
 # Let AI help
-wit ai commit -a -x              # AI writes the commit message
-wit search "where is auth?"      # Semantic search, not grep
-wit ai review                    # AI reviews your changes
+myvcs ai commit -a -x              # AI writes the commit message
+myvcs search "where is auth?"      # Semantic search, not grep
+myvcs ai review                    # AI reviews your changes
 ```
 
 ## Features
@@ -62,33 +62,33 @@ wit ai review                    # AI reviews your changes
 ### AI-Native Workflow
 
 ```bash
-wit ai commit -a -x      # AI analyzes changes and writes the message
-wit ai review            # Get AI code review before pushing
-wit ai explain HEAD~3..  # Explain what happened in recent commits
-wit search "error handling for API calls"  # Semantic search
+myvcs ai commit -a -x      # AI analyzes changes and writes the message
+myvcs ai review            # Get AI code review before pushing
+myvcs ai explain HEAD~3..  # Explain what happened in recent commits
+myvcs search "error handling for API calls"  # Semantic search
 ```
 
 ### Quality of Life Commands
 
 ```bash
-wit undo                 # Actually undo the last thing (journal-based)
-wit wip -a               # Quick save with auto-generated message
-wit amend -m "fix typo"  # Amend last commit easily
-wit uncommit             # Undo commit but keep changes staged
-wit cleanup              # Delete merged branches
+myvcs undo                 # Actually undo the last thing (journal-based)
+myvcs wip -a               # Quick save with auto-generated message
+myvcs amend -m "fix typo"  # Amend last commit easily
+myvcs uncommit             # Undo commit but keep changes staged
+myvcs cleanup              # Delete merged branches
 ```
 
 ### Visual Interfaces
 
 ```bash
-wit web                  # Browser UI for your repo (like GitKraken)
-wit ui                   # Terminal UI (keyboard-driven)
-wit graph                # Commit graph in terminal
+myvcs web                  # Browser UI for your repo (like GitKraken)
+myvcs ui                   # Terminal UI (keyboard-driven)
+myvcs graph                # Commit graph in terminal
 ```
 
 ### Full Git Compatibility
 
-wit implements Git from scratch but stays compatible:
+myvcs implements Git from scratch but stays compatible:
 
 - Push/pull to GitHub, GitLab, Bitbucket
 - 66 commands covering the full Git workflow
@@ -101,7 +101,7 @@ wit implements Git from scratch but stays compatible:
 |----------|--------------|
 | **Git Commands** | 66 commands — init, add, commit, branch, merge, rebase, cherry-pick, bisect, stash, worktree, submodules... |
 | **AI Tools** | Commit messages, code review, PR descriptions, conflict resolution, semantic search |
-| **Visual UIs** | Web UI (`wit web`), Terminal UI (`wit ui`), commit graph |
+| **Visual UIs** | Web UI (`myvcs web`), Terminal UI (`myvcs ui`), commit graph |
 | **Self-Hosted Server** | Git hosting with PRs, issues, webhooks, branch protection, releases |
 
 ## Status
@@ -119,46 +119,46 @@ Check the [ROADMAP](./ROADMAP.md) for details and what's coming.
 
 | Resource | Description |
 |----------|-------------|
-| [Quickstart](https://docs.wit.sh/quickstart) | Zero to productive in 5 minutes |
-| [Why wit?](https://docs.wit.sh/why-wit) | The problems we're solving |
-| [Commands](https://docs.wit.sh/commands/overview) | Every command documented |
-| [AI Features](https://docs.wit.sh/features/ai-powered) | Commit messages, review, semantic search |
-| [Self-Hosting](https://docs.wit.sh/platform/self-hosting) | Run your own wit server |
+| [Quickstart](https://docs.myvcs.sh/quickstart) | Zero to productive in 5 minutes |
+| [Why myvcs?](https://docs.myvcs.sh/why-myvcs) | The problems we're solving |
+| [Commands](https://docs.myvcs.sh/commands/overview) | Every command documented |
+| [AI Features](https://docs.myvcs.sh/features/ai-powered) | Commit messages, review, semantic search |
+| [Self-Hosting](https://docs.myvcs.sh/platform/self-hosting) | Run your own myvcs server |
 | [IDE & Agent Vision](./docs/IDE_AND_AGENT_VISION.mdx) | Our roadmap to the best IDE ever |
 
 ## Command Reference
 
 ```bash
 # Basics
-wit init                 # Initialize new repo
-wit add . && wit commit  # Standard workflow
-wit switch -c feature    # Create and switch to branch
-wit undo                 # Undo last operation
+myvcs init                 # Initialize new repo
+myvcs add . && myvcs commit  # Standard workflow
+myvcs switch -c feature    # Create and switch to branch
+myvcs undo                 # Undo last operation
 
 # AI (requires OPENAI_API_KEY or ANTHROPIC_API_KEY)
-wit ai commit -a -x      # AI writes commit message
-wit ai review            # AI reviews your changes
-wit search "how does X work?"
+myvcs ai commit -a -x      # AI writes commit message
+myvcs ai review            # AI reviews your changes
+myvcs search "how does X work?"
 
 # Daily workflow
-wit wip -a               # Quick work-in-progress save
-wit amend -m "fix typo"  # Fix last commit
-wit cleanup              # Delete merged branches
-wit stash                # Stash changes
+myvcs wip -a               # Quick work-in-progress save
+myvcs amend -m "fix typo"  # Fix last commit
+myvcs cleanup              # Delete merged branches
+myvcs stash                # Stash changes
 
 # Visual
-wit web                  # Browser UI
-wit ui                   # Terminal UI
-wit graph                # Commit graph
+myvcs web                  # Browser UI
+myvcs ui                   # Terminal UI
+myvcs graph                # Commit graph
 ```
 
 ## Self-Hosting
 
-wit can run as a full Git hosting platform — think self-hosted GitHub:
+myvcs can run as a full Git hosting platform — think self-hosted GitHub:
 
 ```bash
 # Start the server
-wit serve --port 3000 --repos ./repos
+myvcs serve --port 3000 --repos ./repos
 
 # Start the web app
 cd apps/web && npm run dev
@@ -172,9 +172,9 @@ You get:
 - **Webhooks** for integrations
 - **tRPC API** for building your own tools
 
-### `wit web` vs `wit serve`
+### `myvcs web` vs `myvcs serve`
 
-| | `wit web` | `wit serve` |
+| | `myvcs web` | `myvcs serve` |
 |---|-----------|-------------|
 | **Purpose** | View current repo in browser | Host multiple repos |
 | **Setup** | None | Database + config |
@@ -190,7 +190,7 @@ The repo includes `.nvmrc` and `.node-version`, and uses `engine-strict=true` in
 
 ## Built With
 
-wit stands on the shoulders of these excellent open source projects:
+myvcs stands on the shoulders of these excellent open source projects:
 
 ### Backend
 
@@ -236,8 +236,8 @@ wit stands on the shoulders of these excellent open source projects:
 Contributions welcome! See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ```bash
-git clone https://github.com/abhiaiyer91/wit.git
-cd wit
+git clone https://github.com/abhiaiyer91/myvcs.git
+cd myvcs
 npm install
 npm run build
 npm test
@@ -245,7 +245,7 @@ npm test
 
 ## About This Project
 
-wit is an experiment in AI-led software development. The technical direction, architecture, and priorities are defined by Claude (an AI), with a human co-founder providing guidance and autonomy.
+myvcs is an experiment in AI-led software development. The technical direction, architecture, and priorities are defined by Claude (an AI), with a human co-founder providing guidance and autonomy.
 
 Read more in the [ROADMAP](./ROADMAP.md).
 

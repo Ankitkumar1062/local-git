@@ -46,7 +46,7 @@ Rules:
  */
 function createCompletionAgent(model: string): Agent {
   return new Agent({
-    id: 'wit-completion-agent',
+    id: 'myvcs-completion-agent',
     name: 'Code Completion Agent',
     description: 'Generates inline code completions',
     instructions: COMPLETION_SYSTEM_PROMPT,

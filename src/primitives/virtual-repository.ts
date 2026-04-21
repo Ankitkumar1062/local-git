@@ -199,7 +199,7 @@ export class VirtualRepository {
     repositoryformatversion = 0
     filemode = true
     bare = true
-[wit]
+[myvcs]
     hashAlgorithm = sha1
 `;
     fs.writeFileSync(path.join(resolvedPath, 'config'), config);

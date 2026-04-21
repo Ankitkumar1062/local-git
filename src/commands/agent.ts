@@ -1,5 +1,5 @@
 /**
- * Agent Command for wit
+ * Agent Command for myvcs
  * 
  * Provides an interactive coding agent that can:
  * - Read and edit files
@@ -57,7 +57,7 @@ function createMessage(
 }
 
 /**
- * Main handler for `wit agent` command
+ * Main handler for `myvcs agent` command
  */
 export async function handleAgent(args: string[]): Promise<void> {
   const subcommand = args[0];
@@ -96,7 +96,7 @@ async function handleOneShot(args: string[]): Promise<void> {
   
   if (!query.trim()) {
     console.error('Please provide a question or task.');
-    console.error('Example: wit agent "explain the authentication flow"');
+    console.error('Example: myvcs agent "explain the authentication flow"');
     process.exit(1);
   }
 
@@ -119,16 +119,16 @@ Modified files: ${status.modified.length}
 Untracked files: ${status.untracked.length}
 `;
   } catch {
-    // Not in a wit repo, that's okay
+    // Not in a myvcs repo, that's okay
   }
 
   const agent = getTsgitAgent();
   
-  console.log(`\n${colors.cyan}${colors.bold}wit agent${colors.reset}\n`);
+  console.log(`\n${colors.cyan}${colors.bold}myvcs agent${colors.reset}\n`);
   
   try {
     const systemContext = repoContext 
-      ? `You are a coding assistant working in a wit repository.\n${repoContext}\n\nUser request:`
+      ? `You are a coding assistant working in a myvcs repository.\n${repoContext}\n\nUser request:`
       : 'You are a coding assistant. User request:';
     
     const result = await agent.stream(`${systemContext}\n\n${query}`);
@@ -163,12 +163,12 @@ async function startInteractiveSession(_args: string[]): Promise<void> {
     repoPath = repo.workDir;
     branch = repo.refs.getCurrentBranch() || 'HEAD';
   } catch {
-    // Not in a wit repo
+    // Not in a myvcs repo
   }
 
   // Create a unique thread for this session
   const threadId = crypto.randomUUID();
-  const resourceId = repoPath || 'wit-agent';
+  const resourceId = repoPath || 'myvcs-agent';
   
   // Initialize memory thread
   const memory = getMemory();
@@ -327,7 +327,7 @@ async function processUserMessage(session: AgentSession, message: string): Promi
 function printWelcomeBanner(session: AgentSession): void {
   console.log('');
   console.log(`${colors.cyan}${colors.bold}╭─────────────────────────────────────────╮${colors.reset}`);
-  console.log(`${colors.cyan}${colors.bold}│${colors.reset}          ${colors.magenta}${colors.bold}wit coding agent${colors.reset}            ${colors.cyan}${colors.bold}│${colors.reset}`);
+  console.log(`${colors.cyan}${colors.bold}│${colors.reset}          ${colors.magenta}${colors.bold}myvcs coding agent${colors.reset}            ${colors.cyan}${colors.bold}│${colors.reset}`);
   console.log(`${colors.cyan}${colors.bold}╰─────────────────────────────────────────╯${colors.reset}`);
   console.log('');
   
@@ -335,7 +335,7 @@ function printWelcomeBanner(session: AgentSession): void {
     console.log(`${colors.dim}Repository:${colors.reset} ${session.repoPath}`);
     console.log(`${colors.dim}Branch:${colors.reset} ${session.branch}`);
   } else {
-    console.log(`${colors.yellow}Not in a wit repository${colors.reset}`);
+    console.log(`${colors.yellow}Not in a myvcs repository${colors.reset}`);
   }
   
   console.log('');
@@ -437,7 +437,7 @@ function printAgentStatus(): void {
   const info = getAIInfo();
   
   console.log('');
-  console.log(`${colors.bold}wit Agent Status${colors.reset}`);
+  console.log(`${colors.bold}myvcs Agent Status${colors.reset}`);
   console.log('');
   console.log(`Available: ${info.available ? `${colors.green}Yes${colors.reset}` : `${colors.red}No${colors.reset}`}`);
   console.log(`Model: ${info.model}`);
@@ -452,7 +452,7 @@ function printAgentStatus(): void {
     console.log(`Branch: ${branch}`);
   } catch {
     console.log('');
-    console.log(`${colors.yellow}Not in a wit repository${colors.reset}`);
+    console.log(`${colors.yellow}Not in a myvcs repository${colors.reset}`);
   }
   
   if (!info.available) {
@@ -474,22 +474,22 @@ function printAINotConfigured(): void {
   console.error('  export OPENAI_API_KEY=sk-...');
   console.error('  export ANTHROPIC_API_KEY=sk-ant-...');
   console.error('');
-  console.error('Run "wit agent status" to see current configuration.');
+  console.error('Run "myvcs agent status" to see current configuration.');
 }
 
 /**
- * Print help for wit agent
+ * Print help for myvcs agent
  */
 function printAgentHelp(): void {
   console.log(`
-${colors.bold}wit agent${colors.reset} - Interactive coding assistant
+${colors.bold}myvcs agent${colors.reset} - Interactive coding assistant
 
 ${colors.bold}Usage:${colors.reset}
-  wit agent                    Start interactive chat session
-  wit agent chat               Start interactive chat session
-  wit agent ask <query>        Ask a one-shot question
-  wit agent status             Show agent configuration
-  wit agent help               Show this help
+  myvcs agent                    Start interactive chat session
+  myvcs agent chat               Start interactive chat session
+  myvcs agent ask <query>        Ask a one-shot question
+  myvcs agent status             Show agent configuration
+  myvcs agent help               Show this help
 
 ${colors.bold}Interactive Commands:${colors.reset}
   help                         Show available commands
@@ -499,9 +499,9 @@ ${colors.bold}Interactive Commands:${colors.reset}
   exit                         Exit the agent
 
 ${colors.bold}Examples:${colors.reset}
-  wit agent                            # Start interactive session
-  wit agent "explain the auth flow"    # One-shot query
-  wit agent ask "what does main.ts do" # One-shot query
+  myvcs agent                            # Start interactive session
+  myvcs agent "explain the auth flow"    # One-shot query
+  myvcs agent ask "what does main.ts do" # One-shot query
 
 ${colors.bold}Capabilities:${colors.reset}
   - Read and understand code files
@@ -519,12 +519,12 @@ ${colors.bold}Environment:${colors.reset}
 }
 
 export const AGENT_HELP = `
-wit agent - Interactive coding assistant
+myvcs agent - Interactive coding assistant
 
 Usage:
-  wit agent                    Start interactive chat session
-  wit agent ask <query>        Ask a one-shot question
-  wit agent status             Show agent configuration
+  myvcs agent                    Start interactive chat session
+  myvcs agent ask <query>        Ask a one-shot question
+  myvcs agent status             Show agent configuration
 
 The coding agent can:
   - Read and edit files in your repository
@@ -534,7 +534,7 @@ The coding agent can:
   - Explain code and suggest improvements
 
 Examples:
-  wit agent
-  wit agent "add error handling to the API"
-  wit agent ask "what does Repository.find() do?"
+  myvcs agent
+  myvcs agent "add error handling to the API"
+  myvcs agent ask "what does Repository.find() do?"
 `;

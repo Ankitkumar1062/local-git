@@ -96,7 +96,7 @@ export { handleUp, UP_HELP } from './up';
 export { handleDown, DOWN_HELP } from './down';
 export { handlePlatformStatus, STATUS_HELP } from './platform-status';
 
-// Smart status - the killer wit command
+// Smart status - the killer myvcs command
 export { handleSmartStatus } from './smart-status';
 
 // Semantic search - the "holy shit" feature

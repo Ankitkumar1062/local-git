@@ -73,7 +73,7 @@ export class DiskStorage implements StorageBackend {
     repositoryformatversion = 0
     filemode = true
     bare = true
-[wit]
+[myvcs]
     hashAlgorithm = sha1
 `;
     fs.writeFileSync(path.join(repoPath, 'config'), config);

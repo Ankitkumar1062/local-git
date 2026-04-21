@@ -717,7 +717,7 @@ export const useWorkflowStore = create<WorkflowState>()(
       },
     }),
     {
-      name: 'wit-workflow-builder',
+      name: 'myvcs-workflow-builder',
       partialize: (state) => ({
         workflow: state.workflow,
         simpleWorkflow: state.simpleWorkflow,

@@ -11,7 +11,7 @@
  * - Required reviews and status checks (metadata for integration)
  * - Allowed pushers list
  * 
- * Storage: .wit/branch-protection.json
+ * Storage: .myvcs/branch-protection.json
  */
 
 import * as path from 'path';
@@ -190,8 +190,8 @@ export class BranchProtectionManager {
           `Protection rule for pattern '${pattern}' already exists`,
           ErrorCode.INVALID_ARGUMENT,
           [
-            `wit protect update ${pattern}    # Update existing rule`,
-            `wit protect remove ${pattern}    # Remove existing rule first`,
+            `myvcs protect update ${pattern}    # Update existing rule`,
+            `myvcs protect remove ${pattern}    # Remove existing rule first`,
           ],
           { pattern }
         );
@@ -223,8 +223,8 @@ export class BranchProtectionManager {
         `No protection rule found for pattern '${pattern}'`,
         ErrorCode.INVALID_ARGUMENT,
         [
-          'wit protect list    # List existing rules',
-          `wit protect add ${pattern}    # Add new rule`,
+          'myvcs protect list    # List existing rules',
+          `myvcs protect add ${pattern}    # Add new rule`,
         ],
         { pattern }
       );
@@ -732,10 +732,10 @@ const { colors } = require('../utils/colors');
       
       if (rules.length === 0) {
         console.log(colors.dim('No branch protection rules configured'));
-        console.log(colors.dim('\nUse "wit protect add <pattern>" to add a rule'));
+        console.log(colors.dim('\nUse "myvcs protect add <pattern>" to add a rule'));
         console.log(colors.dim('Examples:'));
-        console.log(colors.dim('  wit protect add main --require-pr'));
-        console.log(colors.dim('  wit protect add "release/*" --no-force-push --no-delete'));
+        console.log(colors.dim('  myvcs protect add main --require-pr'));
+        console.log(colors.dim('  myvcs protect add "release/*" --no-force-push --no-delete'));
         return;
       }
       
@@ -758,11 +758,11 @@ const { colors } = require('../utils/colors');
       const pattern = args[1];
       if (!pattern) {
         console.error(colors.red('error: ') + 'Please specify a branch pattern');
-        console.error('\nUsage: wit protect add <pattern> [options]');
+        console.error('\nUsage: myvcs protect add <pattern> [options]');
         console.error('\nExamples:');
-        console.error('  wit protect add main');
-        console.error('  wit protect add "release/*" --require-pr');
-        console.error('  wit protect add main --preset strict');
+        console.error('  myvcs protect add main');
+        console.error('  myvcs protect add "release/*" --require-pr');
+        console.error('  myvcs protect add main --preset strict');
         process.exit(1);
       }
       
@@ -851,7 +851,7 @@ const { colors } = require('../utils/colors');
       const branchName = args[1];
       if (!branchName) {
         console.error(colors.red('error: ') + 'Please specify a branch name');
-        console.error('\nUsage: wit protect check <branch> [--push|--force-push|--delete|--merge]');
+        console.error('\nUsage: myvcs protect check <branch> [--push|--force-push|--delete|--merge]');
         process.exit(1);
       }
       
@@ -920,13 +920,13 @@ const { colors } = require('../utils/colors');
     default:
       console.error(colors.red('error: ') + `Unknown subcommand: ${subcommand}`);
       console.error('\nUsage:');
-      console.error('  wit protect                           List all protection rules');
-      console.error('  wit protect add <pattern> [options]   Add a protection rule');
-      console.error('  wit protect update <pattern> [options] Update a rule');
-      console.error('  wit protect remove <pattern>          Remove a rule');
-      console.error('  wit protect show <pattern>            Show rule details');
-      console.error('  wit protect check <branch> [type]     Check if operation is allowed');
-      console.error('  wit protect status <branch>           Show protection status');
+      console.error('  myvcs protect                           List all protection rules');
+      console.error('  myvcs protect add <pattern> [options]   Add a protection rule');
+      console.error('  myvcs protect update <pattern> [options] Update a rule');
+      console.error('  myvcs protect remove <pattern>          Remove a rule');
+      console.error('  myvcs protect show <pattern>            Show rule details');
+      console.error('  myvcs protect check <branch> [type]     Check if operation is allowed');
+      console.error('  myvcs protect status <branch>           Show protection status');
       console.error('\nOptions:');
       console.error('  --require-pr                Require pull requests');
       console.error('  --approvals <n>             Required number of approvals');

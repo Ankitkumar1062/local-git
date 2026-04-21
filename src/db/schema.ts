@@ -1194,7 +1194,7 @@ export const packageVisibilityEnum = pgEnum('package_visibility', ['public', 'pr
 export const packages = pgTable('packages', {
   id: uuid('id').primaryKey().defaultRandom(),
   name: text('name').notNull(),                    // Package name (can differ from repo name)
-  scope: text('scope'),                            // Scope without @, e.g., "wit" (defaults to owner username)
+  scope: text('scope'),                            // Scope without @, e.g., "myvcs" (defaults to owner username)
   repoId: uuid('repo_id')
     .notNull()
     .references(() => repositories.id, { onDelete: 'cascade' }),
@@ -1538,7 +1538,7 @@ export const workflowRuns = pgTable('workflow_runs', {
   /** Repository this workflow belongs to */
   repoId: uuid('repo_id').notNull().references(() => repositories.id),
   
-  /** Path to the workflow file (e.g., .wit/workflows/ci.yml) */
+  /** Path to the workflow file (e.g., .myvcs/workflows/ci.yml) */
   workflowPath: text('workflow_path').notNull(),
   
   /** Name of the workflow */
@@ -1792,7 +1792,7 @@ export const agentModeEnum = pgEnum('agent_mode', [
 
 /**
  * Agent sessions table
- * Tracks conversations between users and the wit coding agent
+ * Tracks conversations between users and the myvcs coding agent
  */
 export const agentSessions = pgTable('agent_sessions', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -2201,7 +2201,7 @@ export const journalPageHistory = pgTable('journal_page_history', {
 });
 
 
-// ============ OAUTH APPS (Wit Apps) ============
+// ============ OAUTH APPS (myvcs Apps) ============
 
 /**
  * OAuth Apps table - registered third-party applications
@@ -2250,7 +2250,7 @@ export const oauthApps = pgTable('oauth_apps', {
   /** Whether this app is published/public or still in development */
   isPublished: boolean('is_published').notNull().default(false),
   
-  /** Whether this app is verified by Wit */
+  /** Whether this app is verified by myvcs */
   isVerified: boolean('is_verified').notNull().default(false),
   
   /** Number of installations/authorizations */
@@ -2509,7 +2509,7 @@ export const repoSandboxConfig = pgTable('repo_sandbox_config', {
 
   // Docker-specific settings
   /** Docker image to use */
-  dockerImage: text('docker_image').notNull().default('wit-sandbox:latest'),
+  dockerImage: text('docker_image').notNull().default('myvcs-sandbox:latest'),
 
   // Vercel-specific settings
   /** Vercel Project ID */

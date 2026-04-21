@@ -1,4 +1,4 @@
-// IDE components for wit
+// IDE components for myvcs
 export { IDELayout } from './ide-layout';
 export { FileTabs } from './file-tabs';
 export { CodeEditor } from './code-editor';

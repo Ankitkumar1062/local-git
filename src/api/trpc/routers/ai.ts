@@ -38,7 +38,7 @@ function flattenTree(repo: BareRepository, treeHash: string, prefix: string): Ma
 }
 
 /**
- * Get diff between two refs using wit's TS API
+ * Get diff between two refs using myvcs's TS API
  */
 function getDiffBetweenRefs(repoPath: string, baseSha: string, headSha: string): string {
   try {
@@ -94,7 +94,7 @@ function getDiffBetweenRefs(repoPath: string, baseSha: string, headSha: string):
 }
 
 /**
- * Get commits between two refs using wit's TS API
+ * Get commits between two refs using myvcs's TS API
  */
 function getCommitsBetween(repoPath: string, baseSha: string, headSha: string): Array<{
   sha: string;
@@ -131,7 +131,7 @@ function getCommitsBetween(repoPath: string, baseSha: string, headSha: string): 
 }
 
 /**
- * Get file diff for a specific file using wit's TS API
+ * Get file diff for a specific file using myvcs's TS API
  */
 function getFileDiff(repoPath: string, baseSha: string, headSha: string, filePath: string): string {
   try {
@@ -883,7 +883,7 @@ Be helpful, concise, and provide specific references to files and line numbers w
       return {
         results: [],
         query: input.query,
-        message: 'Semantic search requires repository indexing. Run `wit index` in your repository to enable this feature.',
+        message: 'Semantic search requires repository indexing. Run `myvcs index` in your repository to enable this feature.',
       };
     }),
 });

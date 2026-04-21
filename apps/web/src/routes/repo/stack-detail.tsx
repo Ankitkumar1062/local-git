@@ -546,7 +546,7 @@ export function StackDetailPage() {
                 Add branches using the button above or the CLI:
               </p>
               <code className="text-sm bg-muted px-2 py-1 rounded mt-2 inline-block">
-                wit stack push
+                myvcs stack push
               </code>
             </CardContent>
           </Card>
@@ -597,10 +597,10 @@ export function StackDetailPage() {
           <CardContent className="p-4">
             <h3 className="font-medium mb-2">Managing this stack via CLI</h3>
             <div className="space-y-1 text-sm text-muted-foreground font-mono">
-              <p><code>wit stack show {stack.name}</code> - View stack</p>
-              <p><code>wit stack push</code> - Add new branch</p>
-              <p><code>wit stack sync</code> - Rebase all branches</p>
-              <p><code>wit stack submit</code> - Push all branches and create PRs</p>
+              <p><code>myvcs stack show {stack.name}</code> - View stack</p>
+              <p><code>myvcs stack push</code> - Add new branch</p>
+              <p><code>myvcs stack sync</code> - Rebase all branches</p>
+              <p><code>myvcs stack submit</code> - Push all branches and create PRs</p>
             </div>
           </CardContent>
         </Card>

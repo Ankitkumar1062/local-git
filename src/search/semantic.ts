@@ -233,7 +233,7 @@ export class SemanticSearch {
     const defaultExcludes = [
       'node_modules/',
       '.git/',
-      '.wit/',
+      '.myvcs/',
       'dist/',
       'build/',
       'coverage/',

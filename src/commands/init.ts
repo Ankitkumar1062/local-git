@@ -29,7 +29,7 @@ export interface InitOptions {
 }
 
 /**
- * Initialize a new wit repository
+ * Initialize a new myvcs repository
  */
 export function init(directory: string = '.', options: InitOptions = {}): void {
   initAsync(directory, options).catch((error) => {
@@ -48,8 +48,8 @@ export function init(directory: string = '.', options: InitOptions = {}): void {
 async function initAsync(directory: string = '.', options: InitOptions = {}): Promise<void> {
   const absolutePath = path.resolve(directory);
   
-  // Check if already a wit repository
-  const witDir = path.join(absolutePath, '.wit');
+  // Check if already a myvcs repository
+  const witDir = path.join(absolutePath, '.myvcs');
   if (exists(witDir)) {
     throw Errors.repositoryExists(absolutePath);
   }
@@ -88,8 +88,8 @@ async function initAsync(directory: string = '.', options: InitOptions = {}): Pr
     
     // User chose not to migrate - warn them
     if (!options.noMigrate) {
-      console.log('\nNote: Creating fresh wit repository. Git history will not be migrated.');
-      console.log('To migrate later, use: wit init --migrate-git\n');
+      console.log('\nNote: Creating fresh myvcs repository. Git history will not be migrated.');
+      console.log('To migrate later, use: myvcs init --migrate-git\n');
     }
   }
   
@@ -98,7 +98,7 @@ async function initAsync(directory: string = '.', options: InitOptions = {}): Pr
     const repo = Repository.init(directory, { 
       hashAlgorithm: options.hashAlgorithm 
     });
-    console.log(`Initialized empty wit repository in ${repo.gitDir}`);
+    console.log(`Initialized empty myvcs repository in ${repo.gitDir}`);
   } catch (error) {
     if (error instanceof TsgitError) {
       throw error;
@@ -108,7 +108,7 @@ async function initAsync(directory: string = '.', options: InitOptions = {}): Pr
         console.error(`error: Permission denied: ${directory}`);
         console.error('\nhint:');
         console.error('  Check directory permissions');
-        console.error('  Try: sudo wit init (if appropriate)');
+        console.error('  Try: sudo myvcs init (if appropriate)');
         process.exit(1);
       } else if (error.message.includes('ENOENT')) {
         console.error(`error: Directory does not exist: ${directory}`);
@@ -167,7 +167,7 @@ async function promptForMigration(gitDir: string, autoYes?: boolean): Promise<bo
       output: process.stdout,
     });
     
-    rl.question('\nMigrate Git history to wit? [Y/n] ', (answer) => {
+    rl.question('\nMigrate Git history to myvcs? [Y/n] ', (answer) => {
       rl.close();
       const normalized = answer.trim().toLowerCase();
       resolve(normalized === '' || normalized === 'y' || normalized === 'yes');
@@ -176,19 +176,19 @@ async function promptForMigration(gitDir: string, autoYes?: boolean): Promise<bo
 }
 
 /**
- * Perform the Git to wit migration
+ * Perform the Git to myvcs migration
  */
 async function performMigration(
   workDir: string, 
   gitDir: string, 
   options: InitOptions
 ): Promise<void> {
-  const witDir = path.join(workDir, '.wit');
+  const witDir = path.join(workDir, '.myvcs');
   const hashAlgorithm = options.hashAlgorithm || 'sha256';
   
-  console.log(`\nMigrating Git repository to wit (using ${hashAlgorithm})...`);
+  console.log(`\nMigrating Git repository to myvcs (using ${hashAlgorithm})...`);
   
-  // Create wit directory structure
+  // Create myvcs directory structure
   mkdirp(path.join(witDir, 'objects'));
   mkdirp(path.join(witDir, 'refs', 'heads'));
   mkdirp(path.join(witDir, 'refs', 'tags'));
@@ -245,7 +245,7 @@ async function performMigration(
     repositoryformatversion = 1
     filemode = true
     bare = false
-[wit]
+[myvcs]
     hashAlgorithm = ${hashAlgorithm}
     largeFileThreshold = ${CHUNK_THRESHOLD}
     autoStashOnSwitch = true
@@ -294,7 +294,7 @@ async function performMigration(
     }
     
     console.log(`\nRepository initialized in ${witDir}`);
-    console.log('Hash mapping saved to .wit/git-migration-map');
+    console.log('Hash mapping saved to .myvcs/git-migration-map');
     
     if (hashAlgorithm === 'sha256') {
       console.log('\nNote: Objects have been re-hashed with SHA-256.');

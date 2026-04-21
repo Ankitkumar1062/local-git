@@ -42,7 +42,7 @@ export function getRepoDiskPath(
  * Resolve a stored diskPath to an absolute filesystem path.
  * 
  * Database stores paths like "/repos/owner/name.git" which need to be
- * resolved relative to REPOS_DIR (e.g., "./repos" or "~/.wit/repos").
+ * resolved relative to REPOS_DIR (e.g., "./repos" or "~/.myvcs/repos").
  * 
  * @param storedPath - The diskPath from the database (e.g., "/repos/owner/name.git")
  * @returns The absolute filesystem path
@@ -74,12 +74,12 @@ export class RepoManager {
    * Get the full path for a repository
    */
   private getRepoPath(owner: string, name: string): string {
-    // Normalize name - strip .wit.git or .wit suffix and ensure .git extension
+    // Normalize name - strip .myvcs.git or .myvcs suffix and ensure .git extension
     let repoName = name;
-    if (repoName.endsWith('.wit.git')) {
-      repoName = repoName.slice(0, -8) + '.git'; // repo5.wit.git -> repo5.git
-    } else if (repoName.endsWith('.wit')) {
-      repoName = repoName.slice(0, -4) + '.git'; // repo5.wit -> repo5.git
+    if (repoName.endsWith('.myvcs.git')) {
+      repoName = repoName.slice(0, -8) + '.git'; // repo5.myvcs.git -> repo5.git
+    } else if (repoName.endsWith('.myvcs')) {
+      repoName = repoName.slice(0, -4) + '.git'; // repo5.myvcs -> repo5.git
     } else if (!repoName.endsWith('.git')) {
       repoName = `${repoName}.git`;
     }
@@ -148,7 +148,7 @@ export class RepoManager {
     repositoryformatversion = 0
     filemode = true
     bare = true
-[wit]
+[myvcs]
     hashAlgorithm = sha1
 `;
     fs.writeFileSync(path.join(repoPath, 'config'), config);
@@ -248,11 +248,11 @@ export class RepoManager {
 export class BareRepository extends Repository {
   constructor(repoPath: string) {
     // For bare repos, we need to trick the Repository constructor
-    // The parent expects workDir/.wit to be gitDir
+    // The parent expects workDir/.myvcs to be gitDir
     // But for bare repos, workDir IS gitDir
     super(repoPath, { hashAlgorithm: 'sha1' });
 
-    // Override the gitDir to be the repoPath itself (not repoPath/.wit)
+    // Override the gitDir to be the repoPath itself (not repoPath/.myvcs)
     (this as any).gitDir = repoPath;
     (this as any).workDir = repoPath;
 
@@ -329,8 +329,8 @@ export class BareRepository extends Repository {
     const worktreeEntryDir = path.join(this.gitDir, 'worktrees', worktreeName);
     mkdirp(worktreeEntryDir);
     
-    // Create .wit file in worktree pointing to entry
-    const worktreeGitFile = path.join(fullPath, '.wit');
+    // Create .myvcs file in worktree pointing to entry
+    const worktreeGitFile = path.join(fullPath, '.myvcs');
     fs.writeFileSync(worktreeGitFile, `gitdir: ${worktreeEntryDir}\n`);
     
     // Create gitdir file pointing back
@@ -434,7 +434,7 @@ export class BareRepository extends Repository {
 }
 
 /**
- * Fork a repository on disk using wit's TS API
+ * Fork a repository on disk using myvcs's TS API
  * 
  * Creates a bare clone of the source repository at the target path,
  * preserving all branches, tags, and commit history. Sets up the
@@ -621,7 +621,7 @@ export function deleteRepository(diskPath: string): void {
 }
 
 /**
- * Get repository information using wit's TS API
+ * Get repository information using myvcs's TS API
  */
 export function getRepositoryInfo(diskPath: string): {
   branches: string[];
@@ -664,7 +664,7 @@ export function getRepositoryInfo(diskPath: string): {
 }
 
 /**
- * Check if repository has any commits using wit's TS API
+ * Check if repository has any commits using myvcs's TS API
  */
 export function hasCommits(diskPath: string): boolean {
   try {
@@ -708,7 +708,7 @@ export function initBareRepository(repoPath: string): BareRepository {
     repositoryformatversion = 0
     filemode = true
     bare = true
-[wit]
+[myvcs]
     hashAlgorithm = sha1
 `;
   fs.writeFileSync(path.join(repoPath, 'config'), config);
@@ -716,7 +716,7 @@ export function initBareRepository(repoPath: string): BareRepository {
   // Write description
   fs.writeFileSync(
     path.join(repoPath, 'description'),
-    'Wit repository\n'
+    'myvcs repository\n'
   );
 
   console.log(`[server] Initialized bare repository at: ${repoPath}`);

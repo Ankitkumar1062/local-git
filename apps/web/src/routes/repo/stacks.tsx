@@ -286,7 +286,7 @@ export function StacksPage() {
             </ol>
             <p className="text-sm text-muted-foreground mt-3">
               <strong>CLI usage:</strong>{' '}
-              <code className="bg-muted px-1 rounded">wit stack create &lt;name&gt;</code>
+              <code className="bg-muted px-1 rounded">myvcs stack create &lt;name&gt;</code>
             </p>
           </CardContent>
         </Card>

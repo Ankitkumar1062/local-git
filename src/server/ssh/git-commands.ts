@@ -47,7 +47,7 @@ const SERVER_CAPABILITIES = [
   'include-tag',
   'report-status',
   'delete-refs',
-  'agent=wit-ssh-server/1.0',
+  'agent=myvcs-ssh-server/1.0',
 ];
 
 /**
@@ -73,7 +73,7 @@ export class GitCommandHandler {
     const repoPath = path.join(this.repoRoot, command.repoPath);
 
     // Check if repository exists
-    if (!exists(repoPath) && !exists(path.join(repoPath, '.wit'))) {
+    if (!exists(repoPath) && !exists(path.join(repoPath, '.myvcs'))) {
       await this.sendError(channel, `Repository not found: ${command.repoPath}`);
       return false;
     }
@@ -136,7 +136,7 @@ export class GitCommandHandler {
   ): Promise<boolean> {
     // Create repository if it doesn't exist
     let repo: Repository;
-    if (!exists(path.join(repoPath, '.wit'))) {
+    if (!exists(path.join(repoPath, '.myvcs'))) {
       mkdirp(repoPath);
       repo = Repository.init(repoPath);
     } else {

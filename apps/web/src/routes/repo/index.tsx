@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
-import { Copy, Check, Tag, Package, Star, GitFork, Eye, Info, ChevronUp } from 'lucide-react';
+import { Copy, Check, Tag, Star, GitFork, Eye, Info, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -39,11 +39,6 @@ export function RepoPage() {
     { enabled: !!pageData?.repo.id }
   );
 
-  // Fetch package info (still separate as it's less critical)
-  const { data: packageData } = trpc.packages.getByRepoId.useQuery(
-    { repoId: pageData?.repo.id ?? '' },
-    { enabled: !!pageData?.repo.id }
-  );
 
   // Extract data from combined response
   const repoInfo = pageData?.repo;
@@ -61,7 +56,7 @@ export function RepoPage() {
   // Utils for the trpc context
   const utils = trpc.useUtils();
 
-  const cloneUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/${ownerUsername}/${repoInfo?.name || repo}.wit`;
+  const cloneUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/${ownerUsername}/${repoInfo?.name || repo}.myvcs`;
 
   const handleCopyCloneUrl = async () => {
     await navigator.clipboard.writeText(cloneUrl);
@@ -166,41 +161,6 @@ export function RepoPage() {
         )}
       </div>
 
-      {/* Package */}
-      <div className={cn("border rounded-lg p-4 space-y-3", isMobile && "border-0 p-0 pt-4 border-t rounded-none")}>
-        <h3 className="font-semibold text-sm">Package</h3>
-        {packageData ? (
-          <div className="space-y-1">
-            <Link
-              to={`/${owner}/${repo}/package`}
-              className="flex items-center gap-2 text-sm hover:text-primary"
-              onClick={() => setShowMobileInfo(false)}
-            >
-              <Package className="h-4 w-4" />
-              <span className="font-mono truncate">{packageData.fullName}</span>
-            </Link>
-            {packageData.versions && packageData.versions[0] && (
-              <div className="text-xs text-muted-foreground">
-                Latest: <span className="font-mono">{packageData.versions[0].version}</span>
-              </div>
-            )}
-          </div>
-        ) : isOwner ? (
-          <>
-            <p className="text-sm text-muted-foreground">
-              Publish this repo as an npm package
-            </p>
-            <Link to={`/${owner}/${repo}/settings/package`} onClick={() => setShowMobileInfo(false)}>
-              <Button variant="outline" size="sm" className="w-full gap-2">
-                <Package className="h-4 w-4" />
-                Enable Package Registry
-              </Button>
-            </Link>
-          </>
-        ) : (
-          <p className="text-sm text-muted-foreground">No package published</p>
-        )}
-      </div>
     </div>
   );
 

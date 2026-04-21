@@ -1,5 +1,5 @@
 /**
- * Comprehensive Keyboard Navigation System for wit
+ * Comprehensive Keyboard Navigation System for myvcs
  * Full keyboard support with customizable shortcuts
  */
 
@@ -315,7 +315,7 @@ export class KeyboardManager {
 }
 
 /**
- * Default wit shortcuts
+ * Default myvcs shortcuts
  */
 export function getDefaultShortcuts(callbacks: {
   onCommandPalette?: () => void;

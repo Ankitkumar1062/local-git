@@ -4,7 +4,7 @@ import * as path from 'path';
 /**
  * Default patterns that are always ignored
  */
-const DEFAULT_IGNORE_PATTERNS = ['.wit/', '.git/', 'node_modules/'];
+const DEFAULT_IGNORE_PATTERNS = ['.myvcs/', '.git/', 'node_modules/'];
 
 /**
  * Parse a .witignore or .gitignore file into patterns

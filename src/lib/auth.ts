@@ -35,7 +35,7 @@ function getGitHubOAuthConfig() {
     clientSecret,
     // Request repo scope for importing private repos
     scope: ['repo', 'user:email'],
-    // Map GitHub profile to wit user
+    // Map GitHub profile to myvcs user
     mapProfileToUser: (profile: { login?: string; name?: string; avatar_url?: string; bio?: string }) => ({
       username: profile.login,
       name: profile.name || profile.login,
@@ -169,7 +169,7 @@ export function createAuth(): ReturnType<typeof betterAuth<any>> {
     advanced: {
       crossSubDomainCookies: {
         enabled: isProduction,
-        domain: process.env.COOKIE_DOMAIN || '.wit.sh', // Root domain for cross-subdomain cookies
+        domain: process.env.COOKIE_DOMAIN || '.myvcs.sh', // Root domain for cross-subdomain cookies
       },
       defaultCookieAttributes: {
         secure: isProduction,

@@ -1,5 +1,5 @@
 /**
- * wit AI Tools
+ * myvcs AI Tools
  * 
  * These tools provide the AI agent with capabilities to interact with the git repository.
  */
@@ -74,7 +74,7 @@ import { virtualCommitTool } from './virtual-commit.js';
 import { virtualStatusTool } from './virtual-status.js';
 
 /**
- * All wit tools bundled together for easy registration with an agent
+ * All myvcs tools bundled together for easy registration with an agent
  */
 export const witTools = {
   // Git operations

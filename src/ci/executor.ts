@@ -594,7 +594,7 @@ export class WorkflowExecutor {
         os: os.platform() === 'darwin' ? 'macOS' : os.platform() === 'win32' ? 'Windows' : 'Linux',
         arch: os.arch(),
         temp: os.tmpdir(),
-        tool_cache: path.join(os.homedir(), '.wit', 'tool-cache'),
+        tool_cache: path.join(os.homedir(), '.myvcs', 'tool-cache'),
       },
       job: {
         status: 'success',

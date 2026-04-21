@@ -1,7 +1,7 @@
 /**
  * SSH Server Types
  * 
- * Types for SSH protocol support in wit Git operations.
+ * Types for SSH protocol support in myvcs Git operations.
  */
 
 /**

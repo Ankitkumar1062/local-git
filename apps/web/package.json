@@ -1,5 +1,5 @@
 {
-  "name": "@wit/web",
+  "name": "@myvcs/web",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -62,7 +62,7 @@
     "superjson": "^2.2.6",
     "tailwind-merge": "^2.6.0",
     "use-debounce": "^10.0.6",
-    "wit": "*",
+    "myvcs": "*",
     "yaml": "^2.8.2",
     "zod": "^3.24.1",
     "zustand": "^5.0.9"

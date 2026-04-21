@@ -5,7 +5,7 @@
  * This is the critical piece that makes PRs actually work - without this,
  * merging a PR only updates the database, not the refs.
  * 
- * Uses wit's TypeScript API for all git operations.
+ * Uses myvcs's TypeScript API for all git operations.
  */
 
 import { BareRepository } from './repos';
@@ -178,7 +178,7 @@ function countCommits(repo: BareRepository, fromSha: string, toSha: string): num
 }
 
 /**
- * Check if a merge would have conflicts using wit's TS API
+ * Check if a merge would have conflicts using myvcs's TS API
  */
 export function checkMergeability(
   repoPath: string,
@@ -444,7 +444,7 @@ function mergeFileContents(
 }
 
 /**
- * Perform a merge in a bare repository using wit's TS API
+ * Perform a merge in a bare repository using myvcs's TS API
  */
 export async function mergePullRequest(
   repoPath: string,

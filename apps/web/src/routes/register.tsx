@@ -90,7 +90,7 @@ export function RegisterPage() {
           </div>
           <CardTitle className="text-2xl">Create your account</CardTitle>
           <CardDescription>
-            Join wit to host and collaborate on code
+            Join myvcs to host and collaborate on code
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
@@ -116,7 +116,7 @@ export function RegisterPage() {
                 title="Letters, numbers, underscores and hyphens only"
               />
               <p className="text-xs text-muted-foreground">
-                This will be your unique identifier on Wit
+                This will be your unique identifier on myvcs
               </p>
             </div>
             <div className="space-y-2">

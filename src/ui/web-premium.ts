@@ -1,5 +1,5 @@
 /**
- * Premium Web UI for wit
+ * Premium Web UI for myvcs
  * GitKraken-inspired professional design with beautiful commit graphs
  * and polished conflict resolution
  */
@@ -1093,7 +1093,7 @@ export class PremiumWebUI {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>wit - ${repoName}</title>
+  <title>myvcs - ${repoName}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -1119,7 +1119,7 @@ export class PremiumWebUI {
               <path d="M10 16 L16 10 L22 16 M16 10 L16 22" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <span class="logo-text">wit</span>
+          <span class="logo-text">myvcs</span>
         </div>
         <div class="repo-name">
           <svg class="icon" viewBox="0 0 16 16" fill="currentColor">
@@ -5670,7 +5670,7 @@ export class PremiumWebUI {
   start(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.server.listen(this.port, () => {
-        console.log(`\n✨ wit Premium Web UI is running!\n`);
+        console.log(`\n✨ myvcs Premium Web UI is running!\n`);
         console.log(`   Open in browser: \x1b[36mhttp://localhost:${this.port}\x1b[0m`);
         console.log(`\n   GitKraken-inspired features:`);
         console.log(`   • Beautiful curved commit graph`);

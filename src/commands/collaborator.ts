@@ -3,24 +3,24 @@
  * Manage repository collaborators, teams, and permissions
  * 
  * Usage:
- *   wit collaborator                         # List collaborators
- *   wit collaborator add <email> [--role <role>] [--message "..."]
- *   wit collaborator remove <email>          # Remove collaborator
- *   wit collaborator update <email> --role <role>  # Update role
- *   wit collaborator show <email>            # Show collaborator details
- *   wit collaborator accept <token>          # Accept invitation
- *   wit collaborator revoke <email>          # Revoke pending invitation
- *   wit collaborator invitations             # List pending invitations
- *   wit collaborator activity                # Show activity log
- *   wit collaborator stats                   # Show statistics
- *   wit collaborator config                  # Show/update configuration
+ *   myvcs collaborator                         # List collaborators
+ *   myvcs collaborator add <email> [--role <role>] [--message "..."]
+ *   myvcs collaborator remove <email>          # Remove collaborator
+ *   myvcs collaborator update <email> --role <role>  # Update role
+ *   myvcs collaborator show <email>            # Show collaborator details
+ *   myvcs collaborator accept <token>          # Accept invitation
+ *   myvcs collaborator revoke <email>          # Revoke pending invitation
+ *   myvcs collaborator invitations             # List pending invitations
+ *   myvcs collaborator activity                # Show activity log
+ *   myvcs collaborator stats                   # Show statistics
+ *   myvcs collaborator config                  # Show/update configuration
  *   
  * Team commands:
- *   wit collaborator team list               # List teams
- *   wit collaborator team create <name> --role <role>
- *   wit collaborator team delete <slug>
- *   wit collaborator team add-member <slug> <email>
- *   wit collaborator team remove-member <slug> <email>
+ *   myvcs collaborator team list               # List teams
+ *   myvcs collaborator team create <name> --role <role>
+ *   myvcs collaborator team delete <slug>
+ *   myvcs collaborator team add-member <slug> <email>
+ *   myvcs collaborator team remove-member <slug> <email>
  */
 
 import { Repository } from '../core/repository';
@@ -102,7 +102,7 @@ export function listCollaborators(verbose: boolean = false): void {
   
   if (collaborators.length === 0) {
     console.log(colors.dim('No collaborators yet.'));
-    console.log(colors.dim('Use `wit collaborator add <email>` to invite someone.'));
+    console.log(colors.dim('Use `myvcs collaborator add <email>` to invite someone.'));
     return;
   }
   
@@ -198,7 +198,7 @@ export async function addCollaborator(
     try {
       const emailService = createEmailService({
         resendApiKey: config.resendApiKey,
-        emailFromAddress: config.emailFromAddress || 'noreply@wit.dev',
+        emailFromAddress: config.emailFromAddress || 'noreply@myvcs.dev',
         emailFromName: config.emailFromName,
         repositoryName: config.repositoryName || 'Repository',
         repositoryUrl: config.repositoryUrl,
@@ -224,7 +224,7 @@ export async function addCollaborator(
   console.log(colors.cyan(`  ${invitation.token}`));
   console.log();
   console.log(colors.dim('They can accept with:'));
-  console.log(colors.dim(`  wit collaborator accept ${invitation.token}`));
+  console.log(colors.dim(`  myvcs collaborator accept ${invitation.token}`));
 }
 
 /**
@@ -599,7 +599,7 @@ export function listTeams(): void {
   
   if (teams.length === 0) {
     console.log(colors.dim('No teams yet.'));
-    console.log(colors.dim('Use `wit collaborator team create <name>` to create one.'));
+    console.log(colors.dim('Use `myvcs collaborator team create <name>` to create one.'));
     return;
   }
   
@@ -731,7 +731,7 @@ export async function handleCollaborator(args: string[]): Promise<void> {
       case 'invite': {
         const email = positional[1];
         if (!email) {
-          console.error(colors.red('error: ') + 'usage: wit collaborator add <email> [--role <role>] [--message "..."]');
+          console.error(colors.red('error: ') + 'usage: myvcs collaborator add <email> [--role <role>] [--message "..."]');
           process.exit(1);
         }
         await addCollaborator(email, {
@@ -747,7 +747,7 @@ export async function handleCollaborator(args: string[]): Promise<void> {
       case 'rm': {
         const email = positional[1];
         if (!email) {
-          console.error(colors.red('error: ') + 'usage: wit collaborator remove <email>');
+          console.error(colors.red('error: ') + 'usage: myvcs collaborator remove <email>');
           process.exit(1);
         }
         removeCollaborator(email);
@@ -758,7 +758,7 @@ export async function handleCollaborator(args: string[]): Promise<void> {
         const email = positional[1];
         const role = options.role as CollaboratorRole;
         if (!email || !role) {
-          console.error(colors.red('error: ') + 'usage: wit collaborator update <email> --role <role>');
+          console.error(colors.red('error: ') + 'usage: myvcs collaborator update <email> --role <role>');
           process.exit(1);
         }
         updateCollaboratorRole(email, role);
@@ -768,7 +768,7 @@ export async function handleCollaborator(args: string[]): Promise<void> {
       case 'show': {
         const email = positional[1];
         if (!email) {
-          console.error(colors.red('error: ') + 'usage: wit collaborator show <email>');
+          console.error(colors.red('error: ') + 'usage: myvcs collaborator show <email>');
           process.exit(1);
         }
         showCollaborator(email);
@@ -778,7 +778,7 @@ export async function handleCollaborator(args: string[]): Promise<void> {
       case 'accept': {
         const token = positional[1];
         if (!token) {
-          console.error(colors.red('error: ') + 'usage: wit collaborator accept <token>');
+          console.error(colors.red('error: ') + 'usage: myvcs collaborator accept <token>');
           process.exit(1);
         }
         acceptInvitation(token, options.name as string);
@@ -788,7 +788,7 @@ export async function handleCollaborator(args: string[]): Promise<void> {
       case 'revoke': {
         const email = positional[1];
         if (!email) {
-          console.error(colors.red('error: ') + 'usage: wit collaborator revoke <email>');
+          console.error(colors.red('error: ') + 'usage: myvcs collaborator revoke <email>');
           process.exit(1);
         }
         revokeInvitation(email);
@@ -824,7 +824,7 @@ export async function handleCollaborator(args: string[]): Promise<void> {
             const name = positional[2];
             const role = (options.role || 'contributor') as CollaboratorRole;
             if (!name) {
-              console.error(colors.red('error: ') + 'usage: wit collaborator team create <name> [--role <role>]');
+              console.error(colors.red('error: ') + 'usage: myvcs collaborator team create <name> [--role <role>]');
               process.exit(1);
             }
             createTeam(name, role, options.description as string);
@@ -834,7 +834,7 @@ export async function handleCollaborator(args: string[]): Promise<void> {
           case 'delete': {
             const slug = positional[2];
             if (!slug) {
-              console.error(colors.red('error: ') + 'usage: wit collaborator team delete <slug>');
+              console.error(colors.red('error: ') + 'usage: myvcs collaborator team delete <slug>');
               process.exit(1);
             }
             deleteTeam(slug);
@@ -845,7 +845,7 @@ export async function handleCollaborator(args: string[]): Promise<void> {
             const slug = positional[2];
             const email = positional[3];
             if (!slug || !email) {
-              console.error(colors.red('error: ') + 'usage: wit collaborator team add-member <slug> <email>');
+              console.error(colors.red('error: ') + 'usage: myvcs collaborator team add-member <slug> <email>');
               process.exit(1);
             }
             addTeamMember(slug, email);
@@ -856,7 +856,7 @@ export async function handleCollaborator(args: string[]): Promise<void> {
             const slug = positional[2];
             const email = positional[3];
             if (!slug || !email) {
-              console.error(colors.red('error: ') + 'usage: wit collaborator team remove-member <slug> <email>');
+              console.error(colors.red('error: ') + 'usage: myvcs collaborator team remove-member <slug> <email>');
               process.exit(1);
             }
             removeTeamMember(slug, email);
@@ -866,11 +866,11 @@ export async function handleCollaborator(args: string[]): Promise<void> {
           default:
             console.error(colors.red('error: ') + `Unknown team subcommand: ${teamSubcommand}`);
             console.error('\nTeam commands:');
-            console.error('  wit collaborator team list');
-            console.error('  wit collaborator team create <name> [--role <role>]');
-            console.error('  wit collaborator team delete <slug>');
-            console.error('  wit collaborator team add-member <slug> <email>');
-            console.error('  wit collaborator team remove-member <slug> <email>');
+            console.error('  myvcs collaborator team list');
+            console.error('  myvcs collaborator team create <name> [--role <role>]');
+            console.error('  myvcs collaborator team delete <slug>');
+            console.error('  myvcs collaborator team add-member <slug> <email>');
+            console.error('  myvcs collaborator team remove-member <slug> <email>');
             process.exit(1);
         }
         break;
@@ -883,18 +883,18 @@ export async function handleCollaborator(args: string[]): Promise<void> {
         } else {
           console.error(colors.red('error: ') + `Unknown subcommand: ${subcommand}`);
           console.error('\nUsage:');
-          console.error('  wit collaborator                       List collaborators');
-          console.error('  wit collaborator add <email>           Invite a collaborator');
-          console.error('  wit collaborator remove <email>        Remove a collaborator');
-          console.error('  wit collaborator update <email> --role <role>');
-          console.error('  wit collaborator show <email>          Show details');
-          console.error('  wit collaborator accept <token>        Accept invitation');
-          console.error('  wit collaborator revoke <email>        Revoke invitation');
-          console.error('  wit collaborator invitations           List pending');
-          console.error('  wit collaborator activity              Show activity log');
-          console.error('  wit collaborator stats                 Show statistics');
-          console.error('  wit collaborator config                Configure settings');
-          console.error('  wit collaborator team ...              Team management');
+          console.error('  myvcs collaborator                       List collaborators');
+          console.error('  myvcs collaborator add <email>           Invite a collaborator');
+          console.error('  myvcs collaborator remove <email>        Remove a collaborator');
+          console.error('  myvcs collaborator update <email> --role <role>');
+          console.error('  myvcs collaborator show <email>          Show details');
+          console.error('  myvcs collaborator accept <token>        Accept invitation');
+          console.error('  myvcs collaborator revoke <email>        Revoke invitation');
+          console.error('  myvcs collaborator invitations           List pending');
+          console.error('  myvcs collaborator activity              Show activity log');
+          console.error('  myvcs collaborator stats                 Show statistics');
+          console.error('  myvcs collaborator config                Configure settings');
+          console.error('  myvcs collaborator team ...              Team management');
           process.exit(1);
         }
     }

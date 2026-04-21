@@ -3,11 +3,11 @@
  * Show various types of objects (commits, files at commits, tags)
  * 
  * Usage:
- * - wit show <commit>             # Show commit details + diff
- * - wit show <commit>:<file>      # Show file at commit
- * - wit show <tag>                # Show tag info
- * - wit show --stat <commit>      # Show commit with stat summary only
- * - wit show --name-only <commit> # Show commit with file names only
+ * - myvcs show <commit>             # Show commit details + diff
+ * - myvcs show <commit>:<file>      # Show file at commit
+ * - myvcs show <tag>                # Show tag info
+ * - myvcs show --stat <commit>      # Show commit with stat summary only
+ * - myvcs show --name-only <commit> # Show commit with file names only
  */
 
 import { Repository } from '../core/repository';
@@ -108,8 +108,8 @@ export function showFileAtCommit(
       `Path '${filePath}' does not exist in '${commitRef}'`,
       ErrorCode.FILE_NOT_FOUND,
       [
-        `wit ls-tree ${commitRef}    # List files in commit`,
-        `wit show ${commitRef}       # Show commit details`
+        `myvcs ls-tree ${commitRef}    # List files in commit`,
+        `myvcs show ${commitRef}       # Show commit details`
       ]
     );
   }
@@ -203,9 +203,9 @@ export function show(
       `Unknown revision or path: ${ref}`,
       ErrorCode.REF_NOT_FOUND,
       [
-        'wit log         # View recent commits',
-        'wit branch      # List branches',
-        'wit tag         # List tags'
+        'myvcs log         # View recent commits',
+        'myvcs branch      # List branches',
+        'myvcs tag         # List tags'
       ]
     );
   }

@@ -1,6 +1,6 @@
 node_modules
 dist
-.wit
+.myvcs
 example/
 
 # Environment

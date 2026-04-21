@@ -376,7 +376,7 @@ export class DockerProvider extends BaseSandboxProvider {
     }
 
     // Pull/verify the sandbox image
-    const image = this.dockerConfig.options?.image || 'wit-sandbox:latest';
+    const image = this.dockerConfig.options?.image || 'myvcs-sandbox:latest';
     try {
       await this.runDocker(['image', 'inspect', image]);
     } catch {
@@ -402,11 +402,11 @@ export class DockerProvider extends BaseSandboxProvider {
 
     // Labels for tracking
     dockerArgs.push(
-      '--label', `wit.sessionId=${config.sessionId}`,
-      '--label', `wit.userId=${config.userId}`,
+      '--label', `myvcs.sessionId=${config.sessionId}`,
+      '--label', `myvcs.userId=${config.userId}`,
     );
     if (config.repository) {
-      dockerArgs.push('--label', `wit.repository=${config.repository}`);
+      dockerArgs.push('--label', `myvcs.repository=${config.repository}`);
     }
 
     // Resource limits
@@ -461,7 +461,7 @@ export class DockerProvider extends BaseSandboxProvider {
     dockerArgs.push('-w', config.workdir || '/workspace');
 
     // Image
-    const image = config.image || opts.image || 'wit-sandbox:latest';
+    const image = config.image || opts.image || 'myvcs-sandbox:latest';
     dockerArgs.push(image);
 
     // Keep container running

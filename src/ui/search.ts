@@ -414,7 +414,7 @@ export class SearchEngine {
       const entries = fs.readdirSync(dirPath, { withFileTypes: true });
       
       for (const entry of entries) {
-        // Skip hidden files and directories, and .wit/.git
+        // Skip hidden files and directories, and .myvcs/.git
         if (entry.name.startsWith('.')) continue;
         if (entry.name === 'node_modules') continue;
         

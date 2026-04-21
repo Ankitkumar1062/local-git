@@ -142,7 +142,7 @@ class MergeQueueHandler {
             strategy: 'merge',
             message: `Merge PR #${pr.number}: ${pr.title}`,
             authorName: 'Merge Queue',
-            authorEmail: 'merge-queue@wit.local',
+            authorEmail: 'merge-queue@myvcs.local',
           }
         );
 

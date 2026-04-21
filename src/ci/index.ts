@@ -1,8 +1,8 @@
 /**
  * CI/CD Engine Entry Point
  * 
- * A GitHub Actions-compatible CI/CD engine for wit repositories.
- * Workflows are defined in .wit/workflows/*.yml
+ * A GitHub Actions-compatible CI/CD engine for myvcs repositories.
+ * Workflows are defined in .myvcs/workflows/*.yml
  * 
  * **Built on Mastra Workflows**
  * 
@@ -10,7 +10,7 @@
  * - Observability and tracing for each step
  * - Retry handling for transient failures
  * - Real-time streaming of execution events
- * - Integration with the wit AI agent ecosystem
+ * - Integration with the myvcs AI agent ecosystem
  */
 
 // Export types
@@ -92,7 +92,7 @@ import { loadWorkflows, loadWorkflowFile, validateWorkflowFile } from './parser'
 export interface CIEngineConfig {
   /** Repository root path */
   repoPath: string;
-  /** Custom workflows directory (default: .wit/workflows) */
+  /** Custom workflows directory (default: .myvcs/workflows) */
   workflowsDir?: string;
   /** Enable verbose logging */
   verbose?: boolean;
@@ -127,7 +127,7 @@ export class CIEngine {
   constructor(config: CIEngineConfig) {
     this.config = {
       ...config,
-      workflowsDir: config.workflowsDir ?? path.join(config.repoPath, '.wit', 'workflows'),
+      workflowsDir: config.workflowsDir ?? path.join(config.repoPath, '.myvcs', 'workflows'),
     };
   }
   
@@ -534,13 +534,13 @@ export interface RunCIWorkflowOptions {
  * ```typescript
  * import { runCIWorkflow, loadWorkflowFile } from './ci';
  * 
- * const parsed = loadWorkflowFile('/path/to/.wit/workflows/ci.yml');
+ * const parsed = loadWorkflowFile('/path/to/.myvcs/workflows/ci.yml');
  * const result = await runCIWorkflow(parsed.workflow, {
  *   repoId: 'repo-123',
  *   repoDiskPath: '/path/to/repo',
  *   commitSha: 'abc123',
  *   event: 'push',
- *   workflowPath: '.wit/workflows/ci.yml',
+ *   workflowPath: '.myvcs/workflows/ci.yml',
  * });
  * 
  * console.log(`Workflow ${result.success ? 'passed' : 'failed'}: ${result.summary}`);
@@ -572,7 +572,7 @@ export async function runCIWorkflow(
  * ```typescript
  * import { streamCIWorkflow, loadWorkflowFile } from './ci';
  * 
- * const parsed = loadWorkflowFile('/path/to/.wit/workflows/ci.yml');
+ * const parsed = loadWorkflowFile('/path/to/.myvcs/workflows/ci.yml');
  * 
  * for await (const event of streamCIWorkflow(parsed.workflow, options)) {
  *   if (event.type === 'step-start') {

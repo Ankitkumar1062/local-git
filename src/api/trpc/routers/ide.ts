@@ -154,10 +154,10 @@ export const ideRouter = router({
       }
 
       // Security check
-      if (filePath.startsWith('.wit') || filePath.startsWith('.git')) {
+      if (filePath.startsWith('.myvcs') || filePath.startsWith('.git')) {
         throw new TRPCError({
           code: 'FORBIDDEN',
-          message: 'Cannot write to .wit or .git directories',
+          message: 'Cannot write to .myvcs or .git directories',
         });
       }
 

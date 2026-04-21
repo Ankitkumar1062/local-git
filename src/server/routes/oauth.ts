@@ -1,7 +1,7 @@
 /**
  * OAuth Routes
  *
- * Implements OAuth 2.0 authorization code flow for Wit Apps.
+ * Implements OAuth 2.0 authorization code flow for myvcs Apps.
  * Supports PKCE for public clients.
  *
  * Endpoints:
@@ -733,7 +733,7 @@ function renderConsentPage(data: {
       <p>Authorizing as <strong>${data.user.name}</strong> (${data.user.email})</p>
     </div>
 
-    <h3>${data.app.name} wants to access your Wit account</h3>
+    <h3>${data.app.name} wants to access your myvcs account</h3>
 
     <div class="scopes">
       <ul>
@@ -749,7 +749,7 @@ function renderConsentPage(data: {
 
     ${!data.app.isVerified ? `
     <div class="warning">
-      This app has not been verified by Wit. Proceed with caution.
+      This app has not been verified by myvcs. Proceed with caution.
     </div>
     ` : ''}
 

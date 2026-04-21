@@ -73,12 +73,12 @@ For small targeted changes to existing files, prefer the vfs-edit-file tool inst
         };
       }
 
-      // Security: Prevent writing to .wit or .git directories
-      if (filePath.startsWith('.wit') || filePath.startsWith('.git') ||
-          filePath.includes('/.wit/') || filePath.includes('/.git/')) {
+      // Security: Prevent writing to .myvcs or .git directories
+      if (filePath.startsWith('.myvcs') || filePath.startsWith('.git') ||
+          filePath.includes('/.myvcs/') || filePath.includes('/.git/')) {
         return {
           success: false,
-          message: 'Access denied: Cannot write to .wit or .git directories',
+          message: 'Access denied: Cannot write to .myvcs or .git directories',
         };
       }
 

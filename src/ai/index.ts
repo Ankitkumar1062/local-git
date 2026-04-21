@@ -1,7 +1,7 @@
 /**
- * AI Integration for wit using @mastra/core
+ * AI Integration for myvcs using @mastra/core
  * 
- * This module provides AI-powered features for wit including:
+ * This module provides AI-powered features for myvcs including:
  * - Intelligent commit message generation
  * - AI-assisted merge conflict resolution
  * - Natural language git commands

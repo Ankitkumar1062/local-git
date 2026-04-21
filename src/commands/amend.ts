@@ -31,7 +31,7 @@ export function amend(options: AmendOptions = {}): string {
     throw new TsgitError(
       'No commits to amend',
       ErrorCode.NO_COMMITS_YET,
-      ['wit commit -m "Initial commit"    # Create your first commit']
+      ['myvcs commit -m "Initial commit"    # Create your first commit']
     );
   }
   
@@ -55,9 +55,9 @@ export function amend(options: AmendOptions = {}): string {
       'Nothing to amend - no staged changes and no new message provided',
       ErrorCode.NOTHING_TO_COMMIT,
       [
-        'wit amend -m "New message"    # Change commit message',
-        'wit add <file>                # Stage changes first',
-        'wit amend -a                  # Stage and amend all tracked changes',
+        'myvcs amend -m "New message"    # Change commit message',
+        'myvcs add <file>                # Stage changes first',
+        'myvcs amend -a                  # Stage and amend all tracked changes',
       ]
     );
   }
@@ -142,7 +142,7 @@ function buildTree(repo: Repository): string {
     throw new TsgitError(
       'Nothing staged',
       ErrorCode.NOTHING_TO_COMMIT,
-      ['wit add <file>    # Stage files first']
+      ['myvcs add <file>    # Stage files first']
     );
   }
   

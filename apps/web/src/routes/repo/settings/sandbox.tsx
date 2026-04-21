@@ -142,7 +142,7 @@ export function SandboxSettingsPage() {
   const [e2bTemplateId, setE2bTemplateId] = useState('');
   const [daytonaSnapshot, setDaytonaSnapshot] = useState('');
   const [daytonaAutoStop, setDaytonaAutoStop] = useState(15);
-  const [dockerImage, setDockerImage] = useState('wit-sandbox:latest');
+  const [dockerImage, setDockerImage] = useState('myvcs-sandbox:latest');
   const [vercelProjectId, setVercelProjectId] = useState('');
   const [vercelTeamId, setVercelTeamId] = useState('');
   const [vercelRuntime, setVercelRuntime] = useState<'node22' | 'python3.13'>('node22');
@@ -170,7 +170,7 @@ export function SandboxSettingsPage() {
       setE2bTemplateId(settings.e2bTemplateId ?? '');
       setDaytonaSnapshot(settings.daytonaSnapshot ?? '');
       setDaytonaAutoStop(settings.daytonaAutoStop ?? 15);
-      setDockerImage(settings.dockerImage ?? 'wit-sandbox:latest');
+      setDockerImage(settings.dockerImage ?? 'myvcs-sandbox:latest');
       setVercelProjectId(settings.vercelProjectId ?? '');
       setVercelTeamId(settings.vercelTeamId ?? '');
       setVercelRuntime(settings.vercelRuntime ?? 'node22');
@@ -729,7 +729,7 @@ export function SandboxSettingsPage() {
                   <Label htmlFor="dockerImage">Sandbox Image</Label>
                   <Input
                     id="dockerImage"
-                    placeholder="wit-sandbox:latest"
+                    placeholder="myvcs-sandbox:latest"
                     value={dockerImage}
                     onChange={(e) => setDockerImage(e.target.value)}
                   />

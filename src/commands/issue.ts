@@ -4,24 +4,24 @@
  * Manage issues from the command line with Linear-style features.
  *
  * Usage:
- *   wit issue create <title>     Create a new issue
- *   wit issue list               List issues
- *   wit issue view <number>      View issue details
- *   wit issue close <number>     Close an issue
- *   wit issue reopen <number>    Reopen an issue
- *   wit issue comment <num>      Add a comment to an issue
- *   wit issue priority <num> <p> Set issue priority
- *   wit issue due <num> <date>   Set due date
- *   wit issue estimate <num> <n> Set estimate (story points)
- *   wit issue parent <num> <p>   Set parent issue
- *   wit issue subs <number>      List sub-issues
- *   wit issue block <a> <b>      Mark issue A as blocking issue B
- *   wit issue relate <a> <b>     Mark issues as related
- *   wit issue duplicate <a> <b>  Mark issue A as duplicate of B
- *   wit issue triage             List triage items
- *   wit issue accept <number>    Accept triage item
- *   wit issue reject <number>    Reject triage item
- *   wit issue activity [number]  View activity log
+ *   myvcs issue create <title>     Create a new issue
+ *   myvcs issue list               List issues
+ *   myvcs issue view <number>      View issue details
+ *   myvcs issue close <number>     Close an issue
+ *   myvcs issue reopen <number>    Reopen an issue
+ *   myvcs issue comment <num>      Add a comment to an issue
+ *   myvcs issue priority <num> <p> Set issue priority
+ *   myvcs issue due <num> <date>   Set due date
+ *   myvcs issue estimate <num> <n> Set estimate (story points)
+ *   myvcs issue parent <num> <p>   Set parent issue
+ *   myvcs issue subs <number>      List sub-issues
+ *   myvcs issue block <a> <b>      Mark issue A as blocking issue B
+ *   myvcs issue relate <a> <b>     Mark issues as related
+ *   myvcs issue duplicate <a> <b>  Mark issue A as duplicate of B
+ *   myvcs issue triage             List triage items
+ *   myvcs issue accept <number>    Accept triage item
+ *   myvcs issue reject <number>    Reject triage item
+ *   myvcs issue activity [number]  View activity log
  */
 
 import { getApiClient, ApiError, getServerUrl } from '../api/client';
@@ -40,9 +40,9 @@ const PRIORITY_DISPLAY: Record<string, { icon: string; color: (s: string) => str
 };
 
 export const ISSUE_HELP = `
-wit issue - Manage issues (Linear-style)
+myvcs issue - Manage issues (Linear-style)
 
-Usage: wit issue <command> [options]
+Usage: myvcs issue <command> [options]
 
 Commands:
   create              Create a new issue
@@ -111,20 +111,20 @@ List Options:
   --triage            Show only triage items
 
 Examples:
-  wit issue create "Bug: Login fails" -p high -d tomorrow
-  wit issue create -t "Implement feature" -e 5 -P 42
-  wit issue list --priority urgent
-  wit issue list --overdue
-  wit issue priority 42 urgent
-  wit issue due 42 "2024-12-31"
-  wit issue parent 43 42          # Make #43 a sub-issue of #42
-  wit issue block 41 42           # #41 blocks #42
-  wit issue triage
-  wit issue accept 45
-  wit issue activity 42
-  wit issue stages                # List all workflow stages
-  wit issue stages add qa_review "QA Review" --icon "🔍" --color "f59e0b"
-  wit issue stage 42 qa_review    # Move issue #42 to QA Review stage
+  myvcs issue create "Bug: Login fails" -p high -d tomorrow
+  myvcs issue create -t "Implement feature" -e 5 -P 42
+  myvcs issue list --priority urgent
+  myvcs issue list --overdue
+  myvcs issue priority 42 urgent
+  myvcs issue due 42 "2024-12-31"
+  myvcs issue parent 43 42          # Make #43 a sub-issue of #42
+  myvcs issue block 41 42           # #41 blocks #42
+  myvcs issue triage
+  myvcs issue accept 45
+  myvcs issue activity 42
+  myvcs issue stages                # List all workflow stages
+  myvcs issue stages add qa_review "QA Review" --icon "🔍" --color "f59e0b"
+  myvcs issue stage 42 qa_review    # Move issue #42 to QA Review stage
 `;
 
 /**
@@ -167,7 +167,7 @@ function getRemoteUrl(repo: Repository): string {
       'No remote origin configured',
       ErrorCode.OPERATION_FAILED,
       [
-        'Add a remote with: wit remote add origin <url>',
+        'Add a remote with: myvcs remote add origin <url>',
         'Or clone from a remote repository',
       ]
     );
@@ -272,7 +272,7 @@ export async function handleIssue(args: string[]): Promise<void> {
     if (error instanceof ApiError) {
       console.error(colors.red('error: ') + error.message);
       if (error.status === 0) {
-        console.error(colors.dim('hint: Start the server with: wit serve'));
+        console.error(colors.dim('hint: Start the server with: myvcs serve'));
       }
       process.exit(1);
     }
@@ -437,8 +437,8 @@ async function handleIssueCreate(args: string[]): Promise<void> {
   const title = (flags.title as string) || positional[0];
   if (!title) {
     console.error(colors.red('error: ') + 'Issue title required');
-    console.error('usage: wit issue create "Title here"');
-    console.error('   or: wit issue create -t "Title here"');
+    console.error('usage: myvcs issue create "Title here"');
+    console.error('   or: myvcs issue create -t "Title here"');
     process.exit(1);
   }
 
@@ -590,7 +590,7 @@ async function handleIssueView(args: string[]): Promise<void> {
 
   if (isNaN(issueNumber)) {
     console.error(colors.red('error: ') + 'Issue number required');
-    console.error('usage: wit issue view <number>');
+    console.error('usage: myvcs issue view <number>');
     process.exit(1);
   }
 
@@ -711,7 +711,7 @@ async function handleIssueClose(args: string[]): Promise<void> {
 
   if (isNaN(issueNumber)) {
     console.error(colors.red('error: ') + 'Issue number required');
-    console.error('usage: wit issue close <number>');
+    console.error('usage: myvcs issue close <number>');
     process.exit(1);
   }
 
@@ -734,7 +734,7 @@ async function handleIssueReopen(args: string[]): Promise<void> {
 
   if (isNaN(issueNumber)) {
     console.error(colors.red('error: ') + 'Issue number required');
-    console.error('usage: wit issue reopen <number>');
+    console.error('usage: myvcs issue reopen <number>');
     process.exit(1);
   }
 
@@ -758,13 +758,13 @@ async function handleIssueComment(args: string[]): Promise<void> {
 
   if (isNaN(issueNumber)) {
     console.error(colors.red('error: ') + 'Issue number required');
-    console.error('usage: wit issue comment <number> "Comment text"');
+    console.error('usage: myvcs issue comment <number> "Comment text"');
     process.exit(1);
   }
 
   if (!body) {
     console.error(colors.red('error: ') + 'Comment body required');
-    console.error('usage: wit issue comment <number> "Comment text"');
+    console.error('usage: myvcs issue comment <number> "Comment text"');
     process.exit(1);
   }
 
@@ -792,7 +792,7 @@ async function handleIssuePriority(args: string[]): Promise<void> {
 
   if (isNaN(issueNumber)) {
     console.error(colors.red('error: ') + 'Issue number required');
-    console.error('usage: wit issue priority <number> <priority>');
+    console.error('usage: myvcs issue priority <number> <priority>');
     process.exit(1);
   }
 
@@ -821,8 +821,8 @@ async function handleIssueDue(args: string[]): Promise<void> {
 
   if (isNaN(issueNumber)) {
     console.error(colors.red('error: ') + 'Issue number required');
-    console.error('usage: wit issue due <number> <date>');
-    console.error('   or: wit issue due <number> --clear');
+    console.error('usage: myvcs issue due <number> <date>');
+    console.error('   or: myvcs issue due <number> --clear');
     process.exit(1);
   }
 
@@ -838,7 +838,7 @@ async function handleIssueDue(args: string[]): Promise<void> {
     const dateStr = positional[1];
     if (!dateStr) {
       console.error(colors.red('error: ') + 'Date required');
-      console.error('usage: wit issue due <number> <date>');
+      console.error('usage: myvcs issue due <number> <date>');
       process.exit(1);
     }
 
@@ -858,7 +858,7 @@ async function handleIssueEstimate(args: string[]): Promise<void> {
 
   if (isNaN(issueNumber)) {
     console.error(colors.red('error: ') + 'Issue number required');
-    console.error('usage: wit issue estimate <number> <points>');
+    console.error('usage: myvcs issue estimate <number> <points>');
     process.exit(1);
   }
 
@@ -889,8 +889,8 @@ async function handleIssueParent(args: string[]): Promise<void> {
 
   if (isNaN(issueNumber)) {
     console.error(colors.red('error: ') + 'Issue number required');
-    console.error('usage: wit issue parent <number> <parent-number>');
-    console.error('   or: wit issue parent <number> --rm');
+    console.error('usage: myvcs issue parent <number> <parent-number>');
+    console.error('   or: myvcs issue parent <number> --rm');
     process.exit(1);
   }
 
@@ -923,7 +923,7 @@ async function handleIssueSubs(args: string[]): Promise<void> {
 
   if (isNaN(issueNumber)) {
     console.error(colors.red('error: ') + 'Issue number required');
-    console.error('usage: wit issue subs <number>');
+    console.error('usage: myvcs issue subs <number>');
     process.exit(1);
   }
 
@@ -964,14 +964,14 @@ async function handleIssueSubCreate(args: string[]): Promise<void> {
 
   if (isNaN(parentNumber)) {
     console.error(colors.red('error: ') + 'Parent issue number required');
-    console.error('usage: wit issue sub <parent-number> -t "Title"');
+    console.error('usage: myvcs issue sub <parent-number> -t "Title"');
     process.exit(1);
   }
 
   const title = (flags.title as string) || positional[1];
   if (!title) {
     console.error(colors.red('error: ') + 'Title required');
-    console.error('usage: wit issue sub <parent-number> -t "Title"');
+    console.error('usage: myvcs issue sub <parent-number> -t "Title"');
     process.exit(1);
   }
 
@@ -1004,7 +1004,7 @@ async function handleIssueBlock(args: string[]): Promise<void> {
 
   if (isNaN(blockingNumber) || isNaN(blockedNumber)) {
     console.error(colors.red('error: ') + 'Two issue numbers required');
-    console.error('usage: wit issue block <blocking-issue> <blocked-issue>');
+    console.error('usage: myvcs issue block <blocking-issue> <blocked-issue>');
     console.error('  This marks the first issue as blocking the second issue');
     process.exit(1);
   }
@@ -1028,7 +1028,7 @@ async function handleIssueUnblock(args: string[]): Promise<void> {
 
   if (isNaN(blockingNumber) || isNaN(blockedNumber)) {
     console.error(colors.red('error: ') + 'Two issue numbers required');
-    console.error('usage: wit issue unblock <blocking-issue> <blocked-issue>');
+    console.error('usage: myvcs issue unblock <blocking-issue> <blocked-issue>');
     process.exit(1);
   }
 
@@ -1051,7 +1051,7 @@ async function handleIssueRelate(args: string[]): Promise<void> {
 
   if (isNaN(issueA) || isNaN(issueB)) {
     console.error(colors.red('error: ') + 'Two issue numbers required');
-    console.error('usage: wit issue relate <issue-a> <issue-b>');
+    console.error('usage: myvcs issue relate <issue-a> <issue-b>');
     process.exit(1);
   }
 
@@ -1074,7 +1074,7 @@ async function handleIssueUnrelate(args: string[]): Promise<void> {
 
   if (isNaN(issueA) || isNaN(issueB)) {
     console.error(colors.red('error: ') + 'Two issue numbers required');
-    console.error('usage: wit issue unrelate <issue-a> <issue-b>');
+    console.error('usage: myvcs issue unrelate <issue-a> <issue-b>');
     process.exit(1);
   }
 
@@ -1097,7 +1097,7 @@ async function handleIssueDuplicate(args: string[]): Promise<void> {
 
   if (isNaN(duplicateNumber) || isNaN(canonicalNumber)) {
     console.error(colors.red('error: ') + 'Two issue numbers required');
-    console.error('usage: wit issue duplicate <duplicate-issue> <canonical-issue>');
+    console.error('usage: myvcs issue duplicate <duplicate-issue> <canonical-issue>');
     console.error('  This marks the first issue as a duplicate of the second and closes it');
     process.exit(1);
   }
@@ -1143,8 +1143,8 @@ async function handleIssueTriage(_args: string[]): Promise<void> {
   }
 
   console.log();
-  console.log(colors.dim('Use `wit issue accept <number>` to move to backlog'));
-  console.log(colors.dim('Use `wit issue reject <number> [reason]` to close'));
+  console.log(colors.dim('Use `myvcs issue accept <number>` to move to backlog'));
+  console.log(colors.dim('Use `myvcs issue reject <number> [reason]` to close'));
 }
 
 /**
@@ -1156,7 +1156,7 @@ async function handleIssueAccept(args: string[]): Promise<void> {
 
   if (isNaN(issueNumber)) {
     console.error(colors.red('error: ') + 'Issue number required');
-    console.error('usage: wit issue accept <number>');
+    console.error('usage: myvcs issue accept <number>');
     process.exit(1);
   }
 
@@ -1183,7 +1183,7 @@ async function handleIssueReject(args: string[]): Promise<void> {
 
   if (isNaN(issueNumber)) {
     console.error(colors.red('error: ') + 'Issue number required');
-    console.error('usage: wit issue reject <number> [reason]');
+    console.error('usage: myvcs issue reject <number> [reason]');
     process.exit(1);
   }
 
@@ -1354,8 +1354,8 @@ async function handleIssueStages(args: string[]): Promise<void> {
     }
 
     console.log();
-    console.log(colors.dim('Use `wit issue stages add <key> <name>` to add a custom stage'));
-    console.log(colors.dim('Use `wit issue stage <num> <key>` to move an issue to a stage'));
+    console.log(colors.dim('Use `myvcs issue stages add <key> <name>` to add a custom stage'));
+    console.log(colors.dim('Use `myvcs issue stage <num> <key>` to move an issue to a stage'));
     return;
   }
 
@@ -1366,7 +1366,7 @@ async function handleIssueStages(args: string[]): Promise<void> {
 
     if (!key) {
       console.error(colors.red('error: ') + 'Stage key required');
-      console.error('usage: wit issue stages add <key> [name] [--icon <emoji>] [--color <hex>] [--closes]');
+      console.error('usage: myvcs issue stages add <key> [name] [--icon <emoji>] [--color <hex>] [--closes]');
       process.exit(1);
     }
 
@@ -1394,7 +1394,7 @@ async function handleIssueStages(args: string[]): Promise<void> {
 
     if (!key) {
       console.error(colors.red('error: ') + 'Stage key required');
-      console.error('usage: wit issue stages remove <key>');
+      console.error('usage: myvcs issue stages remove <key>');
       process.exit(1);
     }
 
@@ -1409,7 +1409,7 @@ async function handleIssueStages(args: string[]): Promise<void> {
 
     if (!key) {
       console.error(colors.red('error: ') + 'Stage key required');
-      console.error('usage: wit issue stages update <key> [--name <name>] [--icon <emoji>] [--color <hex>] [--closes] [--default]');
+      console.error('usage: myvcs issue stages update <key> [--name <name>] [--icon <emoji>] [--color <hex>] [--closes] [--default]');
       process.exit(1);
     }
 
@@ -1426,7 +1426,7 @@ async function handleIssueStages(args: string[]): Promise<void> {
   }
 
   console.error(colors.red('error: ') + `Unknown stages subcommand: ${subcommand}`);
-  console.error('usage: wit issue stages [list|add|remove|update]');
+  console.error('usage: myvcs issue stages [list|add|remove|update]');
   process.exit(1);
 }
 
@@ -1440,8 +1440,8 @@ async function handleIssueStage(args: string[]): Promise<void> {
 
   if (isNaN(issueNumber) || !stageKey) {
     console.error(colors.red('error: ') + 'Issue number and stage key required');
-    console.error('usage: wit issue stage <number> <stage-key>');
-    console.error('  Use `wit issue stages` to see available stages');
+    console.error('usage: myvcs issue stage <number> <stage-key>');
+    console.error('  Use `myvcs issue stages` to see available stages');
     process.exit(1);
   }
 

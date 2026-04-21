@@ -1,9 +1,9 @@
 /**
  * Storage Configuration
  * 
- * Manages the wit configuration file that controls where repositories are stored.
+ * Manages the myvcs configuration file that controls where repositories are stored.
  * 
- * Config file location: ~/.wit/config.json
+ * Config file location: ~/.myvcs/config.json
  * 
  * Example config:
  * {
@@ -22,7 +22,7 @@ import * as os from 'os';
 import type { StorageConfig } from './types';
 
 /**
- * Full wit configuration
+ * Full myvcs configuration
  */
 export interface WitConfig {
   /** Storage backend configuration */
@@ -44,8 +44,8 @@ const DEFAULT_CONFIG: WitConfig = {
   storage: {
     type: 'disk',
     disk: {
-      // Default to ~/wit-projects for local development
-      projectsDir: path.join(os.homedir(), 'wit-projects'),
+      // Default to ~/myvcs-projects for local development
+      projectsDir: path.join(os.homedir(), 'myvcs-projects'),
     },
   },
   server: {
@@ -63,8 +63,8 @@ export function getConfigDir(): string {
     return process.env.WIT_CONFIG_DIR;
   }
   
-  // Default to ~/.wit
-  return path.join(os.homedir(), '.wit');
+  // Default to ~/.myvcs
+  return path.join(os.homedir(), '.myvcs');
 }
 
 /**

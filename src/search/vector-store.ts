@@ -1,7 +1,7 @@
 /**
  * File-based Vector Store for Semantic Search
  * 
- * Stores embeddings locally in the .wit directory for fast retrieval.
+ * Stores embeddings locally in the .myvcs directory for fast retrieval.
  * Uses a simple JSON-based storage with in-memory caching.
  */
 
@@ -58,7 +58,7 @@ export interface VectorQueryResult {
  * Options for vector store
  */
 export interface VectorStoreOptions {
-  /** Directory to store vectors (defaults to .wit/embeddings) */
+  /** Directory to store vectors (defaults to .myvcs/embeddings) */
   storageDir?: string;
   /** Whether to use compression */
   compress?: boolean;

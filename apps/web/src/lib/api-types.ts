@@ -1,14 +1,14 @@
 /**
- * API Types - Re-exported from wit core package
+ * API Types - Re-exported from myvcs core package
  *
- * This file re-exports types from the wit package to provide
+ * This file re-exports types from the myvcs package to provide
  * end-to-end type safety between the server and web app.
  */
 
 // Re-export the AppRouter type for tRPC
-export type { AppRouter } from 'wit';
+export type { AppRouter } from 'myvcs';
 
-// Re-export API types from wit core (with friendly names for web app)
+// Re-export API types from myvcs core (with friendly names for web app)
 export type {
   ApiUser as User,
   ApiRepository as Repository,
@@ -17,7 +17,7 @@ export type {
   ApiIssue as Issue,
   ApiIssueWithAuthor as IssueWithAuthor,
   ApiLabel as Label,
-} from 'wit';
+} from 'myvcs';
 
 // Additional UI-specific types that extend the base types
 

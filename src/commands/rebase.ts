@@ -3,11 +3,11 @@
  * Reapply commits on top of another base branch
  * 
  * Usage:
- *   wit rebase <branch>           Rebase onto branch
- *   wit rebase --onto <new> <old> Rebase onto specific base
- *   wit rebase --continue         Continue after conflict resolution
- *   wit rebase --abort            Abort the rebase
- *   wit rebase --skip             Skip current commit
+ *   myvcs rebase <branch>           Rebase onto branch
+ *   myvcs rebase --onto <new> <old> Rebase onto specific base
+ *   myvcs rebase --continue         Continue after conflict resolution
+ *   myvcs rebase --abort            Abort the rebase
+ *   myvcs rebase --skip             Skip current commit
  */
 
 import * as path from 'path';
@@ -123,8 +123,8 @@ export class RebaseManager {
         'A rebase is already in progress',
         ErrorCode.OPERATION_FAILED,
         [
-          'wit rebase --continue    # Continue after resolving conflicts',
-          'wit rebase --abort        # Abort the rebase',
+          'myvcs rebase --continue    # Continue after resolving conflicts',
+          'myvcs rebase --abort        # Abort the rebase',
         ]
       );
     }
@@ -143,8 +143,8 @@ export class RebaseManager {
         'You have uncommitted changes',
         ErrorCode.UNCOMMITTED_CHANGES,
         [
-          'wit stash              # Stash your changes',
-          'wit commit -m "WIP"    # Commit your changes first',
+          'myvcs stash              # Stash your changes',
+          'myvcs commit -m "WIP"    # Commit your changes first',
         ]
       );
     }
@@ -759,7 +759,7 @@ export function handleRebase(args: string[]): void {
             }
           }
           console.error('\nResolve conflicts and run:');
-          console.error('  wit rebase --continue');
+          console.error('  myvcs rebase --continue');
           process.exit(1);
         }
         break;
@@ -789,7 +789,7 @@ export function handleRebase(args: string[]): void {
       default: {
         if (!targetBranch) {
           console.error('error: No branch specified');
-          console.error('\nUsage: wit rebase [options] <branch>');
+          console.error('\nUsage: myvcs rebase [options] <branch>');
           console.error('\nOptions:');
           console.error('  --continue        Continue after conflict resolution');
           console.error('  --abort           Abort the rebase');
@@ -797,8 +797,8 @@ export function handleRebase(args: string[]): void {
           console.error('  --onto <branch>   Rebase onto specific branch');
           console.error('  --autostash       Automatically stash and unstash');
           console.error('\nExamples:');
-          console.error('  wit rebase main                    # Rebase onto main');
-          console.error('  wit rebase --onto main feature     # Rebase onto main from feature');
+          console.error('  myvcs rebase main                    # Rebase onto main');
+          console.error('  myvcs rebase --onto main feature     # Rebase onto main from feature');
           process.exit(1);
         }
 
@@ -821,9 +821,9 @@ export function handleRebase(args: string[]): void {
             }
           }
           console.error('\nResolve conflicts and run:');
-          console.error('  wit rebase --continue');
+          console.error('  myvcs rebase --continue');
           console.error('\nOr abort with:');
-          console.error('  wit rebase --abort');
+          console.error('  myvcs rebase --abort');
           process.exit(1);
         }
         break;

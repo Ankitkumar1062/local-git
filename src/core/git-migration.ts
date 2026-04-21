@@ -1,9 +1,9 @@
 /**
- * Git to wit repository migration
+ * Git to myvcs repository migration
  * 
- * This module handles the migration of existing Git repositories to wit format.
+ * This module handles the migration of existing Git repositories to myvcs format.
  * It reads all Git objects (commits, trees, blobs, tags), re-hashes them using
- * SHA-256, and stores them in the .wit directory while maintaining the full
+ * SHA-256, and stores them in the .myvcs directory while maintaining the full
  * history and structure.
  */
 
@@ -65,7 +65,7 @@ const OBJ_OFS_DELTA = 6;
 const OBJ_REF_DELTA = 7;
 
 /**
- * Migrate a Git repository to wit format
+ * Migrate a Git repository to myvcs format
  */
 export async function migrateFromGit(options: MigrationOptions): Promise<MigrationResult> {
   const { gitDir, witDir, onProgress } = options;
@@ -918,7 +918,7 @@ function transformTagContent(
 }
 
 /**
- * Write a wit object to the object store
+ * Write a myvcs object to the object store
  */
 function writeWitObject(
   witDir: string,
@@ -1005,7 +1005,7 @@ function readPackedRefs(filePath: string): Array<{ name: string; hash: string }>
  */
 function saveMigrationMap(witDir: string, hashMap: Map<string, string>): void {
   const mapPath = path.join(witDir, 'git-migration-map');
-  const lines: string[] = ['# Git SHA-1 to wit hash mapping'];
+  const lines: string[] = ['# Git SHA-1 to myvcs hash mapping'];
   
   for (const [oldHash, newHash] of hashMap) {
     lines.push(`${oldHash} ${newHash}`);

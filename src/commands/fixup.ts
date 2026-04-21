@@ -3,7 +3,7 @@
  * Create a commit that is marked to be squashed into a previous commit
  * 
  * This is a QoL improvement - easier than git commit --fixup
- * Works with wit's auto-squash during rebase
+ * Works with myvcs's auto-squash during rebase
  */
 
 import { Repository } from '../core/repository';
@@ -37,8 +37,8 @@ export function fixup(options: FixupOptions = {}): string {
       'Nothing staged to commit',
       ErrorCode.NOTHING_TO_COMMIT,
       [
-        'wit add <file>     # Stage files first',
-        'wit fixup -a HEAD  # Stage all and fixup',
+        'myvcs add <file>     # Stage files first',
+        'myvcs fixup -a HEAD  # Stage all and fixup',
       ]
     );
   }
@@ -182,7 +182,7 @@ export function showRecentCommits(limit: number = 10): void {
     }
     
     console.log();
-    console.log(colors.dim('Use: wit fixup HEAD~n'));
+    console.log(colors.dim('Use: myvcs fixup HEAD~n'));
   } catch {
     console.log(colors.dim('No commits yet'));
   }
@@ -220,7 +220,7 @@ export function handleFixup(args: string[]): void {
     const prefix = options.amend ? 'amend!' : 'fixup!';
     console.log(colors.green('✓') + ` Created ${prefix} commit: ${colors.yellow(hash.slice(0, 8))}`);
     console.log(colors.dim('  This commit will be squashed during rebase'));
-    console.log(colors.dim('  Use "wit undo" to revert if needed'));
+    console.log(colors.dim('  Use "myvcs undo" to revert if needed'));
   } catch (error) {
     if (error instanceof TsgitError) {
       console.error(error.format());

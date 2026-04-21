@@ -5,9 +5,9 @@ import * as path from 'path';
  * Help text for the serve command
  */
 export const SERVE_HELP = `
-wit serve - Start a Git HTTP server for hosting repositories
+myvcs serve - Start a Git HTTP server for hosting repositories
 
-Usage: wit serve [options]
+Usage: myvcs serve [options]
 
 Options:
   --port <number>    Port to listen on (default: 3000)
@@ -17,25 +17,25 @@ Options:
   -h, --help         Show this help message
 
 Examples:
-  wit serve
+  myvcs serve
     Start server on port 3000 with repos in ./repos
 
-  wit serve --port 8080
+  myvcs serve --port 8080
     Start server on port 8080
 
-  wit serve --repos /var/git/repos --port 3000
+  myvcs serve --repos /var/git/repos --port 3000
     Start server with custom repository directory
 
 Once the server is running, you can:
 
   Clone a repository:
-    wit clone http://localhost:3000/owner/repo.git
+    myvcs clone http://localhost:3000/owner/repo.git
 
   Push to a repository (auto-creates if it doesn't exist):
-    wit push origin main
+    myvcs push origin main
 
   Fetch from a repository:
-    wit fetch origin
+    myvcs fetch origin
 `;
 
 /**

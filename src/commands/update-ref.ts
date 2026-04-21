@@ -3,9 +3,9 @@
  * Update the object name stored in a ref safely
  * 
  * Usage:
- * - wit update-ref <ref> <hash>        # Update ref to point to hash
- * - wit update-ref -d <ref>            # Delete ref
- * - wit update-ref --stdin             # Batch update from stdin
+ * - myvcs update-ref <ref> <hash>        # Update ref to point to hash
+ * - myvcs update-ref -d <ref>            # Delete ref
+ * - myvcs update-ref --stdin             # Batch update from stdin
  * 
  * This is a plumbing command for scripting and advanced usage.
  */
@@ -57,7 +57,7 @@ export function updateRef(
       throw new TsgitError(
         `Ref ${refName} does not exist`,
         ErrorCode.REF_NOT_FOUND,
-        ['Check that the ref exists with: wit show-ref']
+        ['Check that the ref exists with: myvcs show-ref']
       );
     }
     deleteFile(refPath);
@@ -248,9 +248,9 @@ export function handleUpdateRef(args: string[]): void {
 
     // Update mode: update-ref <ref> <newvalue> [<oldvalue>]
     if (positional.length < 2) {
-      console.error('usage: wit update-ref <ref> <newvalue> [<oldvalue>]');
-      console.error('   or: wit update-ref -d <ref> [<oldvalue>]');
-      console.error('   or: wit update-ref --stdin');
+      console.error('usage: myvcs update-ref <ref> <newvalue> [<oldvalue>]');
+      console.error('   or: myvcs update-ref -d <ref> [<oldvalue>]');
+      console.error('   or: myvcs update-ref --stdin');
       process.exit(1);
     }
 

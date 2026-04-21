@@ -1,5 +1,5 @@
 /**
- * Stash Management UI for wit
+ * Stash Management UI for myvcs
  * Visual stash list with quick actions
  */
 

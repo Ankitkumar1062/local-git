@@ -171,7 +171,7 @@ export class StackManager {
       throw new TsgitError(
         `Stack '${name}' already exists`,
         ErrorCode.OPERATION_FAILED,
-        ['wit stack list    # View existing stacks']
+        ['myvcs stack list    # View existing stacks']
       );
     }
 
@@ -181,7 +181,7 @@ export class StackManager {
       throw new TsgitError(
         'Cannot create stack: HEAD is detached',
         ErrorCode.DETACHED_HEAD,
-        ['wit switch <branch>    # Switch to a branch first']
+        ['myvcs switch <branch>    # Switch to a branch first']
       );
     }
 
@@ -241,8 +241,8 @@ export class StackManager {
         `Branch '${currentBranch}' is not part of any stack`,
         ErrorCode.OPERATION_FAILED,
         [
-          'wit stack create <name>    # Create a new stack first',
-          'wit stack list             # View existing stacks',
+          'myvcs stack create <name>    # Create a new stack first',
+          'myvcs stack list             # View existing stacks',
         ]
       );
     }
@@ -255,7 +255,7 @@ export class StackManager {
       throw new TsgitError(
         `Branch '${newBranchName}' already exists`,
         ErrorCode.BRANCH_EXISTS,
-        [`wit switch ${newBranchName}    # Switch to existing branch`]
+        [`myvcs switch ${newBranchName}    # Switch to existing branch`]
       );
     }
 
@@ -289,7 +289,7 @@ export class StackManager {
       throw new TsgitError(
         'Not currently on a stacked branch',
         ErrorCode.OPERATION_FAILED,
-        ['wit stack list    # View existing stacks']
+        ['myvcs stack list    # View existing stacks']
       );
     }
 
@@ -323,7 +323,7 @@ export class StackManager {
       throw new TsgitError(
         'Not currently on a stacked branch',
         ErrorCode.OPERATION_FAILED,
-        ['wit stack list    # View existing stacks']
+        ['myvcs stack list    # View existing stacks']
       );
     }
 
@@ -428,7 +428,7 @@ export class StackManager {
       throw new TsgitError(
         'Not currently on a stacked branch',
         ErrorCode.OPERATION_FAILED,
-        ['wit stack list    # View existing stacks']
+        ['myvcs stack list    # View existing stacks']
       );
     }
 
@@ -559,7 +559,7 @@ export class StackManager {
       throw new TsgitError(
         `Stack '${name}' not found`,
         ErrorCode.OPERATION_FAILED,
-        ['wit stack list    # View existing stacks']
+        ['myvcs stack list    # View existing stacks']
       );
     }
 

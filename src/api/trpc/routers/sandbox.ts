@@ -201,7 +201,7 @@ export const sandboxRouter = router({
           e2bTemplateId: undefined,
           daytonaSnapshot: undefined,
           daytonaAutoStop: 15,
-          dockerImage: 'wit-sandbox:latest',
+          dockerImage: 'myvcs-sandbox:latest',
           vercelProjectId: undefined,
           vercelTeamId: undefined,
           vercelRuntime: 'node22' as const,

@@ -1,5 +1,5 @@
 /**
- * Visual Merge Conflict Resolution UI for wit
+ * Visual Merge Conflict Resolution UI for myvcs
  * Interactive 3-way merge with visual diff
  */
 

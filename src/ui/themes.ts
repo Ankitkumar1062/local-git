@@ -1,5 +1,5 @@
 /**
- * Advanced Theme System for wit
+ * Advanced Theme System for myvcs
  * Supports multiple themes with customization
  */
 

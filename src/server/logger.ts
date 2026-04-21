@@ -1,5 +1,5 @@
 /**
- * Structured Logging for wit Server
+ * Structured Logging for myvcs Server
  * 
  * Provides JSON-formatted logs in production and pretty logs in development.
  * Includes request tracing, timing, and contextual metadata.
@@ -214,7 +214,7 @@ export class Logger {
 // Default Logger Instance
 // =============================================================================
 
-export const logger = new Logger({ service: 'wit' });
+export const logger = new Logger({ service: 'myvcs' });
 
 // =============================================================================
 // Request Logging Middleware

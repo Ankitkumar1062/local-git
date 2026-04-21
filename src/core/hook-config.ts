@@ -5,9 +5,9 @@
  * Allows teams to share hook configurations via version control.
  * 
  * Configuration can be in:
- * - .wit/hooks.json (recommended)
- * - wit.config.js (for dynamic configs)
- * - package.json "wit.hooks" field
+ * - .myvcs/hooks.json (recommended)
+ * - myvcs.config.js (for dynamic configs)
+ * - package.json "myvcs.hooks" field
  */
 
 import * as path from 'path';
@@ -42,8 +42,8 @@ export interface HookConfig {
  * Default config file locations
  */
 const CONFIG_LOCATIONS = [
-  '.wit/hooks.json',
-  'wit.config.json',
+  '.myvcs/hooks.json',
+  'myvcs.config.json',
 ];
 
 /**
@@ -63,17 +63,17 @@ export function loadHookConfig(workDir: string): HookConfig | null {
     }
   }
 
-  // Try package.json wit.hooks field
+  // Try package.json myvcs.hooks field
   const packageJsonPath = path.join(workDir, 'package.json');
   if (exists(packageJsonPath)) {
     try {
       const content = readFileText(packageJsonPath);
       const pkg = JSON.parse(content);
-      if (pkg.wit?.hooks || pkg.wit?.staged) {
+      if (pkg.myvcs?.hooks || pkg.myvcs?.staged) {
         return {
-          hooks: pkg.wit.hooks,
-          staged: pkg.wit.staged,
-          enabled: pkg.wit.enabled,
+          hooks: pkg.myvcs.hooks,
+          staged: pkg.myvcs.staged,
+          enabled: pkg.myvcs.enabled,
         };
       }
     } catch {
@@ -88,7 +88,7 @@ export function loadHookConfig(workDir: string): HookConfig | null {
  * Save hook configuration to project
  */
 export function saveHookConfig(workDir: string, config: HookConfig): void {
-  const witDir = path.join(workDir, '.wit');
+  const witDir = path.join(workDir, '.myvcs');
   if (!exists(witDir)) {
     mkdirp(witDir);
   }
@@ -131,9 +131,9 @@ export function generateHookScript(hookType: HookType, config: HookConfig): stri
  */
 function generateShellScript(hookType: HookType, commands: string[], filePatterns?: string[]): string {
   let script = `#!/bin/sh
-# wit ${hookType} hook
-# Generated from .wit/hooks.json - DO NOT EDIT DIRECTLY
-# To modify, edit .wit/hooks.json and run: wit hooks sync
+# myvcs ${hookType} hook
+# Generated from .myvcs/hooks.json - DO NOT EDIT DIRECTLY
+# To modify, edit .myvcs/hooks.json and run: myvcs hooks sync
 
 set -e
 
@@ -167,8 +167,8 @@ export function generateStagedHookScript(config: HookConfig): string | null {
   }
 
   let script = `#!/bin/sh
-# wit pre-commit hook (lint-staged style)
-# Generated from .wit/hooks.json - DO NOT EDIT DIRECTLY
+# myvcs pre-commit hook (lint-staged style)
+# Generated from .myvcs/hooks.json - DO NOT EDIT DIRECTLY
 
 set -e
 
@@ -221,5 +221,5 @@ export function createSampleConfig(): HookConfig {
 export function initHookConfig(workDir: string, sample: boolean = false): string {
   const config = sample ? createSampleConfig() : { hooks: {}, staged: {}, enabled: true };
   saveHookConfig(workDir, config);
-  return path.join(workDir, '.wit', 'hooks.json');
+  return path.join(workDir, '.myvcs', 'hooks.json');
 }

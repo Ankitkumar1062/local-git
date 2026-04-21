@@ -3,10 +3,10 @@
  * Read, modify, and delete symbolic refs
  * 
  * Usage:
- * - wit symbolic-ref HEAD              # Output: refs/heads/main
- * - wit symbolic-ref HEAD refs/heads/x # Set HEAD to branch x
- * - wit symbolic-ref --short HEAD      # Output: main
- * - wit symbolic-ref -d <name>         # Delete symbolic ref
+ * - myvcs symbolic-ref HEAD              # Output: refs/heads/main
+ * - myvcs symbolic-ref HEAD refs/heads/x # Set HEAD to branch x
+ * - myvcs symbolic-ref --short HEAD      # Output: main
+ * - myvcs symbolic-ref -d <name>         # Delete symbolic ref
  * 
  * This is a plumbing command for scripting and advanced usage.
  */
@@ -167,9 +167,9 @@ export function handleSymbolicRef(args: string[]): void {
   }
 
   if (positional.length === 0) {
-    console.error('usage: wit symbolic-ref <name> [<ref>]');
-    console.error('   or: wit symbolic-ref -d <name>');
-    console.error('   or: wit symbolic-ref --short <name>');
+    console.error('usage: myvcs symbolic-ref <name> [<ref>]');
+    console.error('   or: myvcs symbolic-ref -d <name>');
+    console.error('   or: myvcs symbolic-ref --short <name>');
     process.exit(1);
   }
 

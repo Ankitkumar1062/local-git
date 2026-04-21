@@ -1,13 +1,13 @@
 /**
- * Issue Tracking System for wit
+ * Issue Tracking System for myvcs
  * Linear-inspired local-first project management
  * 
  * Features:
- * - Local-first: Issues stored in .wit/issues.json, work offline
- * - Linear-like IDs: WIT-1, WIT-2, etc.
+ * - Local-first: Issues stored in .myvcs/issues.json, work offline
+ * - Linear-like IDs: myvcs-1, myvcs-2, etc.
  * - Cycles (sprints) for time-boxed work
  * - Labels, priorities, and assignments
- * - Commit integration: --closes WIT-123
+ * - Commit integration: --closes myvcs-123
  * - Fast keyboard-driven workflow
  */
 
@@ -57,7 +57,7 @@ export type IssueType = 'feature' | 'bug' | 'improvement' | 'task' | 'chore';
  */
 export interface Issue {
   id: string;              // UUID
-  number: number;          // Sequential number for WIT-123 style IDs
+  number: number;          // Sequential number for myvcs-123 style IDs
   title: string;
   description: string;
   status: IssueStatus;
@@ -172,7 +172,7 @@ const DEFAULT_CUSTOM_STAGES: CustomStage[] = [
 
 const DEFAULT_STORAGE: IssueStorage = {
   version: 2,
-  prefix: 'WIT',
+  prefix: 'myvcs',
   nextNumber: 1,
   nextCycleNumber: 1,
   issues: [],
@@ -357,7 +357,7 @@ export class IssueManager {
       return this.storage.issues.find(i => i.number === idOrNumber) || null;
     }
     
-    // Check if it's a WIT-123 style ID
+    // Check if it's a myvcs-123 style ID
     const match = idOrNumber.match(/^([A-Z]+)-(\d+)$/i);
     if (match) {
       const num = parseInt(match[2], 10);
@@ -519,7 +519,7 @@ export class IssueManager {
   }
 
   /**
-   * Get issue display ID (WIT-123)
+   * Get issue display ID (myvcs-123)
    */
   getDisplayId(issue: Issue): string {
     return `${this.storage.prefix}-${issue.number}`;
@@ -573,7 +573,7 @@ export class IssueManager {
 
   /**
    * Parse commit message for issue references
-   * Supports: closes WIT-123, fixes #123, refs WIT-456
+   * Supports: closes myvcs-123, fixes #123, refs myvcs-456
    */
   parseCommitMessage(message: string): {
     closes: number[];
@@ -582,15 +582,15 @@ export class IssueManager {
     const closes: number[] = [];
     const refs: number[] = [];
 
-    // Match "closes WIT-123" or "fixes WIT-123"
-    const closePattern = /(?:closes?|fixes?|resolves?)\s+(?:WIT-)?#?(\d+)/gi;
+    // Match "closes myvcs-123" or "fixes myvcs-123"
+    const closePattern = /(?:closes?|fixes?|resolves?)\s+(?:myvcs-)?#?(\d+)/gi;
     let match;
     while ((match = closePattern.exec(message)) !== null) {
       closes.push(parseInt(match[1], 10));
     }
 
-    // Match "refs WIT-123" or just "WIT-123"
-    const refPattern = /(?:refs?|see|re:?)?\s*WIT-(\d+)/gi;
+    // Match "refs myvcs-123" or just "myvcs-123"
+    const refPattern = /(?:refs?|see|re:?)?\s*myvcs-(\d+)/gi;
     while ((match = refPattern.exec(message)) !== null) {
       const num = parseInt(match[1], 10);
       if (!closes.includes(num)) {

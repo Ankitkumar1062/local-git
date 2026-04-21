@@ -1,7 +1,7 @@
 /**
- * wit status - Show wit platform status
+ * myvcs status - Show myvcs platform status
  *
- * Displays the current state of all wit services.
+ * Displays the current state of all myvcs services.
  */
 
 import * as fs from 'fs';
@@ -9,13 +9,13 @@ import * as path from 'path';
 import * as os from 'os';
 import { colors } from '../utils/colors';
 
-const WIT_DIR = path.join(os.homedir(), '.wit');
-const PID_FILE = path.join(WIT_DIR, 'wit.pid');
+const WIT_DIR = path.join(os.homedir(), '.myvcs');
+const PID_FILE = path.join(WIT_DIR, 'myvcs.pid');
 
 export const STATUS_HELP = `
-wit status - Show wit platform status
+myvcs status - Show myvcs platform status
 
-Usage: wit status [options]
+Usage: myvcs status [options]
 
 Options:
   --json        Output as JSON
@@ -54,9 +54,9 @@ export async function handlePlatformStatus(args: string[]): Promise<void> {
   const services: ServiceStatus[] = [
     {
       name: 'Database',
-      running: await isProcessRunning('wit-postgres', true),
+      running: await isProcessRunning('myvcs-postgres', true),
       port: options.dbPort,
-      url: `postgresql://localhost:${options.dbPort}/wit`,
+      url: `postgresql://localhost:${options.dbPort}/myvcs`,
     },
     {
       name: 'API Server',
@@ -85,7 +85,7 @@ export async function handlePlatformStatus(args: string[]): Promise<void> {
   }
 
   // Pretty print
-  console.log(colors.bold('\n📊 wit platform status\n'));
+  console.log(colors.bold('\n📊 myvcs platform status\n'));
 
   const allRunning = services.every(s => s.running);
   const someRunning = services.some(s => s.running);
@@ -119,7 +119,7 @@ export async function handlePlatformStatus(args: string[]): Promise<void> {
   console.log();
 
   if (!someRunning) {
-    console.log(colors.dim('  Start with: wit up\n'));
+    console.log(colors.dim('  Start with: myvcs up\n'));
   }
 }
 

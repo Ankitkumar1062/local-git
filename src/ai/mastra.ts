@@ -1,7 +1,7 @@
 /**
- * Mastra Configuration for wit
+ * Mastra Configuration for myvcs
  * 
- * Sets up the Mastra instance with the wit agent, tools, memory, and workflows.
+ * Sets up the Mastra instance with the myvcs agent, tools, memory, and workflows.
  * Uses PostgreSQL for server-side storage, LibSQL for CLI storage.
  */
 
@@ -65,10 +65,10 @@ function isServerMode(): boolean {
 }
 
 /**
- * Get the path to the wit data directory (for CLI mode)
+ * Get the path to the myvcs data directory (for CLI mode)
  */
 function getWitDataDir(): string {
-  const witDir = process.env.WIT_DATA_DIR || path.join(os.homedir(), '.wit');
+  const witDir = process.env.WIT_DATA_DIR || path.join(os.homedir(), '.myvcs');
   return witDir;
 }
 
@@ -81,7 +81,7 @@ export function getStorage(): LibSQLStore | PostgresStore {
     if (isServerMode()) {
       // Server mode: use PostgreSQL
       storageInstance = new PostgresStore({
-        id: 'wit-mastra-storage',
+        id: 'myvcs-mastra-storage',
         connectionString: process.env.DATABASE_URL!,
       });
       console.log('[Mastra] Using PostgresStore for storage');
@@ -89,7 +89,7 @@ export function getStorage(): LibSQLStore | PostgresStore {
       // CLI mode: use local LibSQL
       const dbPath = path.join(getWitDataDir(), 'agent.db');
       storageInstance = new LibSQLStore({
-        id: 'wit-agent-storage',
+        id: 'myvcs-agent-storage',
         url: `file:${dbPath}`,
       });
       console.log('[Mastra] Using LibSQLStore for storage');
@@ -112,7 +112,7 @@ export function getMemory(): Memory {
 }
 
 /**
- * Create and configure a Mastra instance for wit
+ * Create and configure a Mastra instance for myvcs
  * Default model: Claude Opus 4 (claude-opus-4-5)
  */
 export function createTsgitMastra(config: AIConfig = {}): Mastra {
@@ -126,7 +126,7 @@ export function createTsgitMastra(config: AIConfig = {}): Mastra {
   
   const mastra = new Mastra({
     agents: {
-      wit: agent,
+      myvcs: agent,
       witText: textAgent,
     },
     tools: witTools,
@@ -138,7 +138,7 @@ export function createTsgitMastra(config: AIConfig = {}): Mastra {
       multiAgentPlanning: multiAgentPlanningWorkflow,
     },
     memory: {
-      wit: memory,
+      myvcs: memory,
     },
     storage,
     logger: config.verbose ? undefined : false,
@@ -159,15 +159,15 @@ export function getTsgitMastra(config?: AIConfig): Mastra {
 }
 
 /**
- * Get the wit agent from the Mastra instance
+ * Get the myvcs agent from the Mastra instance
  */
 export function getTsgitAgent(config?: AIConfig): Agent {
   const mastra = getTsgitMastra(config);
-  return mastra.getAgent('wit');
+  return mastra.getAgent('myvcs');
 }
 
 /**
- * Get the text-only wit agent from the Mastra instance
+ * Get the text-only myvcs agent from the Mastra instance
  */
 export function getTextAgent(config?: AIConfig): Agent {
   const mastra = getTsgitMastra(config);

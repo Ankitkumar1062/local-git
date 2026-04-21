@@ -1,5 +1,5 @@
 /**
- * wit up - Start the wit platform with one command
+ * myvcs up - Start the myvcs platform with one command
  *
  * This command handles everything:
  * - Starts PostgreSQL (via Docker or embedded)
@@ -16,23 +16,23 @@ import * as net from 'net';
 import { colors } from '../utils/colors';
 
 export const UP_HELP = `
-wit up - Start the wit platform
+myvcs up - Start the myvcs platform
 
-Usage: wit up [options]
+Usage: myvcs up [options]
 
 Options:
   --port <port>       Server port (default: 3000)
   --db-port <port>    Database port (default: 5432)
   --no-web            Don't start the web UI
   --no-db             Use external database (requires DATABASE_URL)
-  --data-dir <dir>    Data directory (default: ~/.wit)
+  --data-dir <dir>    Data directory (default: ~/.myvcs)
   -h, --help          Show this help message
 
 Examples:
-  wit up                        Start everything on default ports
-  wit up --port 8080            Start server on port 8080
-  wit up --no-web               Start without web UI
-  wit up --data-dir ./my-data   Use custom data directory
+  myvcs up                        Start everything on default ports
+  myvcs up --port 8080            Start server on port 8080
+  myvcs up --no-web               Start without web UI
+  myvcs up --data-dir ./my-data   Use custom data directory
 
 The command will:
   1. Start PostgreSQL database (if not using external)
@@ -40,7 +40,7 @@ The command will:
   3. Start the API server
   4. Start the web UI (unless --no-web)
 
-All data is stored in ~/.wit by default.
+All data is stored in ~/.myvcs by default.
 `;
 
 interface UpOptions {
@@ -51,8 +51,8 @@ interface UpOptions {
   dataDir: string;
 }
 
-const WIT_DIR = path.join(os.homedir(), '.wit');
-const PID_FILE = path.join(WIT_DIR, 'wit.pid');
+const WIT_DIR = path.join(os.homedir(), '.myvcs');
+const PID_FILE = path.join(WIT_DIR, 'myvcs.pid');
 const LOG_DIR = path.join(WIT_DIR, 'logs');
 const SERVER_LOG = path.join(LOG_DIR, 'server.log');
 const WEB_LOG = path.join(LOG_DIR, 'web.log');
@@ -65,15 +65,15 @@ export async function handleUp(args: string[]): Promise<void> {
 
   const options = parseOptions(args);
 
-  console.log(colors.bold('\n🚀 Starting wit platform...\n'));
+  console.log(colors.bold('\n🚀 Starting myvcs platform...\n'));
 
   // Ensure data directory exists
   ensureDataDir(options.dataDir);
 
   // Check if already running
   if (isRunning()) {
-    console.log(colors.yellow('⚠️  wit is already running'));
-    console.log(colors.dim(`   Stop it with: wit down`));
+    console.log(colors.yellow('⚠️  myvcs is already running'));
+    console.log(colors.dim(`   Stop it with: myvcs down`));
     return;
   }
 
@@ -98,7 +98,7 @@ export async function handleUp(args: string[]): Promise<void> {
     savePidFile(options);
 
     // Print success
-    console.log(colors.green('\n✓ wit is running!\n'));
+    console.log(colors.green('\n✓ myvcs is running!\n'));
     console.log(colors.bold('  Services:'));
     console.log(`    API:      ${colors.cyan(`http://localhost:${options.port}`)}`);
     if (!options.noWeb) {
@@ -106,12 +106,12 @@ export async function handleUp(args: string[]): Promise<void> {
     }
     console.log(`    Database: ${colors.cyan(`localhost:${options.dbPort}`)}`);
     console.log();
-    console.log(colors.dim('  Stop with: wit down'));
+    console.log(colors.dim('  Stop with: myvcs down'));
     console.log(colors.dim('  Logs at:   ' + LOG_DIR));
     console.log();
 
   } catch (error) {
-    console.error(colors.red('\n✗ Failed to start wit'));
+    console.error(colors.red('\n✗ Failed to start myvcs'));
     console.error(colors.dim(`  ${error}`));
     console.error(colors.dim(`\n  Logs directory: ${LOG_DIR}`));
     
@@ -223,7 +223,7 @@ async function startDatabase(options: UpOptions): Promise<void> {
   }
 
   // Start PostgreSQL container
-  const containerName = 'wit-postgres';
+  const containerName = 'myvcs-postgres';
   const dataDir = path.join(options.dataDir, 'db');
 
   try {
@@ -234,9 +234,9 @@ async function startDatabase(options: UpOptions): Promise<void> {
     execSync(
       `docker run -d \
         --name ${containerName} \
-        -e POSTGRES_USER=wit \
-        -e POSTGRES_PASSWORD=wit \
-        -e POSTGRES_DB=wit \
+        -e POSTGRES_USER=myvcs \
+        -e POSTGRES_PASSWORD=myvcs \
+        -e POSTGRES_DB=myvcs \
         -p ${options.dbPort}:5432 \
         -v "${dataDir}:/var/lib/postgresql/data" \
         postgres:16-alpine`,
@@ -254,7 +254,7 @@ async function startDatabase(options: UpOptions): Promise<void> {
 async function waitForDatabase(port: number, maxRetries = 30): Promise<void> {
   for (let i = 0; i < maxRetries; i++) {
     try {
-      execSync(`docker exec wit-postgres pg_isready -U wit`, { stdio: 'ignore' });
+      execSync(`docker exec myvcs-postgres pg_isready -U myvcs`, { stdio: 'ignore' });
       return;
     } catch {
       await sleep(1000);
@@ -267,7 +267,7 @@ async function runMigrations(options: UpOptions): Promise<void> {
   console.log(colors.dim('  Running migrations...'));
 
   const dbUrl = process.env.DATABASE_URL || 
-    `postgresql://wit:wit@localhost:${options.dbPort}/wit`;
+    `postgresql://myvcs:myvcs@localhost:${options.dbPort}/myvcs`;
 
   try {
     // Use drizzle-kit push
@@ -286,7 +286,7 @@ async function startServer(options: UpOptions): Promise<void> {
   console.log(colors.dim('  Starting API server...'));
 
   const dbUrl = process.env.DATABASE_URL || 
-    `postgresql://wit:wit@localhost:${options.dbPort}/wit`;
+    `postgresql://myvcs:myvcs@localhost:${options.dbPort}/myvcs`;
 
   // Use REPOS_DIR from env if set, otherwise use dataDir/repos
   const reposDir = process.env.REPOS_DIR || path.join(options.dataDir, 'repos');
@@ -317,7 +317,7 @@ async function startServer(options: UpOptions): Promise<void> {
   }
   
   if (!cliPath) {
-    // Fallback: run npm script from the wit directory
+    // Fallback: run npm script from the myvcs directory
     console.log(colors.dim('  Using npm run serve...'));
     
     const serverProcess = spawn(
@@ -505,7 +505,7 @@ async function isPortInUse(port: number): Promise<boolean> {
 }
 
 function getWitInstallDir(): string {
-  // Find where wit is installed
+  // Find where myvcs is installed
   // In development, this is the project root
   // In production, this would be in node_modules or global install
   return path.resolve(__dirname, '../..');

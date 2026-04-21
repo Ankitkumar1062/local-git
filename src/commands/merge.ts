@@ -64,8 +64,8 @@ export function mergeAbort(): void {
       'No merge in progress to abort',
       ErrorCode.OPERATION_FAILED,
       [
-        'wit status    # Check repository status',
-        'wit merge <branch>    # Start a new merge',
+        'myvcs status    # Check repository status',
+        'myvcs merge <branch>    # Start a new merge',
       ]
     );
   }
@@ -86,8 +86,8 @@ export function mergeContinue(message?: string): void {
       'No merge in progress to continue',
       ErrorCode.OPERATION_FAILED,
       [
-        'wit status    # Check repository status',
-        'wit merge <branch>    # Start a new merge',
+        'myvcs status    # Check repository status',
+        'myvcs merge <branch>    # Start a new merge',
       ]
     );
   }
@@ -101,8 +101,8 @@ export function mergeContinue(message?: string): void {
       ErrorCode.MERGE_CONFLICT,
       [
         `Unresolved files: ${files.slice(0, 3).join(', ')}${files.length > 3 ? ` (+${files.length - 3} more)` : ''}`,
-        'wit merge --conflicts    # View all conflicts',
-        'wit merge --resolve <file>    # Mark file as resolved after fixing',
+        'myvcs merge --conflicts    # View all conflicts',
+        'myvcs merge --resolve <file>    # Mark file as resolved after fixing',
       ],
       { files }
     );
@@ -137,7 +137,7 @@ export function showConflicts(): void {
   const unresolved = mergeManager.getUnresolvedConflicts();
   
   if (unresolved.length === 0) {
-    console.log('All conflicts resolved. Run `wit merge --continue` to complete.');
+    console.log('All conflicts resolved. Run `myvcs merge --continue` to complete.');
     return;
   }
 
@@ -161,8 +161,8 @@ export function resolveFile(filePath: string): void {
       'No merge in progress - cannot mark file as resolved',
       ErrorCode.OPERATION_FAILED,
       [
-        'wit status    # Check repository status',
-        'wit merge <branch>    # Start a new merge',
+        'myvcs status    # Check repository status',
+        'myvcs merge <branch>    # Start a new merge',
       ]
     );
   }
@@ -173,7 +173,7 @@ export function resolveFile(filePath: string): void {
 
     const remaining = mergeManager.getUnresolvedConflicts();
     if (remaining.length === 0) {
-      console.log(`\n${colors.cyan('hint:')} All conflicts resolved. Run ${colors.cyan('wit merge --continue')} to complete.`);
+      console.log(`\n${colors.cyan('hint:')} All conflicts resolved. Run ${colors.cyan('myvcs merge --continue')} to complete.`);
     } else {
       console.log(`\n${colors.yellow(remaining.length.toString())} conflict(s) remaining`);
     }
@@ -240,8 +240,8 @@ export async function handleMerge(args: string[]): Promise<void> {
           '--resolve requires a file path',
           ErrorCode.INVALID_ARGUMENT,
           [
-            'wit merge --resolve <file>    # Mark specific file as resolved',
-            'wit merge --conflicts         # View files with conflicts',
+            'myvcs merge --resolve <file>    # Mark specific file as resolved',
+            'myvcs merge --conflicts         # View files with conflicts',
           ]
         );
       }
@@ -259,8 +259,8 @@ export async function handleMerge(args: string[]): Promise<void> {
         if (otherBranches.length > 0) {
           suggestions.push(`Available branches: ${otherBranches.join(', ')}${branches.length > 4 ? '...' : ''}`);
         }
-        suggestions.push('wit branch    # List all branches');
-        suggestions.push('wit merge --help    # See all options');
+        suggestions.push('myvcs branch    # List all branches');
+        suggestions.push('myvcs merge --help    # See all options');
 
         throw new TsgitError(
           'Branch name required for merge',
