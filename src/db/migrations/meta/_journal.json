@@ -1,0 +1,174 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1766860329605,
+      "tag": "0000_free_madelyne_pryor",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1766866561811,
+      "tag": "0001_natural_shotgun",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1766940662959,
+      "tag": "0002_slippery_hex",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1766943921700,
+      "tag": "0003_icy_gateway",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1766951309810,
+      "tag": "0004_worthless_captain_flint",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1766956859119,
+      "tag": "0005_clammy_husk",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1766958000000,
+      "tag": "0006_admin_portal",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1766958100000,
+      "tag": "0007_user_ai_keys",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1767024000000,
+      "tag": "0008_issue_stages",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1767024100000,
+      "tag": "0009_issue_stage_id",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1767024200000,
+      "tag": "0010_notification_email_columns",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1767024300000,
+      "tag": "0011_sandbox_config",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1767024400000,
+      "tag": "0012_marketing_content",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1767024500000,
+      "tag": "0013_add_vercel_sandbox_provider",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1767024600000,
+      "tag": "0014_add_vercel_team_id",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1767024700000,
+      "tag": "0015_add_marketing_enabled",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1767024800000,
+      "tag": "0016_add_language_stats_cache",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1767024900000,
+      "tag": "0017_add_coderabbit_provider",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1767025000000,
+      "tag": "0018_performance_indexes",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1767025100000,
+      "tag": "0019_gamification",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1767025200000,
+      "tag": "0020_mcp_servers",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1767125000000,
+      "tag": "0021_add_openrouter_provider",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1767125100000,
+      "tag": "0022_sentinel",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1767125200000,
+      "tag": "0023_add_storage_backend",
+      "breakpoints": true
+    }
+  ]
+}

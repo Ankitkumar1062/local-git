@@ -1,0 +1,113 @@
+/**
+ * Sandbox Module
+ *
+ * Provides pluggable sandbox providers for safe code execution.
+ *
+ * Supported providers:
+ * - E2B: Firecracker microVM sandboxes (e2b.dev) - Best for production
+ * - Daytona: Cloud dev environments (daytona.io) - Best for AI coding agents
+ * - Docker: Local containers (self-hosted) - Best for development
+ * - Vercel: Ephemeral compute (vercel.com) - Best for AI agents and code generation
+ *
+ * @example
+ * ```typescript
+ * import { createSandboxManager } from './sandbox';
+ *
+ * // Create manager with E2B provider
+ * const manager = createSandboxManager({
+ *   repoRoot: '/var/lib/wit/repos',
+ *   provider: {
+ *     type: 'e2b',
+ *     options: {
+ *       apiKey: process.env.E2B_API_KEY!,
+ *     },
+ *   },
+ * });
+ *
+ * // Or with Vercel Sandbox provider
+ * const vercelManager = createSandboxManager({
+ *   repoRoot: '/var/lib/wit/repos',
+ *   provider: {
+ *     type: 'vercel',
+ *     options: {
+ *       projectId: process.env.VERCEL_PROJECT_ID!,
+ *       accessToken: process.env.VERCEL_TOKEN,
+ *       teamId: process.env.VERCEL_TEAM_ID,
+ *     },
+ *   },
+ * });
+ *
+ * await manager.initialize();
+ *
+ * // Create a sandbox session
+ * const session = await manager.createSession({
+ *   userId: 'user-123',
+ *   repository: 'my-repo.git',
+ *   pty: { cols: 120, rows: 30, term: 'xterm-256color' },
+ * });
+ *
+ * // Execute commands
+ * const result = await session.exec('npm', ['install']);
+ * console.log(result.stdout);
+ *
+ * // Or use interactive PTY
+ * session.on('data', (data) => process.stdout.write(data));
+ * session.sendInput('ls -la\n');
+ *
+ * // Cleanup
+ * await session.stop();
+ * await manager.shutdown();
+ * ```
+ */
+
+// Types
+export type {
+  SandboxProviderType,
+  ComputeSDKUnderlyingProvider,
+  NetworkMode,
+  SandboxResourceLimits,
+  PTYConfig,
+  SandboxSessionConfig,
+  SandboxState,
+  CommandResult,
+  SandboxSession,
+  SandboxInfo,
+  SandboxStats,
+  SandboxProviderConfig,
+  DockerProviderConfig,
+  ComputeSDKProviderConfig,
+  ProviderConfig,
+  SandboxProvider,
+  SandboxManagerConfig,
+  SandboxAuditEvent,
+} from './types';
+
+// Constants
+export {
+  DEFAULT_RESOURCE_LIMITS,
+  DEFAULT_PTY_CONFIG,
+  PROVIDER_FEATURES,
+} from './types';
+
+// Base classes
+export { BaseSandboxProvider, BaseSandboxSession } from './base-provider';
+
+// Manager
+export {
+  SandboxManager,
+  createSandboxManager,
+  createSandboxManagerFromEnv,
+  registerProvider,
+} from './manager';
+
+// Providers
+export { DockerProvider } from './providers/docker';
+export { ComputeSDKProvider } from './providers/computesdk';
+
+// Sandbox Pool (for reusing sandboxes across requests)
+export {
+  SandboxPool,
+  getSandboxPool,
+  resetSandboxPool,
+  type PooledSandbox,
+} from './pool';
