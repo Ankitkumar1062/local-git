@@ -74,10 +74,12 @@ export class RepoManager {
    * Get the full path for a repository
    */
   private getRepoPath(owner: string, name: string): string {
-    // Normalize name - strip .wit/.git suffix and add .git for internal storage
+    // Normalize name - strip .wit.git or .wit suffix and ensure .git extension
     let repoName = name;
-    if (repoName.endsWith('.wit')) {
-      repoName = repoName.slice(0, -4) + '.git';
+    if (repoName.endsWith('.wit.git')) {
+      repoName = repoName.slice(0, -8) + '.git'; // repo5.wit.git -> repo5.git
+    } else if (repoName.endsWith('.wit')) {
+      repoName = repoName.slice(0, -4) + '.git'; // repo5.wit -> repo5.git
     } else if (!repoName.endsWith('.git')) {
       repoName = `${repoName}.git`;
     }

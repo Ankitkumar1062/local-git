@@ -643,6 +643,12 @@ async function handleDatabaseIntegration(
   try {
     const repoName = repo.replace(/\.(git|wit)$/, '');
 
+    // Normalize diskPath to the canonical /repos/owner/name.git format.
+    // The raw gitDir passed in may be an absolute OS path like
+    // /home/user/.../repos/owner/repo5.wit.git — we must store the
+    // /repos/ relative form so getRepoFromDisk can resolve it correctly.
+    const canonicalDiskPath = `/repos/${owner}/${repoName}.git`;
+
     // Get or create repository in database
     const dbRepoResult = await repoModel.findByPath(owner, repoName);
     let dbRepo = dbRepoResult?.repo;
@@ -657,7 +663,7 @@ async function handleDatabaseIntegration(
           ownerId: user.id,
           ownerType: 'user',
           name: repoName,
-          diskPath,
+          diskPath: canonicalDiskPath,
           defaultBranch: 'main',
           isPrivate: false,
         });
@@ -683,7 +689,7 @@ async function handleDatabaseIntegration(
           ownerId: newUser.id,
           ownerType: 'user',
           name: repoName,
-          diskPath,
+          diskPath: canonicalDiskPath,
           defaultBranch: 'main',
           isPrivate: false,
         });

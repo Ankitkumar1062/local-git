@@ -1,4 +1,4 @@
-import { eq, and, or, desc, sql, ilike, count } from 'drizzle-orm';
+import { eq, and, or, desc, sql, ilike, count, SQL } from 'drizzle-orm';
 import { getDb } from '../index';
 import {
   repositories,
@@ -151,7 +151,7 @@ export const repoModel = {
     const orgResult = await db
       .select()
       .from(repositories)
-      .innerJoin(organizations, eq(repositories.ownerId, organizations.id))
+      .innerJoin(organizations, sql`${repositories.ownerId} = ${organizations.id}::text`)
       .where(
         and(
           eq(organizations.name, ownerName),
