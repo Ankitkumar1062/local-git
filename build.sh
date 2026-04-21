@@ -202,19 +202,21 @@ ensure_pg_hba_allows_password_auth() {
     pg_hba="$(sudo -u postgres psql -tAc "SHOW hba_file;" 2>/dev/null | tr -d '[:space:]')" || true
 
     if [ -z "$pg_hba" ] || [ ! -f "$pg_hba" ]; then
-        warn "Could not locate pg_hba.conf. If drizzle-kit hangs, add a TCP md5 rule manually."
+        warn "Could not locate pg_hba.conf. If drizzle-kit hangs, add a TCP scram-sha-256 rule manually."
         return
     fi
 
     # Check if there's already an md5/scram rule for 127.0.0.1
-    if grep -qE '^host\s+all\s+all\s+127\.0\.0\.1/32\s+(md5|scram-sha-256)' "$pg_hba"; then
+    # Use sudo to read pg_hba.conf (it's owned by postgres)
+    if sudo grep -qE '^host\s+all\s+all\s+127\.0\.0\.1/32\s+(md5|scram-sha-256)' "$pg_hba"; then
+        log "pg_hba.conf already allows password auth for 127.0.0.1."
         return  # already configured
     fi
 
-    log "Adding password-auth rule for 127.0.0.1 to pg_hba.conf..."
-    # Insert before the first "host" line (or append if none exists)
-    sudo sed -i '1i host    all    all    127.0.0.1/32    md5' "$pg_hba" || \
-        echo 'host    all    all    127.0.0.1/32    md5' | sudo tee -a "$pg_hba" >/dev/null
+    log "Adding scram-sha-256 auth rule for 127.0.0.1 to pg_hba.conf..."
+    # Use scram-sha-256 (PostgreSQL 16+ default password encryption)
+    sudo sed -i '1i host    all    all    127.0.0.1/32    scram-sha-256' "$pg_hba" || \
+        echo 'host    all    all    127.0.0.1/32    scram-sha-256' | sudo tee -a "$pg_hba" >/dev/null
 
     # Reload PostgreSQL so the new rule takes effect
     if command -v systemctl >/dev/null 2>&1; then
