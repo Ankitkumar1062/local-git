@@ -268,7 +268,6 @@ export function RepoLayout({ owner, repo, children }: RepoLayoutProps) {
     if (path.includes('/commits')) return 'commits';
     if (path.includes('/issues') || path.includes('/projects') || path.includes('/cycles')) return 'issues';
     if (path.includes('/pulls') || path.includes('/pull/')) return 'pulls';
-    if (path.includes('/actions')) return 'actions';
     if (path.includes('/stacks')) return 'stacks';
     if (path.includes('/journal')) return 'journal';
     if (path.includes('/package') && !path.includes('/settings/package')) return 'package';
@@ -503,10 +502,6 @@ export function RepoLayout({ owner, repo, children }: RepoLayoutProps) {
                 {prCounts?.open ?? repoInfo.openPrsCount}
               </Badge>
             </Link>
-            <Link to={`/${owner}/${repo}/actions`} className={tabClass('actions')}>
-              <Play className="h-4 w-4" />
-              <span className="sr-only sm:not-sr-only sm:inline">Actions</span>
-            </Link>
 
             <Link to={`/${owner}/${repo}/journal`} className={tabClass('journal')}>
               <BookOpen className="h-4 w-4" />
@@ -543,10 +538,6 @@ export function RepoLayout({ owner, repo, children }: RepoLayoutProps) {
             <Badge variant="secondary" className="ml-1 text-xs">
               {prCounts?.open ?? repoInfo.openPrsCount}
             </Badge>
-          </Link>
-          <Link to={`/${owner}/${repo}/actions`} className={tabClass('actions')}>
-            <Play className="h-4 w-4" />
-            <span>Actions</span>
           </Link>
 
           <Link to={`/${owner}/${repo}/journal`} className={tabClass('journal')}>
