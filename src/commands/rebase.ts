@@ -412,9 +412,53 @@ export class RebaseManager {
       );
     }
 
+    // Stage resolved tracked changes so users can fix files and continue directly.
+    const statusBeforeCommit = this.repo.status();
+    for (const file of statusBeforeCommit.modified) {
+      const fullPath = path.join(this.repo.workDir, file);
+      if (exists(fullPath)) {
+        const content = readFile(fullPath).toString();
+        if (content.includes('<<<<<<< ') || content.includes('=======') || content.includes('>>>>>>> ')) {
+          throw new TsgitError(
+            `Unresolved conflict markers in ${file}`,
+            ErrorCode.MERGE_CONFLICT,
+            [
+              `Edit ${file} to remove conflict markers`,
+              'Then run: myvcs rebase --continue',
+              'Or abort: myvcs rebase --abort',
+            ]
+          );
+        }
+        this.repo.add(file);
+      }
+    }
+
+    if (statusBeforeCommit.deleted.length > 0) {
+      for (const file of statusBeforeCommit.deleted) {
+        this.repo.index.remove(file);
+      }
+      this.repo.index.save();
+    }
+
     // Create commit for resolved conflicts
     const commit = this.repo.objects.readCommit(state.currentCommit);
-    const newHash = this.repo.commit(commit.message);
+    let newHash: string;
+    try {
+      newHash = this.repo.commit(commit.message);
+    } catch (error) {
+      if (error instanceof Error && error.message === 'Nothing to commit') {
+        throw new TsgitError(
+          'Nothing to commit for rebase --continue',
+          ErrorCode.OPERATION_FAILED,
+          [
+            'If you resolved files, save them first and run: myvcs rebase --continue',
+            'If this commit should be dropped, run: myvcs rebase --skip',
+            'To cancel, run: myvcs rebase --abort',
+          ]
+        );
+      }
+      throw error;
+    }
 
     state.applied.push(newHash);
     state.currentIndex++;

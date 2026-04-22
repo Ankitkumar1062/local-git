@@ -160,6 +160,7 @@ Merge & Conflict Resolution:
   merge --abort         Abort current merge
   merge --continue      Continue after resolving conflicts
   merge --conflicts     Show current conflicts
+  merge --resolve <f>   Mark a conflicted file as resolved
 
 Undo & History:
   undo                  Undo the last operation
@@ -662,7 +663,19 @@ function main(): void {
       case 'branch':
         if (options.delete) {
           branch(cmdArgs[0], { delete: true });
-        } else if (cmdArgs.length > 0) {
+        } else if (options.message && typeof options.message === 'string') {
+          // -m was parsed as 'message' by parseArgs, but for branch it means rename
+          // Usage: myvcs branch -m <oldname> <newname>
+          // parseArgs sees: -m <oldname> => options.message = oldname, cmdArgs[0] = newname
+          // So options.message is actually the old name, cmdArgs[0] is the new name
+          const oldName = options.message as string;
+          const newName = cmdArgs[0];
+          if (!newName) {
+            console.error('error: branch rename requires: myvcs branch -m <oldname> <newname>');
+            process.exit(1);
+          }
+          branch(oldName, { rename: newName });
+        }else if (cmdArgs.length > 0) {
           branch(cmdArgs[0]);
         } else {
           branch(undefined, { list: true });
@@ -696,6 +709,11 @@ function main(): void {
           options.abort ? ['--abort'] : [],
           options.continue ? ['--continue'] : [],
           options.conflicts ? ['--conflicts'] : [],
+          options.resolve ? (typeof options.resolve === 'string' ? ['--resolve', options.resolve] : ['--resolve']) : [],
+          options['no-commit'] ? ['--no-commit'] : [],
+          options['no-ff'] ? ['--no-ff'] : [],
+          options.squash ? ['--squash'] : [],
+          options['no-verify'] ? ['--no-verify'] : [],
           options.message ? ['-m', options.message as string] : []
         )).catch((error: Error) => {
           if (error instanceof TsgitError) {
