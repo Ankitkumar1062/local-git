@@ -289,7 +289,8 @@ main() {
 
     log "Building project..."
     npm run build
-
+    log "Ensuring CLI entry file is executable..."
+    chmod +x src/cli.ts || true
     log "Linking CLI globally..."
     npm link
 
