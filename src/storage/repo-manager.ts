@@ -334,14 +334,7 @@ export class StorageAwareRepoManager {
    * Get the full path for a repository
    */
   private getRepoPath(owner: string, name: string): string {
-    let repoName = name;
-    if (repoName.endsWith('.myvcs.git')) {
-      repoName = repoName.slice(0, -10) + '.git';
-    } else if (repoName.endsWith('.myvcs')) {
-      repoName = repoName.slice(0, -6) + '.git';
-    } else if (!repoName.endsWith('.git')) {
-      repoName = `${repoName}.git`;
-    }
+    const repoName = name.replace(/(?:\.(?:git|myvcs|vcs))+$/, '') + '.git';
     return path.join(this.baseDir, owner, repoName);
   }
 

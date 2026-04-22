@@ -604,7 +604,7 @@ async function logCloneActivity(
   }
 
   try {
-    const repoName = repo.replace(/\.(git|myvcs)$/, '');
+    const repoName = repo.replace(/(?:\.(?:git|myvcs|vcs))+$/, '');
     const dbRepoResult = await repoModel.findByPath(owner, repoName);
 
     if (!dbRepoResult) {
@@ -641,7 +641,7 @@ async function handleDatabaseIntegration(
   }
 
   try {
-    const repoName = repo.replace(/\.(git|myvcs)$/, '');
+    const repoName = repo.replace(/(?:\.(?:git|myvcs|vcs))+$/, '');
 
     // Normalize diskPath to the canonical /repos/owner/name.git format.
     // The raw gitDir passed in may be an absolute OS path like

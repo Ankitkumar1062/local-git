@@ -348,6 +348,86 @@ export class Refs {
   }
 
   /**
+   * Rename a branch
+   */
+  renameBranch(oldName: string, newName: string): void {
+    // Check old branch exists
+    if (!this.branchExists(oldName)) {
+      const existingBranches = this.listBranches();
+      const similar = findSimilar(oldName, existingBranches);
+      const suggestions: string[] = [];
+      if (similar.length > 0) {
+        suggestions.push(`Did you mean: ${similar.join(', ')}?`);
+      }
+      suggestions.push('myvcs branch    # List all branches');
+
+      throw new TsgitError(
+        `Branch '${oldName}' not found`,
+        ErrorCode.BRANCH_NOT_FOUND,
+        suggestions,
+        { branch: oldName, similarBranches: similar }
+      );
+    }
+
+    // Check new branch doesn't already exist
+    if (this.branchExists(newName)) {
+      throw new TsgitError(
+        `Branch '${newName}' already exists`,
+        ErrorCode.BRANCH_EXISTS,
+        [
+          `myvcs branch -d ${newName}   # Delete it first`,
+          `myvcs branch    # List all branches`,
+        ],
+        { branch: newName }
+      );
+    }
+
+    // Validate new branch name
+    const validation = this.validateBranchName(newName);
+    if (!validation.valid) {
+      throw new TsgitError(
+        `Branch name '${newName}' is invalid: ${validation.reason}`,
+        ErrorCode.INVALID_ARGUMENT,
+        [
+          `Try: myvcs branch -m ${oldName} ${this.suggestValidBranchName(newName)}`,
+        ],
+        { branch: newName }
+      );
+    }
+
+    // Get the commit hash the old branch points to
+    const hash = this.resolve(oldName);
+    if (!hash) {
+      throw new TsgitError(
+        `Cannot resolve branch '${oldName}'`,
+        ErrorCode.OPERATION_FAILED
+      );
+    }
+
+    // Create new branch ref
+    const newBranchPath = path.join(this.headsDir, newName);
+    writeFile(newBranchPath, hash + '\n');
+
+    // Delete old branch ref (loose)
+    const oldBranchPath = path.join(this.headsDir, oldName);
+    if (exists(oldBranchPath)) {
+      require('fs').unlinkSync(oldBranchPath);
+    }
+
+    // Remove old from packed-refs if it exists there
+    const packedRef = this.getPackedRef(`refs/heads/${oldName}`);
+    if (packedRef) {
+      this.removeFromPackedRefs(`refs/heads/${oldName}`);
+    }
+
+    // If HEAD points to the old branch, update it
+    const current = this.getCurrentBranch();
+    if (current === oldName) {
+      this.setHeadSymbolic(`refs/heads/${newName}`);
+    }
+  }
+
+  /**
    * List all branches (from both loose refs and packed-refs)
    */
   listBranches(): string[] {

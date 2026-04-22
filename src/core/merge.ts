@@ -44,6 +44,7 @@ export interface MergeResult {
   unchanged: string[];
   added: string[];
   deleted: string[];
+  autoMergedContents?: Map<string, string>;
   mergeCommit?: string;
 }
 
@@ -138,6 +139,19 @@ export class MergeManager {
         [
           'myvcs merge --continue    # Continue after resolving conflicts',
           'myvcs merge --abort       # Abort the merge',
+        ]
+      );
+    }
+
+    const status = this.repo.status();
+    if (status.staged.length > 0 || status.modified.length > 0 || status.deleted.length > 0) {
+      throw new TsgitError(
+        'Cannot merge with uncommitted changes',
+        ErrorCode.OPERATION_FAILED,
+        [
+          'Please commit or stash your changes before merging',
+          'myvcs commit -m "Save changes"',
+          'myvcs status',
         ]
       );
     }
@@ -298,6 +312,10 @@ export class MergeManager {
         result.success = false;
       } else if (mergeFileResult.merged) {
         result.autoMerged.push(filePath);
+        if (mergeFileResult.mergedContent) {
+          if (!result.autoMergedContents) result.autoMergedContents = new Map();
+          result.autoMergedContents.set(filePath, mergeFileResult.mergedContent);
+        }
       } else if (mergeFileResult.added) {
         result.added.push(filePath);
       } else if (mergeFileResult.deleted) {
@@ -330,8 +348,9 @@ export class MergeManager {
       this.updateWorkingDirectoryAfterMerge(sourceTree, result);
       
       if (!options.noCommit) {
-        // Create merge commit (would use options.message or default message)
-        // Note: Would need to extend commit to support multiple parents
+        const commitMessage = options.message || `Merge branch '${sourceBranch}' into ${targetBranch}`;
+        const commitHash = this.repo.commit(commitMessage, undefined, [targetHash, sourceHash]);
+        result.mergeCommit = commitHash;
       }
     }
 
@@ -376,7 +395,19 @@ export class MergeManager {
     theirFiles: Map<string, string>,
     result: MergeResult
   ): void {
-    // Write added files from their branch
+    // Write auto-merged files and update index
+    if (result.autoMergedContents) {
+      for (const [filePath, content] of result.autoMergedContents.entries()) {
+        const workingPath = path.join(this.repo.workDir, filePath);
+        mkdirp(path.dirname(workingPath));
+        writeFile(workingPath, content);
+        
+        const hash = this.repo.objects.writeBlob(Buffer.from(content));
+        this.repo.index.add(filePath, hash, this.repo.workDir);
+      }
+    }
+
+    // Write added files from their branch and update index
     for (const filePath of result.added) {
       const blobHash = theirFiles.get(filePath);
       if (blobHash) {
@@ -385,10 +416,12 @@ export class MergeManager {
         const workingPath = path.join(this.repo.workDir, filePath);
         mkdirp(path.dirname(workingPath));
         writeFile(workingPath, content);
+        
+        this.repo.index.add(filePath, blobHash, this.repo.workDir);
       }
     }
 
-    // Delete files that were deleted
+    // Delete files that were deleted and update index
     for (const filePath of result.deleted) {
       const workingPath = path.join(this.repo.workDir, filePath);
       try {
@@ -396,7 +429,10 @@ export class MergeManager {
       } catch {
         // File might not exist, ignore
       }
+      this.repo.index.remove(filePath);
     }
+    
+    this.repo.index.save();
   }
 
   /**
@@ -437,6 +473,7 @@ export class MergeManager {
   ): {
     conflict?: FileConflict;
     merged?: boolean;
+    mergedContent?: string;
     added?: boolean;
     deleted?: boolean;
   } {
@@ -494,7 +531,7 @@ export class MergeManager {
         };
       }
 
-      return { merged: true };
+      return { merged: true, mergedContent: mergeResult.content };
     }
 
     return {};
@@ -604,6 +641,15 @@ export class MergeManager {
 
     if (!state.resolved.includes(filePath)) {
       state.resolved.push(filePath);
+      try {
+        this.repo.add(filePath);
+      } catch (err) {
+        // If file doesn't exist, it means user resolved by deleting it
+        // Note: myvcs repo currently doesn't have a rm() method so we'd normally
+        // use index.remove. Let's just remove it from index.
+        this.repo.index.remove(filePath);
+        this.repo.index.save();
+      }
       this.saveState(state);
     }
   }
@@ -662,7 +708,7 @@ export class MergeManager {
     const commitMessage = message ||
       `Merge branch '${state.sourceBranch}' into ${state.targetBranch}`;
 
-    const commitHash = this.repo.commit(commitMessage);
+    const commitHash = this.repo.commit(commitMessage, undefined, [state.targetCommit, state.sourceCommit]);
     this.clearState();
 
     return commitHash;

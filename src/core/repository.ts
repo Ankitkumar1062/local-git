@@ -302,7 +302,7 @@ export class Repository {
   /**
    * Create a commit from the current index
    */
-  commit(message: string, author?: Author): string {
+  commit(message: string, author?: Author, parentHashesOverride?: string[]): string {
     if (this.index.size === 0) {
       throw new Error('Nothing to commit');
     }
@@ -314,16 +314,20 @@ export class Repository {
     const authorInfo = author || this.getDefaultAuthor();
 
     // Get parent commit(s)
-    const parentHashes: string[] = [];
-    const headHash = this.refs.resolve('HEAD');
-    if (headHash) {
-      // Verify the parent commit exists before using it
-      try {
-        this.objects.readCommit(headHash);
-        parentHashes.push(headHash);
-      } catch {
-        // Parent commit doesn't exist - this could happen if objects weren't properly stored
-        console.warn(`Warning: HEAD points to ${headHash} but commit object not found. Creating orphan commit.`);
+    let parentHashes: string[] = [];
+    if (parentHashesOverride) {
+      parentHashes = parentHashesOverride;
+    } else {
+      const headHash = this.refs.resolve('HEAD');
+      if (headHash) {
+        // Verify the parent commit exists before using it
+        try {
+          this.objects.readCommit(headHash);
+          parentHashes.push(headHash);
+        } catch {
+          // Parent commit doesn't exist - this could happen if objects weren't properly stored
+          console.warn(`Warning: HEAD points to ${headHash} but commit object not found. Creating orphan commit.`);
+        }
       }
     }
 

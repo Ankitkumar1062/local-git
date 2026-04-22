@@ -428,14 +428,8 @@ export class SSHServer extends EventEmitter {
     if (repoPath.startsWith('/')) {
       repoPath = repoPath.slice(1);
     }
-    // Strip .myvcs extension and normalize to .git for internal storage
-    if (repoPath.endsWith('.myvcs.git')) {
-      repoPath = repoPath.slice(0, -10) + '.git';
-    } else if (repoPath.endsWith('.myvcs')) {
-      repoPath = repoPath.slice(0, -6) + '.git';
-    } else if (!repoPath.endsWith('.git')) {
-      repoPath += '.git';
-    }
+    // Strip .myvcs and .vcs extensions and normalize to .git for internal storage
+    repoPath = repoPath.replace(/(?:\.(?:git|myvcs|vcs))+$/, '') + '.git';
 
     return {
       service,

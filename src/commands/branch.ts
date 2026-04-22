@@ -4,7 +4,7 @@ import { colors } from '../utils/colors';
 
 export function branch(
   name?: string,
-  options: { delete?: boolean; list?: boolean } = {}
+  options: { delete?: boolean; list?: boolean; rename?: string } = {}
 ): void {
   try {
     const repo = Repository.find();
@@ -24,6 +24,14 @@ export function branch(
       
       repo.deleteBranch(name);
       console.log(`Deleted branch ${name}`);
+      return;
+    }
+
+    if (options.rename && name) {
+      const oldName = name;
+      const newName = options.rename;
+      repo.refs.renameBranch(oldName, newName);
+      console.log(`Branch '${oldName}' renamed to '${newName}'`);
       return;
     }
 
